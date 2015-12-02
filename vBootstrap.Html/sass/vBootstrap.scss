@@ -5,7 +5,9 @@ $editing-border-width: 2px;
 $editing-margin: 8px;
 $editing-padding: 8px;
 $editing-row-min-height: 60px;
-$containers-alpha: 0.2;
+$containers-alpha: 0.25;
+$containers-locked-alpha: 0.1;
+$containers-dropable-active-alpha: 0.33;
 $locked-border-color: $gray-light-20;
 $resizable-border-color: $red-light-20;
 $resizing-border-color: $red;
@@ -14,13 +16,14 @@ $dropable-border-color: $red;
 .v-bootstrap-editor {
 
     .dragging {
-        opacity: 0.4;
+        opacity: 0.5;
         cursor: move;
         position: absolute;
         @include shadow(3);
     }
 
     &.editing {
+
 
         &.resizing-right,
         &.resizing-left {
@@ -45,11 +48,31 @@ $dropable-border-color: $red;
         .container {
             background-color: rgba($yellow-light-40, $containers-alpha);
             border: dashed $editing-border-width $yellow-light-20;
+
+            &.locked {
+                background-color: rgba($yellow-light-40, $containers-locked-alpha);
+                border-color: $locked-border-color;
+            }
+
+            &.dropable-active {
+                background-color: rgba($yellow-light-40, $containers-dropable-active-alpha);
+                border-color: $yellow;
+            }
         }
 
         .row {
             background-color: rgba($green-light-40, $containers-alpha);
             border: dashed $editing-border-width $green-light-20;
+            
+            &.locked {
+                background-color: rgba($green-light-40, $containers-locked-alpha);
+                border-color: $locked-border-color;
+            }
+
+            &.dropable-active {
+                background-color: rgba($green-light-40, $containers-dropable-active-alpha);
+                border-color: $green-dark-10;
+            }
 
             &.dragging {
                 width: 25%;
@@ -62,6 +85,16 @@ $dropable-border-color: $red;
             min-height: $editing-row-min-height;
             background-color: rgba($blue-light-40, $containers-alpha);
             border: dashed $editing-border-width $blue-light-20;
+            
+            &.locked {
+                background-color: rgba($blue-light-40, $containers-locked-alpha);
+                border-color: $locked-border-color;
+            }
+
+            &.dropable-active {
+                background-color: rgba($blue-light-40, $containers-dropable-active-alpha);
+                border-color: $blue-dark-10;
+            }
 
             &.dragging {
                 width: 8%;
@@ -76,16 +109,8 @@ $dropable-border-color: $red;
         .btn {
             cursor: pointer;
 
-            &.locked {
-                border-color: $locked-border-color;
-            }
-
             &.dragging-not-allowed {
                 cursor: not-allowed;
-            }
-
-            &.dropable-active {
-                border-color: black;
             }
 
             .dropable-target-first {

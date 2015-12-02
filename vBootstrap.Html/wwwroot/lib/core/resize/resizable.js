@@ -1,12 +1,11 @@
 ﻿(function () {
     "use strict";
     var events = vBootstrap.config.events;
+    var globalStreams = vBootstrap.config.streams.global;
     var lockService = vBootstrap.core.lock.lockService;
 
-    var globalMousemove = $(document).asEventStream(events.mousemove);
-    var globalMouseup = $(document).asEventStream(events.mouseup);
     function getMousemoveUntilMouseup() {
-        return globalMousemove.takeUntil(globalMouseup);
+        return globalStreams.mousemove.takeUntil(globalStreams.mouseup);
     }
 
     namespace('vBootstrap.core.resize').resizable = {
@@ -28,7 +27,7 @@
         var mousedownOnOver = mousedown.filter(isOver);
 
         var isResizing = mousedownOnOver.map(true)
-          .merge(globalMouseup.map(false))
+          .merge(globalStreams.mouseup.map(false))
           .toProperty(false);
 
         lockService.lockOn(isResizing);
@@ -37,9 +36,9 @@
         mouseout.assign(elem, 'removeClass', resizableClass);
 
         mousedownOnOver.assign(elem, 'addClass', resizingClass);
-        globalMouseup.assign(elem, 'removeClass', resizingClass);
+        globalStreams.mouseup.assign(elem, 'removeClass', resizingClass);
         mousedownOnOver.assign($(document.body), 'addClass', resizingClass);
-        globalMouseup.assign($(document.body), 'removeClass', resizingClass);
+        globalStreams.mouseup.assign($(document.body), 'removeClass', resizingClass);
 
         mousedownOnOver.flatMap(getMousemoveUntilMouseup).onValue(resizeFn);
     }

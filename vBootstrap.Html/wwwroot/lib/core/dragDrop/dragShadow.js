@@ -2,11 +2,9 @@
     "use strict";
     var events = vBootstrap.config.events;
     var selectors = vBootstrap.config.selectors;
+    var globalStreams = vBootstrap.config.streams.global;
     var dragDropConfig = vBootstrap.config.dragDrop;
     var dragDropService = vBootstrap.core.dragDrop.dragDropService;
-
-    var globalMousemove = $(document).asEventStream(events.mousemove);
-    var globalMouseup = $(document).asEventStream(events.mouseup);
 
     namespace('vBootstrap.core.dragDrop').dragShadow = vBDragShadow;
 
@@ -17,8 +15,8 @@
         var shadowMousemove = shadow.asEventStream(events.mousemove);
         dragDropService.startDrag(shadowMousemove, ev);
         moveElement(ev);
-        var unsubMousemove = globalMousemove.onValue(moveElement);
-        var unsubRemoveShadow = globalMouseup.onValue(removeShadow);
+        var unsubMousemove = globalStreams.mousemove.onValue(moveElement);
+        var unsubRemoveShadow = globalStreams.mouseup.onValue(removeShadow);
 
         return shadow;
 
@@ -32,7 +30,6 @@
 
         function removeShadow() {
             $(elem).data(selectors.vBData).isDragging = false;
-            shadow.remove();
             unsubMousemove();
             unsubRemoveShadow();
         }

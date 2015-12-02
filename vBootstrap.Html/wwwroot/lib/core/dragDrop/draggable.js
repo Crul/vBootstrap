@@ -1,6 +1,7 @@
 ﻿(function () {
     "use strict";
     var events = vBootstrap.config.events;
+    var globalStreams = vBootstrap.config.streams.global;
     var lockService = vBootstrap.core.lock.lockService;
 
     namespace('vBootstrap.core.dragDrop').draggable = {
@@ -10,12 +11,11 @@
     function initDraggable(config) {
         var elem = config.element;
         var getShadowTemplate = config.getShadowTemplate;
-        var globalMouseup = $(document).asEventStream(events.mouseup);
         var mousedown = elem.asEventStream(events.mousedown);
         mousedown.filter(lockService.isNotLocked).onValue(onValueFn);
 
         var isDragging = mousedown.map(true)
-          .merge(globalMouseup.map(false))
+          .merge(globalStreams.mouseup.map(false))
           .toProperty(false);
 
         lockService.lockOn(isDragging);

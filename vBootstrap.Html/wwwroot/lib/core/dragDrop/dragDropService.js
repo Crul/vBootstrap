@@ -4,12 +4,13 @@
     var events = vBootstrap.config.events;
     var selectors = vBootstrap.config.selectors;
     var dragDropCss = vBootstrap.config.dragDrop.cssClasses;
-    var onStopDrag = $(document).asEventStream(events.mouseup);
+    var onStopDrag =vBootstrap.config.streams.global.mouseup;
 
     var draggingBus = new Bacon.Bus();
 
+    //var globalStreams = vBootstrap.config.streams.global;
     //var isDragging = draggingBus.map(true)
-    //  .merge(globalMouseup.map(false))
+    //  .merge(globalStreams.mouseup)
     //  .toProperty(false);
 
     var dragDropService = {
@@ -49,12 +50,13 @@
     namespace('vBootstrap.core.dragDrop').dragDropService = dragDropService;
 
     function onDrop(val) {
+        var dragging = $('.' + dragDropCss.dragging);
+
         unsubscribeSetDropableTarget();
         unsubscribeOnDrop();
 
         var target = $(val.dropable);
         var targetParent = target.parent();
-        var dragging = $('.' + dragDropCss.dragging);
         if (dragging.length === 0) {
             console.warn('dragDropService.onDrop without dragging');
             return;
@@ -71,6 +73,7 @@
             }
         }
 
+        dragging.remove();
         resetDropables();
     }
 

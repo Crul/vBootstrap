@@ -92,6 +92,9 @@
     <Content Include="wwwroot\lib\config\events.js" />
     <Content Include="wwwroot\lib\config\resize.js" />
     <Content Include="wwwroot\lib\config\selectors.js" />
+    <Content Include="wwwroot\lib\config\streams.js" />
+    <Content Include="wwwroot\lib\core\activate\activatable.js" />
+    <Content Include="wwwroot\lib\core\activate\activateService.js" />
     <Content Include="wwwroot\lib\core\dragDrop\draggable.js" />
     <Content Include="wwwroot\lib\core\dragDrop\dragDropService.js" />
     <Content Include="wwwroot\lib\core\dragDrop\dragShadow.js" />
