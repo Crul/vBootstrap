@@ -23,7 +23,7 @@
 
         function resizeFromBottom(ev) {
             var height = ev.clientY - $(elem).position().top;
-            $(elem).css('min-height', height);
+            $(elem).css(resizeConfig.verticalCssProperty, height);
         }
 
         vBootstrap.core.resize.resizable.init(resizableConfig);
