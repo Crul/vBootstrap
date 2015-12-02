@@ -6,8 +6,9 @@ $editing-margin: 8px;
 $editing-padding: 8px;
 $editing-row-min-height: 60px;
 $containers-alpha: 0.25;
-$containers-locked-alpha: 0.1;
-$containers-dropable-active-alpha: 0.33;
+$containers-locked-alpha: 0.25;
+$containers-active-alpha: 0.8;
+$containers-dropable-active-alpha: 0.5;
 $locked-border-color: $gray-light-20;
 $resizable-border-color: $red-light-20;
 $resizing-border-color: $red;
@@ -54,6 +55,10 @@ $dropable-border-color: $red;
                 border-color: $locked-border-color;
             }
 
+            &.activated {
+                border-color: $yellow;
+            }
+
             &.dropable-active {
                 background-color: rgba($yellow-light-40, $containers-dropable-active-alpha);
                 border-color: $yellow;
@@ -63,14 +68,17 @@ $dropable-border-color: $red;
         .row {
             background-color: rgba($green-light-40, $containers-alpha);
             border: dashed $editing-border-width $green-light-20;
-            
+
             &.locked {
                 background-color: rgba($green-light-40, $containers-locked-alpha);
                 border-color: $locked-border-color;
             }
 
+            &.activated {
+                border-color: $green;
+            }
+
             &.dropable-active {
-                background-color: rgba($green-light-40, $containers-dropable-active-alpha);
                 border-color: $green-dark-10;
             }
 
@@ -85,10 +93,14 @@ $dropable-border-color: $red;
             min-height: $editing-row-min-height;
             background-color: rgba($blue-light-40, $containers-alpha);
             border: dashed $editing-border-width $blue-light-20;
-            
+
             &.locked {
                 background-color: rgba($blue-light-40, $containers-locked-alpha);
                 border-color: $locked-border-color;
+            }
+
+            &.activated {
+                border-color: $blue;
             }
 
             &.dropable-active {
@@ -108,6 +120,11 @@ $dropable-border-color: $red;
         [class*="col-"],
         .btn {
             cursor: pointer;
+
+            &.being-dragged {
+                background-color: $gray-light-40;
+                border-color: $gray-light-10;
+            }
 
             &.dragging-not-allowed {
                 cursor: not-allowed;

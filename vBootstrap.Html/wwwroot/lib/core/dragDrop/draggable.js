@@ -12,13 +12,18 @@
         var elem = config.element;
         var getShadowTemplate = config.getShadowTemplate;
         var mousedown = elem.asEventStream(events.mousedown);
-        mousedown.filter(lockService.isNotLocked).onValue(onValueFn);
+        var mousedonwNotLocked = mousedown.filter(lockService.isNotLocked);
+        mousedonwNotLocked.onValue(onValueFn);
 
-        var isDragging = mousedown.map(true)
+        var isDragging = mousedonwNotLocked.map(true)
           .merge(globalStreams.mouseup.map(false))
           .toProperty(false);
 
         lockService.lockOn(isDragging);
+
+        return {
+            isDragging: isDragging
+        };
 
         function onValueFn(ev) {
             var offset;

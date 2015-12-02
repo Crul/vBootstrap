@@ -3,8 +3,8 @@
     var vBUtils = vBootstrap.utils;
     var events = vBootstrap.config.events;
     var selectors = vBootstrap.config.selectors;
+    var globalStreams = vBootstrap.config.streams.global;
     var dragDropCss = vBootstrap.config.dragDrop.cssClasses;
-    var onStopDrag =vBootstrap.config.streams.global.mouseup;
 
     var draggingBus = new Bacon.Bus();
 
@@ -17,10 +17,10 @@
         //isDragging: isDragging,
         startDrag: startDrag,
         onDragging: draggingBus,
-        onStopDrag: onStopDrag
+        onStopDrag: globalStreams.mouseup
     };
 
-    var childestDropable = draggingBus
+    var childestDropable = globalStreams.mousemove
         .map(getChildestDropable)
         .toProperty();
 
@@ -36,11 +36,11 @@
         draggingBus.plug(dragmove);
 
         unsubscribeSetDropableTarget = dropableTarget
-            .sampledBy(draggingBus, mapDropableAndEvent)
+            .sampledBy(globalStreams.mousemove, mapDropableAndEvent)
             .onValue(setDropableTarget);
 
         unsubscribeOnDrop = dropableTarget
-            .sampledBy(onStopDrag, mapDropableAndEvent)
+            .sampledBy(globalStreams.mouseup, mapDropableAndEvent)
             .onValue(onDrop);
 
         if (ev)
@@ -176,17 +176,7 @@
     }
 
     function getChildestDropable() {
-        var dropables = $('.' + dragDropCss.dropable);
-        if (dropables.length === 0)
-            return;
-
-        var ascendants = dropables.parents();
-        for (var i = 0; i < dropables.length; i++) {
-            var dropable = dropables[i];
-            if (ascendants.index(dropable) < 0)
-                return dropable;
-        }
-        throw 'dragDropService.getChildestDropable: error';
+        return vBUtils.getChildest(dragDropCss.dropable);
     }
 
     function mapDropableAndEvent(dropable, ev) {

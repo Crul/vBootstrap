@@ -88,6 +88,7 @@
     <Content Include="wwwroot\lib\bootstrap\col.js" />
     <Content Include="wwwroot\lib\bootstrap\container.js" />
     <Content Include="wwwroot\lib\bootstrap\row.js" />
+    <Content Include="wwwroot\lib\config\activate.js" />
     <Content Include="wwwroot\lib\config\dragDrop.js" />
     <Content Include="wwwroot\lib\config\events.js" />
     <Content Include="wwwroot\lib\config\resize.js" />

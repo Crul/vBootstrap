@@ -1,5 +1,6 @@
 ﻿(function () {
     "use strict";
+    var vBUtils = vBootstrap.utils;
     var selectors = vBootstrap.config.selectors;
     var dragDropConfig = vBootstrap.config.dragDrop;
     var dragDropService = vBootstrap.core.dragDrop.dragDropService;
@@ -8,31 +9,34 @@
         init: initDropable
     };
 
-    function initDropable(e) {
-        var elem = $(e);
+    function initDropable(elem) {
+        var jElem = $(elem);
 
         dragDropService.onDragging
             .map(isOverAndNotChildren)
             .toProperty(false)
-            .assign(elem, 'toggleClass', dragDropConfig.cssClasses.dropable);
+            .assign(jElem, 'toggleClass', dragDropConfig.cssClasses.dropable);
 
         dragDropService.onStopDrag
-            .assign(elem, 'removeClass', dragDropConfig.cssClasses.dropable);
+            .assign(jElem, 'removeClass', dragDropConfig.cssClasses.dropable);
 
         function isOverAndNotChildren(ev) {
-            var source = ($(ev.currentTarget).data(selectors.vBData) || {}).source;
+            var target = $(ev.currentTarget);
+            var source = (target.data(selectors.vBData) || {}).source;
             if (source) {
-                var isDescendant = source.find(e).length > 0;
+                var isDescendant = source.find(elem).length > 0;
                 if (isDescendant)
                     return false;
             }
-            var x = e;
-            var offset = elem.offset();
 
-            return (offset.left < ev.clientX + dragDropConfig.threshold)
-                && (offset.left + elem.width() > ev.clientX - dragDropConfig.threshold)
-                && (offset.top < ev.clientY + dragDropConfig.threshold)
-                && (offset.top + elem.height() > ev.clientY - dragDropConfig.threshold);
+            var offset = jElem.offset();
+            var elemProperties = {
+                left: offset.left,
+                top: offset.top,
+                width: jElem.width() + 2 * dragDropConfig.padding,
+                height: jElem.height() + 2 * dragDropConfig.padding
+            };
+            return vBUtils.isCursorOverElem(ev, elemProperties, dragDropConfig.threshold);
         }
     }
 })();

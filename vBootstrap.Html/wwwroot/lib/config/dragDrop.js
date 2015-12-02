@@ -5,6 +5,7 @@
         padding: 8,
         cssClasses: {
             dragging: 'dragging',
+            beingDragged: 'being-dragged',
             draggingNotAllowed: 'dragging-not-allowed',
             dropable: 'dropable',
             dropableActive: 'dropable-active',

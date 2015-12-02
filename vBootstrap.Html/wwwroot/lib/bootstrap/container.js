@@ -6,6 +6,7 @@
         this.elem = elem;
 
         vBootstrap.core.lock.lockable.init(elem);
+        vBootstrap.core.activate.activatable.init(this.elem);
         vBootstrap.core.resize.verticalResizable.init(elem);
         vBootstrap.core.dragDrop.dropable.init(elem);
     }

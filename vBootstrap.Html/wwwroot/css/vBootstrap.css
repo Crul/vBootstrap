@@ -174,20 +174,23 @@
   background-color: rgba(241, 245, 165, 0.25);
   border: dashed 2px #e4ea4a; }
   .v-bootstrap-editor.editing .container.locked {
-    background-color: rgba(241, 245, 165, 0.1);
+    background-color: rgba(241, 245, 165, 0.25);
     border-color: #bbbbbb; }
+  .v-bootstrap-editor.editing .container.activated {
+    border-color: #b2b915; }
   .v-bootstrap-editor.editing .container.dropable-active {
-    background-color: rgba(241, 245, 165, 0.33);
+    background-color: rgba(241, 245, 165, 0.5);
     border-color: #b2b915; }
 
 .v-bootstrap-editor.editing .row {
   background-color: rgba(165, 245, 167, 0.25);
   border: dashed 2px #4aea4d; }
   .v-bootstrap-editor.editing .row.locked {
-    background-color: rgba(165, 245, 167, 0.1);
+    background-color: rgba(165, 245, 167, 0.25);
     border-color: #bbbbbb; }
+  .v-bootstrap-editor.editing .row.activated {
+    border-color: #15b918; }
   .v-bootstrap-editor.editing .row.dropable-active {
-    background-color: rgba(165, 245, 167, 0.33);
     border-color: #108b12; }
   .v-bootstrap-editor.editing .row.dragging {
     width: 25%;
@@ -199,10 +202,12 @@
   background-color: rgba(165, 211, 245, 0.25);
   border: dashed 2px #4aa7ea; }
   .v-bootstrap-editor.editing [class*="col-"].locked {
-    background-color: rgba(165, 211, 245, 0.1);
+    background-color: rgba(165, 211, 245, 0.25);
     border-color: #bbbbbb; }
+  .v-bootstrap-editor.editing [class*="col-"].activated {
+    border-color: #1574b9; }
   .v-bootstrap-editor.editing [class*="col-"].dropable-active {
-    background-color: rgba(165, 211, 245, 0.33);
+    background-color: rgba(165, 211, 245, 0.5);
     border-color: #10578b; }
   .v-bootstrap-editor.editing [class*="col-"].dragging {
     width: 8%;
@@ -214,6 +219,12 @@
 .v-bootstrap-editor.editing [class*="col-"],
 .v-bootstrap-editor.editing .btn {
   cursor: pointer; }
+  .v-bootstrap-editor.editing .container.being-dragged,
+  .v-bootstrap-editor.editing .row.being-dragged,
+  .v-bootstrap-editor.editing [class*="col-"].being-dragged,
+  .v-bootstrap-editor.editing .btn.being-dragged {
+    background-color: #eeeeee;
+    border-color: #a2a2a2; }
   .v-bootstrap-editor.editing .container.dragging-not-allowed,
   .v-bootstrap-editor.editing .row.dragging-not-allowed,
   .v-bootstrap-editor.editing [class*="col-"].dragging-not-allowed,

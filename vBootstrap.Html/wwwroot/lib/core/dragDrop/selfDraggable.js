@@ -1,6 +1,7 @@
 ﻿(function () {
     "use strict";
-
+    
+    var dragDropCss = vBootstrap.config.dragDrop.cssClasses;
     namespace('vBootstrap.core.dragDrop').selfDraggable = {
         init: initSelfDraggable
     };
@@ -14,7 +15,9 @@
             getOffset: getOffset
         };
 
-        vBootstrap.core.dragDrop.draggable.init(draggableConfig);
+        var draggable = vBootstrap.core.dragDrop.draggable.init(draggableConfig);
+
+        draggable.isDragging.assign(elem, 'toggleClass', dragDropCss.beingDragged);
 
         function getShadowTemplate() {
             return elem;

@@ -8,6 +8,7 @@
         this.elem = elem || vBCol.template.clone()[0];
 
         vBootstrap.core.lock.lockable.init(this.elem);
+        vBootstrap.core.activate.activatable.init(this.elem);
         vBootstrap.core.resize.columnResizable.init(this.elem, this);
         vBootstrap.core.resize.verticalResizable.init(this.elem);
         vBootstrap.core.dragDrop.selfDraggable.init(this.elem);
