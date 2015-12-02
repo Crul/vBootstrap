@@ -21,10 +21,9 @@
             .assign(jElem, 'removeClass', dragDropConfig.cssClasses.dropable);
 
         function isOverAndNotChildren(ev) {
-            var target = $(ev.currentTarget);
-            var source = (target.data(selectors.vBData) || {}).source;
-            if (source) {
-                var isDescendant = source.find(elem).length > 0;
+            var draggedElem = $('.' + dragDropConfig.cssClasses.beingDragged);
+            if (draggedElem) {
+                var isDescendant = draggedElem.find(elem).length > 0;
                 if (isDescendant)
                     return false;
             }
