@@ -1,11 +1,24 @@
 ﻿@import "common/colors";
+@import "common/shadows.scss";
 
 $editing-border-width: 2px;
 $editing-margin: 8px;
 $editing-padding: 8px;
-$editing-row-min-height: 40px;
+$editing-row-min-height: 60px;
+$containers-alpha: 0.2;
+$locked-border-color: $gray-light-20;
+$resizable-border-color: $red-light-20;
+$resizing-border-color: $red;
+$dropable-border-color: $red;
 
 .v-bootstrap-editor {
+
+    .dragging {
+        opacity: 0.4;
+        cursor: move;
+        position: absolute;
+        @include shadow(3);
+    }
 
     &.editing {
 
@@ -30,13 +43,13 @@ $editing-row-min-height: 40px;
         }
 
         .container {
-            background-color: $yellow-light-50;
-            border: dashed $editing-border-width $yellow;
+            background-color: rgba($yellow-light-40, $containers-alpha);
+            border: dashed $editing-border-width $yellow-light-20;
         }
 
         .row {
-            background-color: $green-light-50;
-            border: dashed $editing-border-width $green;
+            background-color: rgba($green-light-40, $containers-alpha);
+            border: dashed $editing-border-width $green-light-20;
 
             &.dragging {
                 width: 25%;
@@ -46,9 +59,10 @@ $editing-row-min-height: 40px;
         }
 
         [class*="col-"] {
-            background-color: $blue-light-50;
-            border: dashed $editing-border-width $blue;
-            
+            min-height: $editing-row-min-height;
+            background-color: rgba($blue-light-40, $containers-alpha);
+            border: dashed $editing-border-width $blue-light-20;
+
             &.dragging {
                 width: 8%;
                 height: 120px;
@@ -63,14 +77,7 @@ $editing-row-min-height: 40px;
             cursor: pointer;
 
             &.locked {
-                border-color: $gray-light-20;
-            }
-
-
-            &.dragging {
-                opacity: 0.4;
-                cursor: move;
-                position: absolute;
+                border-color: $locked-border-color;
             }
 
             &.dragging-not-allowed {
@@ -78,21 +85,20 @@ $editing-row-min-height: 40px;
             }
 
             &.dropable-active {
-                background-color: $yellow-light-40;
+                border-color: black;
             }
 
             .dropable-target-first {
-                border-top: solid 4px $red;
+                border-top: solid 4px $dropable-border-color;
             }
 
-
             &.resizable-bottom {
-                border-bottom-color: $yellow;
+                border-bottom-color: $resizable-border-color;
                 cursor: ns-resize;
             }
 
             &.resizable-right {
-                border-right-color: $yellow;
+                border-right-color: $resizable-border-color;
                 cursor: ew-resize;
             }
 
@@ -101,22 +107,13 @@ $editing-row-min-height: 40px;
             }
 
 
-            &[class*="resizing-"] {
-                background-color: $blue-light-30;
-                border-color: $blue;
-
-                .locked {
-                    opacity: 0.5;
-                }
-            }
-
             &.resizing-bottom {
-                border-bottom-color: $red;
+                border-bottom-color: $resizing-border-color;
                 cursor: ns-resize;
             }
 
             &.resizing-right {
-                border-right-color: $red;
+                border-right-color: $resizing-border-color;
                 cursor: ew-resize;
             }
 
@@ -131,24 +128,22 @@ $editing-row-min-height: 40px;
             margin-bottom: $editing-margin;
 
             &.dropable-target-previous {
-                border-top: solid 4px $red;
+                border-top: solid 4px $dropable-border-color;
             }
 
             &.dropable-target-after {
-                border-bottom: solid 4px $red;
+                border-bottom: solid 4px $dropable-border-color;
             }
         }
 
         .btn,
         [class*="col-"] {
-            min-height: $editing-row-min-height;
-
             &.dropable-target-previous {
-                border-left: solid 4px $red;
+                border-left: solid 4px $dropable-border-color;
             }
 
             &.dropable-target-after {
-                border-right: solid 4px $red;
+                border-right: solid 4px $dropable-border-color;
             }
         }
     }

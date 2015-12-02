@@ -73,6 +73,14 @@
 .green-light-50 {
   color: #d3fad4; }
 
+.v-bootstrap-editor .dragging {
+  opacity: 0.4;
+  cursor: move;
+  position: absolute;
+  -webkit-box-shadow: 3px 3px 18px 0 rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 3px 3px 18px 0 rgba(0, 0, 0, 0.75);
+  box-shadow: 3px 3px 18px 0 rgba(0, 0, 0, 0.75); }
+
 .v-bootstrap-editor.editing.resizing-right, .v-bootstrap-editor.editing.resizing-left {
   cursor: ew-resize; }
 
@@ -88,20 +96,21 @@
   padding: 8px; }
 
 .v-bootstrap-editor.editing .container {
-  background-color: #f8fad3;
-  border: dashed 2px #b2b915; }
+  background-color: rgba(241, 245, 165, 0.2);
+  border: dashed 2px #e4ea4a; }
 
 .v-bootstrap-editor.editing .row {
-  background-color: #d3fad4;
-  border: dashed 2px #15b918; }
+  background-color: rgba(165, 245, 167, 0.2);
+  border: dashed 2px #4aea4d; }
   .v-bootstrap-editor.editing .row.dragging {
     width: 25%;
     height: 60px;
     overflow: hidden; }
 
 .v-bootstrap-editor.editing [class*="col-"] {
-  background-color: #d3eafa;
-  border: dashed 2px #1574b9; }
+  min-height: 60px;
+  background-color: rgba(165, 211, 245, 0.2);
+  border: dashed 2px #4aa7ea; }
   .v-bootstrap-editor.editing [class*="col-"].dragging {
     width: 8%;
     height: 120px;
@@ -117,13 +126,6 @@
   .v-bootstrap-editor.editing [class*="col-"].locked,
   .v-bootstrap-editor.editing .btn.locked {
     border-color: #bbbbbb; }
-  .v-bootstrap-editor.editing .container.dragging,
-  .v-bootstrap-editor.editing .row.dragging,
-  .v-bootstrap-editor.editing [class*="col-"].dragging,
-  .v-bootstrap-editor.editing .btn.dragging {
-    opacity: 0.4;
-    cursor: move;
-    position: absolute; }
   .v-bootstrap-editor.editing .container.dragging-not-allowed,
   .v-bootstrap-editor.editing .row.dragging-not-allowed,
   .v-bootstrap-editor.editing [class*="col-"].dragging-not-allowed,
@@ -133,7 +135,7 @@
   .v-bootstrap-editor.editing .row.dropable-active,
   .v-bootstrap-editor.editing [class*="col-"].dropable-active,
   .v-bootstrap-editor.editing .btn.dropable-active {
-    background-color: #f1f5a5; }
+    border-color: black; }
   .v-bootstrap-editor.editing .container .dropable-target-first,
   .v-bootstrap-editor.editing .row .dropable-target-first,
   .v-bootstrap-editor.editing [class*="col-"] .dropable-target-first,
@@ -143,30 +145,19 @@
   .v-bootstrap-editor.editing .row.resizable-bottom,
   .v-bootstrap-editor.editing [class*="col-"].resizable-bottom,
   .v-bootstrap-editor.editing .btn.resizable-bottom {
-    border-bottom-color: #b2b915;
+    border-bottom-color: #ea4a62;
     cursor: ns-resize; }
   .v-bootstrap-editor.editing .container.resizable-right,
   .v-bootstrap-editor.editing .row.resizable-right,
   .v-bootstrap-editor.editing [class*="col-"].resizable-right,
   .v-bootstrap-editor.editing .btn.resizable-right {
-    border-right-color: #b2b915;
+    border-right-color: #ea4a62;
     cursor: ew-resize; }
   .v-bootstrap-editor.editing .container.resizable-bottom.resizable-right,
   .v-bootstrap-editor.editing .row.resizable-bottom.resizable-right,
   .v-bootstrap-editor.editing [class*="col-"].resizable-bottom.resizable-right,
   .v-bootstrap-editor.editing .btn.resizable-bottom.resizable-right {
     cursor: nwse-resize; }
-  .v-bootstrap-editor.editing .container[class*="resizing-"],
-  .v-bootstrap-editor.editing .row[class*="resizing-"],
-  .v-bootstrap-editor.editing [class*="col-"][class*="resizing-"],
-  .v-bootstrap-editor.editing .btn[class*="resizing-"] {
-    background-color: #77bdf0;
-    border-color: #1574b9; }
-    .v-bootstrap-editor.editing .container[class*="resizing-"] .locked,
-    .v-bootstrap-editor.editing .row[class*="resizing-"] .locked,
-    .v-bootstrap-editor.editing [class*="col-"][class*="resizing-"] .locked,
-    .v-bootstrap-editor.editing .btn[class*="resizing-"] .locked {
-      opacity: 0.5; }
   .v-bootstrap-editor.editing .container.resizing-bottom,
   .v-bootstrap-editor.editing .row.resizing-bottom,
   .v-bootstrap-editor.editing [class*="col-"].resizing-bottom,
@@ -196,14 +187,12 @@
   .v-bootstrap-editor.editing .row.dropable-target-after {
     border-bottom: solid 4px #b9152e; }
 
-.v-bootstrap-editor.editing .btn,
-.v-bootstrap-editor.editing [class*="col-"] {
-  min-height: 40px; }
-  .v-bootstrap-editor.editing .btn.dropable-target-previous,
-  .v-bootstrap-editor.editing [class*="col-"].dropable-target-previous {
-    border-left: solid 4px #b9152e; }
-  .v-bootstrap-editor.editing .btn.dropable-target-after,
-  .v-bootstrap-editor.editing [class*="col-"].dropable-target-after {
-    border-right: solid 4px #b9152e; }
+.v-bootstrap-editor.editing .btn.dropable-target-previous,
+.v-bootstrap-editor.editing [class*="col-"].dropable-target-previous {
+  border-left: solid 4px #b9152e; }
+
+.v-bootstrap-editor.editing .btn.dropable-target-after,
+.v-bootstrap-editor.editing [class*="col-"].dropable-target-after {
+  border-right: solid 4px #b9152e; }
 
 /*# sourceMappingURL=vBootstrap.css.map */

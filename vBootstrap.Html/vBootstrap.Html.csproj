@@ -112,6 +112,7 @@
     <Content Include="wwwroot\lib\tools\creation\buttonCreator.js" />
     <Content Include="wwwroot\lib\vBootstrap.js" />
     <None Include="Properties\PublishProfiles\vBootstrap.pubxml" />
+    <Content Include="sass\common\shadows.scss" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,10 @@
+﻿$depth-length-factor: 1px;
+$depth-blur-factor: 6px;
+
+@mixin shadow($depth) {
+    $length: $depth-length-factor * $depth;
+    $blur: $depth-blur-factor * $depth;
+    -webkit-box-shadow: $length $length $blur 0 rgba(0,0,0,0.75);
+    -moz-box-shadow: $length $length $blur 0 rgba(0,0,0,0.75);
+    box-shadow: $length $length $blur 0 rgba(0,0,0,0.75);
+}
