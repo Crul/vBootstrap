@@ -148,6 +148,14 @@
 .green-light-50 {
   color: #d3fad4; }
 
+body {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+
 .v-bootstrap-editor .dragging {
   opacity: 0.5;
   cursor: move;
@@ -168,7 +176,8 @@
 .v-bootstrap-editor.editing .container,
 .v-bootstrap-editor.editing .row,
 .v-bootstrap-editor.editing [class*="col-"] {
-  padding: 8px; }
+  padding: 8px;
+  min-height: 60px; }
 
 .v-bootstrap-editor.editing .container {
   background-color: rgba(241, 245, 165, 0.25);
@@ -198,7 +207,6 @@
     overflow: hidden; }
 
 .v-bootstrap-editor.editing [class*="col-"] {
-  min-height: 60px;
   background-color: rgba(165, 211, 245, 0.25);
   border: dashed 2px #4aa7ea; }
   .v-bootstrap-editor.editing [class*="col-"].locked {

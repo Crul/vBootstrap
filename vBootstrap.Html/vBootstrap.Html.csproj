@@ -109,6 +109,7 @@
     <Content Include="wwwroot\lib\core\resize\verticalResizable.js" />
     <Content Include="wwwroot\lib\core\toolbar.js" />
     <Content Include="wwwroot\lib\tools\creation\colCreator.js" />
+    <Content Include="wwwroot\lib\tools\creation\containerCreator.js" />
     <Content Include="wwwroot\lib\tools\creation\rowCreator.js" />
     <Content Include="wwwroot\lib\tools\creation\elementCreator.js" />
     <Content Include="wwwroot\lib\seedwork\namespace.js" />

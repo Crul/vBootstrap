@@ -14,6 +14,15 @@ $resizable-border-color: $red-light-20;
 $resizing-border-color: $red;
 $dropable-border-color: $red;
 
+body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 .v-bootstrap-editor {
 
     .dragging {
@@ -44,6 +53,7 @@ $dropable-border-color: $red;
         .row,
         [class*="col-"] {
             padding: $editing-padding;
+            min-height: $editing-row-min-height;
         }
 
         .container {
@@ -90,7 +100,6 @@ $dropable-border-color: $red;
         }
 
         [class*="col-"] {
-            min-height: $editing-row-min-height;
             background-color: rgba($blue-light-40, $containers-alpha);
             border: dashed $editing-border-width $blue-light-20;
 
