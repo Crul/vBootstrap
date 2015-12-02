@@ -6,10 +6,10 @@
         <div class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <span class ="navbar-brand">
+                    <a class ="navbar-brand" href="/">
                         vBootstrap<br/>
                         <h6 style="margin: 0; text-align: right;"><small>demo</small></h6>
-                    </span>
+                    </a>
                 </div>
                 <div class ="${buttonsCssClass}"></div>
             </div>
