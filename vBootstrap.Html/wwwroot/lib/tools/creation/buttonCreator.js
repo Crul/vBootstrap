@@ -2,7 +2,7 @@
     "use strict";
 
     var creatorConfig = {
-        buttonText: 'new<br/>button',
+        buttonText: '+ button',
         elementFn: vBootstrap.bootstrap.button
     };
     var vBButtonCreator = vBootstrap.tools.creation.elementCreator

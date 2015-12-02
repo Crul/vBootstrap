@@ -2,7 +2,7 @@
     "use strict";
 
     var creatorConfig = {
-        buttonText: 'new<br/>row',
+        buttonText: '+ row',
         elementFn: vBootstrap.bootstrap.row
     };
     var vBRowCreator = vBootstrap.tools.creation.elementCreator

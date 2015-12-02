@@ -2,7 +2,7 @@
     "use strict";
 
     var creatorConfig = {
-        buttonText: 'new<br/>col',
+        buttonText: '+ col',
         elementFn: vBootstrap.bootstrap.col
     };
     var vBColCreator = vBootstrap.tools.creation.elementCreator

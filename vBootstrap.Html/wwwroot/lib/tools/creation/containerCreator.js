@@ -2,7 +2,7 @@
     "use strict";
 
     var creatorConfig = {
-        buttonText: 'new<br/>container',
+        buttonText: '+ container',
         elementFn: vBootstrap.bootstrap.container
     };
     var vContainerCreator = vBootstrap.tools.creation.elementCreator

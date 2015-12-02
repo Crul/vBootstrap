@@ -66,6 +66,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="index.html" />
     <Content Include="sass\common\colors.scss" />
     <Content Include="packages.config" />
     <Content Include="package.json" />
@@ -101,6 +102,7 @@
     <Content Include="wwwroot\lib\core\dragDrop\dragShadow.js" />
     <Content Include="wwwroot\lib\core\dragDrop\dropable.js" />
     <Content Include="wwwroot\lib\core\dragDrop\selfDraggable.js" />
+    <Content Include="wwwroot\lib\core\lock\locker.js" />
     <Content Include="wwwroot\lib\core\resize\columnResizable.js" />
     <Content Include="wwwroot\lib\core\lock\lockService.js" />
     <Content Include="wwwroot\lib\core\editor.js" />
