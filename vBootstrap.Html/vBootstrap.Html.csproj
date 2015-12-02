@@ -73,7 +73,6 @@
     <Content Include="wwwroot\css\bootstrap-theme.min.css" />
     <Content Include="wwwroot\css\bootstrap.css" />
     <Content Include="wwwroot\css\bootstrap.min.css" />
-    <Content Include="wwwroot\css\common\colors.css" />
     <Content Include="wwwroot\css\vBootstrap.css" />
     <Content Include="wwwroot\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="wwwroot\index.html" />
@@ -105,6 +104,7 @@
     <Content Include="wwwroot\lib\seedwork\namespace.js" />
     <Content Include="wwwroot\lib\seedwork\utils.js" />
     <Content Include="wwwroot\lib\vBootstrap.js" />
+    <None Include="Properties\PublishProfiles\vBootstrap.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
