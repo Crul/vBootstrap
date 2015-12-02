@@ -9,7 +9,6 @@
 
     function initColumnResizable(e, column) {
         var elem = $(e);
-        var parent = elem.parent();
         var resizableConfig = {
             elem: elem,
             resize: resizeFromRight,
@@ -18,7 +17,7 @@
             resizingClass: resizeConfig.cssClasses.resizingColumn
         };
 
-        var cssClass = e.className;
+        var cssClass = elem.attr('class');
         column.sizes = {
             xs: getColSize(cssClass, 'xs'),
             sm: getColSize(cssClass, 'sm'),
@@ -32,7 +31,7 @@
         }
 
         function resizeFromRight(ev) {
-            var parentWidth = parent.width();
+            var parentWidth = elem.parent().width();
             var colWidth = parentWidth / 12;
             var relativeLeft = ev.clientX - elem.offset().left;
             var cols = Math.round((relativeLeft / colWidth) || 1);

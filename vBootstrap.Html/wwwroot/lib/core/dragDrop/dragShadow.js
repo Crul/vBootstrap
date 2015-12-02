@@ -31,7 +31,7 @@
         }
 
         function removeShadow() {
-            elem.data(selectors.vBData).isDragging = false;
+            $(elem).data(selectors.vBData).isDragging = false;
             shadow.remove();
             unsubMousemove();
             unsubRemoveShadow();
@@ -45,7 +45,8 @@
         };
     }
 
-    function createShadowElem(elem) {
+    function createShadowElem(e) {
+        var elem = $(e);
         var shadow = elem.clone();
 
         if (elem[0].offsetWidth)

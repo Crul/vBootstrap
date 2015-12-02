@@ -4,7 +4,7 @@
     vBRow.template = $('<div />').addClass('row');
 
     function vBRow(elem) {
-        this.elem = elem || vBRow.template.clone();
+        this.elem = elem || vBRow.template.clone()[0];
 
         vBootstrap.core.lock.lockable.init(this.elem);
         vBootstrap.core.resize.verticalResizable.init(this.elem);

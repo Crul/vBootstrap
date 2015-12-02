@@ -102,6 +102,10 @@
 .v-bootstrap-editor.editing [class*="col-"] {
   background-color: #d3eafa;
   border: dashed 2px #1574b9; }
+  .v-bootstrap-editor.editing [class*="col-"].dragging {
+    width: 8%;
+    height: 120px;
+    overflow: hidden; }
 
 .v-bootstrap-editor.editing .container,
 .v-bootstrap-editor.editing .row,

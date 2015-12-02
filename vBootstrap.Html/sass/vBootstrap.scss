@@ -48,6 +48,12 @@ $editing-row-min-height: 40px;
         [class*="col-"] {
             background-color: $blue-light-50;
             border: dashed $editing-border-width $blue;
+            
+            &.dragging {
+                width: 8%;
+                height: 120px;
+                overflow: hidden;
+            }
         }
 
         .container,
