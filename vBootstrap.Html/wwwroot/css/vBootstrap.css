@@ -1,0 +1,171 @@
+.gray-light-10 {
+  color: #a2a2a2; }
+
+.gray-light-20 {
+  color: #bbbbbb; }
+
+.gray-light-30 {
+  color: #d5d5d5; }
+
+.gray-light-40 {
+  color: #eeeeee; }
+
+.gray-light-50 {
+  color: white; }
+
+.blue-light-10 {
+  color: #1c90e5; }
+
+.blue-light-20 {
+  color: #4aa7ea; }
+
+.blue-light-30 {
+  color: #77bdf0; }
+
+.blue-light-40 {
+  color: #a5d3f5; }
+
+.blue-light-50 {
+  color: #d3eafa; }
+
+.red-light-10 {
+  color: #e51c3a; }
+
+.red-light-20 {
+  color: #ea4a62; }
+
+.red-light-30 {
+  color: #f0778a; }
+
+.red-light-40 {
+  color: #f5a5b1; }
+
+.red-light-50 {
+  color: #fad3d9; }
+
+.yellow-light-10 {
+  color: #dde51c; }
+
+.yellow-light-20 {
+  color: #e4ea4a; }
+
+.yellow-light-30 {
+  color: #eaf077; }
+
+.yellow-light-40 {
+  color: #f1f5a5; }
+
+.yellow-light-50 {
+  color: #f8fad3; }
+
+.green-light-10 {
+  color: #1ce51f; }
+
+.green-light-20 {
+  color: #4aea4d; }
+
+.green-light-30 {
+  color: #77f07a; }
+
+.green-light-40 {
+  color: #a5f5a7; }
+
+.green-light-50 {
+  color: #d3fad4; }
+
+body.resizing-right, body.resizing-left {
+  cursor: ew-resize; }
+
+body.resizing-top, body.resizing-bottom {
+  cursor: ns-resize; }
+
+body.resizing-bottom.resizing-right {
+  cursor: nwse-resize; }
+
+.v-bootstrap-editor.editing .container,
+.v-bootstrap-editor.editing .row,
+.v-bootstrap-editor.editing [class*="col-"] {
+  cursor: pointer;
+  background-color: #d3eafa;
+  padding: 8px;
+  border: dashed 2px #1574b9; }
+  .v-bootstrap-editor.editing .container.locked,
+  .v-bootstrap-editor.editing .row.locked,
+  .v-bootstrap-editor.editing [class*="col-"].locked {
+    background-color: #eeeeee;
+    border-color: #bbbbbb; }
+  .v-bootstrap-editor.editing .container.dragging,
+  .v-bootstrap-editor.editing .row.dragging,
+  .v-bootstrap-editor.editing [class*="col-"].dragging {
+    opacity: 0.4;
+    cursor: move;
+    position: absolute; }
+  .v-bootstrap-editor.editing .container.dragging-not-allowed,
+  .v-bootstrap-editor.editing .row.dragging-not-allowed,
+  .v-bootstrap-editor.editing [class*="col-"].dragging-not-allowed {
+    cursor: not-allowed; }
+  .v-bootstrap-editor.editing .container.dropable-active,
+  .v-bootstrap-editor.editing .row.dropable-active,
+  .v-bootstrap-editor.editing [class*="col-"].dropable-active {
+    background-color: #f1f5a5; }
+  .v-bootstrap-editor.editing .container .dropable-target-first,
+  .v-bootstrap-editor.editing .row .dropable-target-first,
+  .v-bootstrap-editor.editing [class*="col-"] .dropable-target-first {
+    border-top: solid 4px #b9152e; }
+  .v-bootstrap-editor.editing .container.resizable-bottom,
+  .v-bootstrap-editor.editing .row.resizable-bottom,
+  .v-bootstrap-editor.editing [class*="col-"].resizable-bottom {
+    border-bottom-color: #b2b915;
+    cursor: ns-resize; }
+  .v-bootstrap-editor.editing .container.resizable-right,
+  .v-bootstrap-editor.editing .row.resizable-right,
+  .v-bootstrap-editor.editing [class*="col-"].resizable-right {
+    border-right-color: #b2b915;
+    cursor: ew-resize; }
+  .v-bootstrap-editor.editing .container.resizable-bottom.resizable-right,
+  .v-bootstrap-editor.editing .row.resizable-bottom.resizable-right,
+  .v-bootstrap-editor.editing [class*="col-"].resizable-bottom.resizable-right {
+    cursor: nwse-resize; }
+  .v-bootstrap-editor.editing .container[class*="resizing-"],
+  .v-bootstrap-editor.editing .row[class*="resizing-"],
+  .v-bootstrap-editor.editing [class*="col-"][class*="resizing-"] {
+    background-color: #77bdf0;
+    border-color: #1574b9; }
+    .v-bootstrap-editor.editing .container[class*="resizing-"] .locked,
+    .v-bootstrap-editor.editing .row[class*="resizing-"] .locked,
+    .v-bootstrap-editor.editing [class*="col-"][class*="resizing-"] .locked {
+      opacity: 0.5; }
+  .v-bootstrap-editor.editing .container.resizing-bottom,
+  .v-bootstrap-editor.editing .row.resizing-bottom,
+  .v-bootstrap-editor.editing [class*="col-"].resizing-bottom {
+    border-bottom-color: #b9152e;
+    cursor: ns-resize; }
+  .v-bootstrap-editor.editing .container.resizing-right,
+  .v-bootstrap-editor.editing .row.resizing-right,
+  .v-bootstrap-editor.editing [class*="col-"].resizing-right {
+    border-right-color: #b9152e;
+    cursor: ew-resize; }
+  .v-bootstrap-editor.editing .container.resizing-bottom.resizing-right,
+  .v-bootstrap-editor.editing .row.resizing-bottom.resizing-right,
+  .v-bootstrap-editor.editing [class*="col-"].resizing-bottom.resizing-right {
+    cursor: nwse-resize; }
+
+.v-bootstrap-editor.editing .container,
+.v-bootstrap-editor.editing .row {
+  margin-top: 8px;
+  margin-bottom: 8px; }
+  .v-bootstrap-editor.editing .container.dropable-target-previous,
+  .v-bootstrap-editor.editing .row.dropable-target-previous {
+    border-top: solid 4px #b9152e; }
+  .v-bootstrap-editor.editing .container.dropable-target-after,
+  .v-bootstrap-editor.editing .row.dropable-target-after {
+    border-bottom: solid 4px #b9152e; }
+
+.v-bootstrap-editor.editing [class*="col-"] {
+  min-height: 40px; }
+  .v-bootstrap-editor.editing [class*="col-"].dropable-target-previous {
+    border-left: solid 4px #b9152e; }
+  .v-bootstrap-editor.editing [class*="col-"].dropable-target-after {
+    border-right: solid 4px #b9152e; }
+
+/*# sourceMappingURL=vBootstrap.css.map */

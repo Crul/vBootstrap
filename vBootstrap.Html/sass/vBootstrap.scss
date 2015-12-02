@@ -1,0 +1,123 @@
+﻿@import "common/colors";
+
+body {
+    &.resizing-right,
+    &.resizing-left {
+        cursor: ew-resize;
+    }
+
+    &.resizing-top,
+    &.resizing-bottom {
+        cursor: ns-resize;
+    }
+
+    &.resizing-bottom.resizing-right {
+        cursor: nwse-resize;
+    }
+}
+
+$editing-border-width: 2px;
+$editing-margin: 8px;
+$editing-padding: 8px;
+$editing-row-min-height: 40px;
+
+.v-bootstrap-editor {
+
+    &.editing {
+
+        .container,
+        .row,
+        [class*="col-"] {
+            cursor: pointer;
+            background-color: $blue-light-50;
+            padding: $editing-padding;
+            border: dashed $editing-border-width $blue;
+
+            &.locked {
+                background-color: $gray-light-40;
+                border-color: $gray-light-20;
+            }
+
+            &.dragging {
+                opacity: 0.4;
+                cursor: move;
+                position: absolute;
+            }
+
+            &.dragging-not-allowed {
+                cursor: not-allowed;
+            }
+
+            &.dropable-active {
+                background-color: $yellow-light-40;
+            }
+
+            .dropable-target-first {
+                border-top: solid 4px $red;
+            }
+
+            &.resizable-bottom {
+                border-bottom-color: $yellow;
+                cursor: ns-resize;
+            }
+
+            &.resizable-right {
+                border-right-color: $yellow;
+                cursor: ew-resize;
+            }
+
+            &.resizable-bottom.resizable-right {
+                cursor: nwse-resize;
+            }
+
+            &[class*="resizing-"] {
+                background-color: $blue-light-30;
+                border-color: $blue;
+
+                .locked {
+                    opacity: 0.5;
+                }
+            }
+
+            &.resizing-bottom {
+                border-bottom-color: $red;
+                cursor: ns-resize;
+            }
+
+            &.resizing-right {
+                border-right-color: $red;
+                cursor: ew-resize;
+            }
+
+            &.resizing-bottom.resizing-right {
+                cursor: nwse-resize;
+            }
+        }
+
+        .container,
+        .row {
+            margin-top: $editing-margin;
+            margin-bottom: $editing-margin;
+
+            &.dropable-target-previous {
+                border-top: solid 4px $red;
+            }
+
+            &.dropable-target-after {
+                border-bottom: solid 4px $red;
+            }
+        }
+
+        [class*="col-"] {
+            min-height: $editing-row-min-height;
+
+            &.dropable-target-previous {
+                border-left: solid 4px $red;
+            }
+
+            &.dropable-target-after {
+                border-right: solid 4px $red;
+            }
+        }
+    }
+}

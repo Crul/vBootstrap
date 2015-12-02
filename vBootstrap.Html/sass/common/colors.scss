@@ -1,0 +1,64 @@
+﻿$gray: #888;
+$gray-light-10: lighten($gray, 10%);
+$gray-light-20: lighten($gray, 20%);
+$gray-light-30: lighten($gray, 30%);
+$gray-light-40: lighten($gray, 40%);
+$gray-light-50: lighten($gray, 50%);
+
+$blue: #1574b9;
+$blue-light-10: lighten($blue, 10%);
+$blue-light-20: lighten($blue, 20%);
+$blue-light-30: lighten($blue, 30%);
+$blue-light-40: lighten($blue, 40%);
+$blue-light-50: lighten($blue, 50%);
+
+$red: #b9152e;
+$red-light-10: lighten($red, 10%);
+$red-light-20: lighten($red, 20%);
+$red-light-30: lighten($red, 30%);
+$red-light-40: lighten($red, 40%);
+$red-light-50: lighten($red, 50%);
+
+$yellow: #b2b915;
+$yellow-light-10: lighten($yellow, 10%);
+$yellow-light-20: lighten($yellow, 20%);
+$yellow-light-30: lighten($yellow, 30%);
+$yellow-light-40: lighten($yellow, 40%);
+$yellow-light-50: lighten($yellow, 50%);
+
+$green: #15b918;
+$green-light-10: lighten($green, 10%);
+$green-light-20: lighten($green, 20%);
+$green-light-30: lighten($green, 30%);
+$green-light-40: lighten($green, 40%);
+$green-light-50: lighten($green, 50%);
+
+.gray-light-10 { color: $gray-light-10; }
+.gray-light-20 { color: $gray-light-20; }
+.gray-light-30 { color: $gray-light-30; }
+.gray-light-40 { color: $gray-light-40; }
+.gray-light-50 { color: $gray-light-50; }
+
+.blue-light-10 { color: $blue-light-10; }
+.blue-light-20 { color: $blue-light-20; }
+.blue-light-30 { color: $blue-light-30; }
+.blue-light-40 { color: $blue-light-40; }
+.blue-light-50 { color: $blue-light-50; }
+
+.red-light-10 { color: $red-light-10; }
+.red-light-20 { color: $red-light-20; }
+.red-light-30 { color: $red-light-30; }
+.red-light-40 { color: $red-light-40; }
+.red-light-50 { color: $red-light-50; }
+
+.yellow-light-10 { color: $yellow-light-10; }
+.yellow-light-20 { color: $yellow-light-20; }
+.yellow-light-30 { color: $yellow-light-30; }
+.yellow-light-40 { color: $yellow-light-40; }
+.yellow-light-50 { color: $yellow-light-50; }
+
+.green-light-10 { color: $green-light-10; }
+.green-light-20 { color: $green-light-20; }
+.green-light-30 { color: $green-light-30; }
+.green-light-40 { color: $green-light-40; }
+.green-light-50 { color: $green-light-50; }
