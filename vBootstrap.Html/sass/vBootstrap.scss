@@ -1,21 +1,5 @@
 ﻿@import "common/colors";
 
-body {
-    &.resizing-right,
-    &.resizing-left {
-        cursor: ew-resize;
-    }
-
-    &.resizing-top,
-    &.resizing-bottom {
-        cursor: ns-resize;
-    }
-
-    &.resizing-bottom.resizing-right {
-        cursor: nwse-resize;
-    }
-}
-
 $editing-border-width: 2px;
 $editing-margin: 8px;
 $editing-padding: 8px;
@@ -25,18 +9,57 @@ $editing-row-min-height: 40px;
 
     &.editing {
 
+        &.resizing-right,
+        &.resizing-left {
+            cursor: ew-resize;
+        }
+
+        &.resizing-top,
+        &.resizing-bottom {
+            cursor: ns-resize;
+        }
+
+        &.resizing-bottom.resizing-right {
+            cursor: nwse-resize;
+        }
+
         .container,
         .row,
         [class*="col-"] {
-            cursor: pointer;
-            background-color: $blue-light-50;
             padding: $editing-padding;
+        }
+
+        .container {
+            background-color: $yellow-light-50;
+            border: dashed $editing-border-width $yellow;
+        }
+
+        .row {
+            background-color: $green-light-50;
+            border: dashed $editing-border-width $green;
+
+            &.dragging {
+                width: 25%;
+                height: 60px;
+                overflow: hidden;
+            }
+        }
+
+        [class*="col-"] {
+            background-color: $blue-light-50;
             border: dashed $editing-border-width $blue;
+        }
+
+        .container,
+        .row,
+        [class*="col-"],
+        .btn {
+            cursor: pointer;
 
             &.locked {
-                background-color: $gray-light-40;
                 border-color: $gray-light-20;
             }
+
 
             &.dragging {
                 opacity: 0.4;
@@ -56,6 +79,7 @@ $editing-row-min-height: 40px;
                 border-top: solid 4px $red;
             }
 
+
             &.resizable-bottom {
                 border-bottom-color: $yellow;
                 cursor: ns-resize;
@@ -69,6 +93,7 @@ $editing-row-min-height: 40px;
             &.resizable-bottom.resizable-right {
                 cursor: nwse-resize;
             }
+
 
             &[class*="resizing-"] {
                 background-color: $blue-light-30;
@@ -108,6 +133,7 @@ $editing-row-min-height: 40px;
             }
         }
 
+        .btn,
         [class*="col-"] {
             min-height: $editing-row-min-height;
 

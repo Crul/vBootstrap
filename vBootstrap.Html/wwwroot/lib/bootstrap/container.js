@@ -1,8 +1,8 @@
 ﻿(function () {
     "use strict";
-    namespace('vBootstrap.bootstrap').container = vbContainer;
+    namespace('vBootstrap.bootstrap').container = vBContainer;
 
-    function vbContainer(elem) {
+    function vBContainer(elem) {
         this.elem = elem;
 
         vBootstrap.core.lock.lockable.init(elem);

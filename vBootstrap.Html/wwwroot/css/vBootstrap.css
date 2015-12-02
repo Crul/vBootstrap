@@ -73,81 +73,112 @@
 .green-light-50 {
   color: #d3fad4; }
 
-body.resizing-right, body.resizing-left {
+.v-bootstrap-editor.editing.resizing-right, .v-bootstrap-editor.editing.resizing-left {
   cursor: ew-resize; }
 
-body.resizing-top, body.resizing-bottom {
+.v-bootstrap-editor.editing.resizing-top, .v-bootstrap-editor.editing.resizing-bottom {
   cursor: ns-resize; }
 
-body.resizing-bottom.resizing-right {
+.v-bootstrap-editor.editing.resizing-bottom.resizing-right {
   cursor: nwse-resize; }
 
 .v-bootstrap-editor.editing .container,
 .v-bootstrap-editor.editing .row,
 .v-bootstrap-editor.editing [class*="col-"] {
-  cursor: pointer;
+  padding: 8px; }
+
+.v-bootstrap-editor.editing .container {
+  background-color: #f8fad3;
+  border: dashed 2px #b2b915; }
+
+.v-bootstrap-editor.editing .row {
+  background-color: #d3fad4;
+  border: dashed 2px #15b918; }
+  .v-bootstrap-editor.editing .row.dragging {
+    width: 25%;
+    height: 60px;
+    overflow: hidden; }
+
+.v-bootstrap-editor.editing [class*="col-"] {
   background-color: #d3eafa;
-  padding: 8px;
   border: dashed 2px #1574b9; }
+
+.v-bootstrap-editor.editing .container,
+.v-bootstrap-editor.editing .row,
+.v-bootstrap-editor.editing [class*="col-"],
+.v-bootstrap-editor.editing .btn {
+  cursor: pointer; }
   .v-bootstrap-editor.editing .container.locked,
   .v-bootstrap-editor.editing .row.locked,
-  .v-bootstrap-editor.editing [class*="col-"].locked {
-    background-color: #eeeeee;
+  .v-bootstrap-editor.editing [class*="col-"].locked,
+  .v-bootstrap-editor.editing .btn.locked {
     border-color: #bbbbbb; }
   .v-bootstrap-editor.editing .container.dragging,
   .v-bootstrap-editor.editing .row.dragging,
-  .v-bootstrap-editor.editing [class*="col-"].dragging {
+  .v-bootstrap-editor.editing [class*="col-"].dragging,
+  .v-bootstrap-editor.editing .btn.dragging {
     opacity: 0.4;
     cursor: move;
     position: absolute; }
   .v-bootstrap-editor.editing .container.dragging-not-allowed,
   .v-bootstrap-editor.editing .row.dragging-not-allowed,
-  .v-bootstrap-editor.editing [class*="col-"].dragging-not-allowed {
+  .v-bootstrap-editor.editing [class*="col-"].dragging-not-allowed,
+  .v-bootstrap-editor.editing .btn.dragging-not-allowed {
     cursor: not-allowed; }
   .v-bootstrap-editor.editing .container.dropable-active,
   .v-bootstrap-editor.editing .row.dropable-active,
-  .v-bootstrap-editor.editing [class*="col-"].dropable-active {
+  .v-bootstrap-editor.editing [class*="col-"].dropable-active,
+  .v-bootstrap-editor.editing .btn.dropable-active {
     background-color: #f1f5a5; }
   .v-bootstrap-editor.editing .container .dropable-target-first,
   .v-bootstrap-editor.editing .row .dropable-target-first,
-  .v-bootstrap-editor.editing [class*="col-"] .dropable-target-first {
+  .v-bootstrap-editor.editing [class*="col-"] .dropable-target-first,
+  .v-bootstrap-editor.editing .btn .dropable-target-first {
     border-top: solid 4px #b9152e; }
   .v-bootstrap-editor.editing .container.resizable-bottom,
   .v-bootstrap-editor.editing .row.resizable-bottom,
-  .v-bootstrap-editor.editing [class*="col-"].resizable-bottom {
+  .v-bootstrap-editor.editing [class*="col-"].resizable-bottom,
+  .v-bootstrap-editor.editing .btn.resizable-bottom {
     border-bottom-color: #b2b915;
     cursor: ns-resize; }
   .v-bootstrap-editor.editing .container.resizable-right,
   .v-bootstrap-editor.editing .row.resizable-right,
-  .v-bootstrap-editor.editing [class*="col-"].resizable-right {
+  .v-bootstrap-editor.editing [class*="col-"].resizable-right,
+  .v-bootstrap-editor.editing .btn.resizable-right {
     border-right-color: #b2b915;
     cursor: ew-resize; }
   .v-bootstrap-editor.editing .container.resizable-bottom.resizable-right,
   .v-bootstrap-editor.editing .row.resizable-bottom.resizable-right,
-  .v-bootstrap-editor.editing [class*="col-"].resizable-bottom.resizable-right {
+  .v-bootstrap-editor.editing [class*="col-"].resizable-bottom.resizable-right,
+  .v-bootstrap-editor.editing .btn.resizable-bottom.resizable-right {
     cursor: nwse-resize; }
   .v-bootstrap-editor.editing .container[class*="resizing-"],
   .v-bootstrap-editor.editing .row[class*="resizing-"],
-  .v-bootstrap-editor.editing [class*="col-"][class*="resizing-"] {
+  .v-bootstrap-editor.editing [class*="col-"][class*="resizing-"],
+  .v-bootstrap-editor.editing .btn[class*="resizing-"] {
     background-color: #77bdf0;
     border-color: #1574b9; }
     .v-bootstrap-editor.editing .container[class*="resizing-"] .locked,
     .v-bootstrap-editor.editing .row[class*="resizing-"] .locked,
-    .v-bootstrap-editor.editing [class*="col-"][class*="resizing-"] .locked {
+    .v-bootstrap-editor.editing [class*="col-"][class*="resizing-"] .locked,
+    .v-bootstrap-editor.editing .btn[class*="resizing-"] .locked {
       opacity: 0.5; }
   .v-bootstrap-editor.editing .container.resizing-bottom,
   .v-bootstrap-editor.editing .row.resizing-bottom,
-  .v-bootstrap-editor.editing [class*="col-"].resizing-bottom {
+  .v-bootstrap-editor.editing [class*="col-"].resizing-bottom,
+  .v-bootstrap-editor.editing .btn.resizing-bottom {
     border-bottom-color: #b9152e;
     cursor: ns-resize; }
   .v-bootstrap-editor.editing .container.resizing-right,
   .v-bootstrap-editor.editing .row.resizing-right,
-  .v-bootstrap-editor.editing [class*="col-"].resizing-right {
+  .v-bootstrap-editor.editing [class*="col-"].resizing-right,
+  .v-bootstrap-editor.editing .btn.resizing-right {
     border-right-color: #b9152e;
     cursor: ew-resize; }
   .v-bootstrap-editor.editing .container.resizing-bottom.resizing-right,
   .v-bootstrap-editor.editing .row.resizing-bottom.resizing-right,
-  .v-bootstrap-editor.editing [class*="col-"].resizing-bottom.resizing-right {
+  .v-bootstrap-editor.editing [class*="col-"].resizing-bottom.resizing-right,
+  .v-bootstrap-editor.editing .btn.resizing-bottom.resizing-right {
     cursor: nwse-resize; }
 
 .v-bootstrap-editor.editing .container,
@@ -161,10 +192,13 @@ body.resizing-bottom.resizing-right {
   .v-bootstrap-editor.editing .row.dropable-target-after {
     border-bottom: solid 4px #b9152e; }
 
+.v-bootstrap-editor.editing .btn,
 .v-bootstrap-editor.editing [class*="col-"] {
   min-height: 40px; }
+  .v-bootstrap-editor.editing .btn.dropable-target-previous,
   .v-bootstrap-editor.editing [class*="col-"].dropable-target-previous {
     border-left: solid 4px #b9152e; }
+  .v-bootstrap-editor.editing .btn.dropable-target-after,
   .v-bootstrap-editor.editing [class*="col-"].dropable-target-after {
     border-right: solid 4px #b9152e; }
 

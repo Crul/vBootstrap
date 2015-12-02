@@ -1,21 +1,22 @@
 ﻿(function () {
     "use strict";
-    namespace('vBootstrap.core').editor = vbEditor;
+    namespace('vBootstrap.core').editor = vBEditor;
 
-    function vbEditor(elem) {
+    function vBEditor(elem) {
         var editorElem = $(elem);
         editorElem.data('vBootstrapEditor', this);
         editorElem.find('*').each(createElem);
+
+        var toolbar = new vBootstrap.core.toolbar(editorElem);
     }
 
     function createElem(i, elem) {
-        var bootstrapSelectors = vBootstrap.config.selectors.bootstrap;
-        var bootstrapElements = Object.keys(bootstrapSelectors);
+        var bootstrapElements = Object.keys(vBootstrap.bootstrap);
         $(bootstrapElements).each(createBootstrapElem);
 
         function createBootstrapElem(i, elemName) {
-            if ($(elem).is(bootstrapSelectors[elemName])) {
-                var bootsrapElement = namespace('vBootstrap.bootstrap.' + elemName);
+            var bootsrapElement = namespace('vBootstrap.bootstrap.' + elemName);
+            if ($(elem).is(bootsrapElement.selector || '.' + elemName)) {
                 new bootsrapElement(elem);
             }
         }

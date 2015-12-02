@@ -1,13 +1,14 @@
 ﻿(function () {
     "use strict";
-    namespace('vBootstrap.bootstrap').row = vbRow;
+    namespace('vBootstrap.bootstrap').row = vBRow;
+    vBRow.template = $('<div />').addClass('row');
 
-    function vbRow(elem) {
-        this.elem = elem;
+    function vBRow(elem) {
+        this.elem = elem || vBRow.template.clone();
 
-        vBootstrap.core.lock.lockable.init(elem);
-        vBootstrap.core.resize.verticalResizable.init(elem);
-        vBootstrap.core.dragDrop.dragable.init(elem);
-        vBootstrap.core.dragDrop.dropable.init(elem);
+        vBootstrap.core.lock.lockable.init(this.elem);
+        vBootstrap.core.resize.verticalResizable.init(this.elem);
+        vBootstrap.core.dragDrop.selfDraggable.init(this.elem);
+        vBootstrap.core.dragDrop.dropable.init(this.elem);
     }
 })();

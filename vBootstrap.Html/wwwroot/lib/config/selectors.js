@@ -3,9 +3,8 @@
     namespace('vBootstrap.config').selectors = {
         editor: '.v-bootstrap-editor',
         bootstrap: {
-            container: '.container',
-            row: '.row',
-            col: '[class*="col-"]'
+            col: '[class*="col-"]',
+            button: '.btn'
         },
         vBData: 'vBootstrapData'
     };

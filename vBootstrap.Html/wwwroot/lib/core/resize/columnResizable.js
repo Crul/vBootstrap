@@ -34,7 +34,7 @@
         function resizeFromRight(ev) {
             var parentWidth = parent.width();
             var colWidth = parentWidth / 12;
-            var relativeLeft = ev.clientX - elem.position().left;
+            var relativeLeft = ev.clientX - elem.offset().left;
             var cols = Math.round((relativeLeft / colWidth) || 1);
 
             // TODO sizes

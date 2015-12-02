@@ -108,7 +108,7 @@
         vBUtils.resetCssClass(dragDropCss.dropableTargetPrevious);
         vBUtils.resetCssClass(dragDropCss.dropableTargetAfter);
 
-        var targetPos = $(target).position();
+        var targetPos = $(target).offset();
         var targetBottom = (targetPos.top + target.offsetHeight);
         var slope = (target.offsetHeight / target.offsetWidth);
         var relX = (ev.clientX - targetPos.left);
@@ -137,14 +137,12 @@
     function getClosestChild(children, ev) {
         var target = children.filter(onTopAndLeft);
         if (target.length === 0)
-            target = children[children.length - 1];
+            return children[children.length - 1];
         else
-            target = target.sort(byDistance)[0];
-
-        return target;
+            return target.sort(byDistance)[0];
 
         function onTopAndLeft(child) {
-            var pos = $(child).position();
+            var pos = $(child).offset();
             var width = child.offsetWidth;
             var height = child.offsetHeight;
 
@@ -153,8 +151,8 @@
         }
 
         function byDistance(child1, child2) {
-            var c1pos = $(child1).position();
-            var c2pos = $(child2).position();
+            var c1pos = $(child1).offset();
+            var c2pos = $(child2).offset();
 
             var c1distX = c1pos.left + (child1.offsetWidth / 2) - ev.clientX;
             var c1distY = c1pos.top + (child1.offsetHeight / 2) - ev.clientY;

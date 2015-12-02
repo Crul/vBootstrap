@@ -1,20 +1,30 @@
 ﻿(function () {
     "use strict";
 
+    var isLocked = Bacon.constant(false);
     var isLockedBus = new Bacon.Bus();
-    var isLocked = isLockedBus.toProperty(false);
-    var isNotLocked = isLocked.not();
+    var isLockedPublic = isLockedBus.toProperty(false);
 
-    function lockOn(prop) {
-        isLockedBus.plug(prop);
-    }
+    var unsubscribeBus;
+    subscribeBus();
 
     var lockService = {
-        isLocked: isLocked,
-        isNotLocked: isNotLocked,
+        isLocked: isLockedPublic,
+        isNotLocked: isLockedPublic.not(),
         lockOn: lockOn
     };
 
     namespace('vBootstrap.core.lock').lockService = lockService;
 
+    function lockOn(prop) {
+        isLocked = isLocked.or(prop);
+        unsubscribeBus();
+        subscribeBus();
+    }
+
+    function subscribeBus() {
+        unsubscribeBus = isLocked.onValue(function (v) {
+            isLockedBus.push(v);
+        });
+    }
 })();

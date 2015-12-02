@@ -20,18 +20,19 @@
             .assign(elem, 'removeClass', dragDropConfig.cssClasses.dropable);
 
         function isOverAndNotChildren(ev) {
-            var source = $(ev.currentTarget).data(selectors.vBData).source;
+            var source = ($(ev.currentTarget).data(selectors.vBData) || {}).source;
             if (source) {
                 var isDescendant = source.find(e).length > 0;
                 if (isDescendant)
                     return false;
             }
-
+            var x = e;
             var offset = elem.offset();
-            return (offset.left < ev.clientX - dragDropConfig.threshold)
-                && (offset.left + elem.width() + 2 * dragDropConfig.padding > ev.clientX + dragDropConfig.threshold)
-                && (offset.top < ev.clientY - dragDropConfig.threshold)
-                && (offset.top + elem.height() + 2 * dragDropConfig.padding > ev.clientY + dragDropConfig.threshold);
+
+            return (offset.left < ev.clientX + dragDropConfig.threshold)
+                && (offset.left + elem.width() > ev.clientX - dragDropConfig.threshold)
+                && (offset.top < ev.clientY + dragDropConfig.threshold)
+                && (offset.top + elem.height() > ev.clientY - dragDropConfig.threshold);
         }
     }
 })();
