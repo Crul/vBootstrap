@@ -22,7 +22,7 @@
         }
 
         function resizeFromBottom(ev) {
-            var height = ev.clientY - $(elem).offset().top;
+            var height = ev.pageY - $(elem).offset().top;
             $(elem).css(resizeConfig.verticalCssProperty, height);
         }
 

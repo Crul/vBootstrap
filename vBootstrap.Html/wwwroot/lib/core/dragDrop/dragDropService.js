@@ -1,40 +1,36 @@
 ﻿(function () {
     "use strict";
     var vBUtils = vBootstrap.utils;
-    var events = vBootstrap.config.events;
     var selectors = vBootstrap.config.selectors;
     var globalStreams = vBootstrap.config.streams.global;
     var dragDropCss = vBootstrap.config.dragDrop.cssClasses;
 
     var draggingBus = new Bacon.Bus();
 
-    //var globalStreams = vBootstrap.config.streams.global;
-    //var isDragging = draggingBus.map(true)
-    //  .merge(globalStreams.mouseup)
-    //  .toProperty(false);
+    var globalStreams = vBootstrap.config.streams.global;
 
     var dragDropService = {
-        //isDragging: isDragging,
         startDrag: startDrag,
         onDragging: draggingBus,
         onStopDrag: globalStreams.mouseup
     };
+
+    var unsubscribeDragMove;
+    var unsubscribeSetDropableTarget;
+    var unsubscribeOnDrop;
 
     var childestDropable = globalStreams.mousemove
         .map(getChildestDropable)
         .toProperty();
 
     var dropableTarget = childestDropable
-        .sampledBy(draggingBus, mapDropableAndEvent)
+        .sampledBy(globalStreams.mousemove, mapDropableAndEvent)
         .map(getDropableTarget)
         .toProperty();
 
-    var unsubscribeSetDropableTarget;
-    var unsubscribeOnDrop;
+    namespace('vBootstrap.core.dragDrop').dragDropService = dragDropService;
 
-    function startDrag(dragmove, ev) {
-        draggingBus.plug(dragmove);
-
+    function startDrag(ev) {
         unsubscribeSetDropableTarget = dropableTarget
             .sampledBy(globalStreams.mousemove, mapDropableAndEvent)
             .onValue(setDropableTarget);
@@ -43,19 +39,25 @@
             .sampledBy(globalStreams.mouseup, mapDropableAndEvent)
             .onValue(onDrop);
 
+        unsubscribeDragMove = globalStreams.mousemove.onValue(function (ev) {
+            draggingBus.push(ev);
+        });
+
         if (ev)
             draggingBus.push(ev);
     }
 
-    namespace('vBootstrap.core.dragDrop').dragDropService = dragDropService;
-
     function onDrop(val) {
+        var target = $(val.dropable);
         var dragging = $('.' + dragDropCss.dragging);
 
+        unsubscribeDragMove();
         unsubscribeSetDropableTarget();
         unsubscribeOnDrop();
 
-        var target = $(val.dropable);
+        if (target.length === 0) {
+            console.warn('dragDropService.onDrop without target');
+        }
         var targetParent = target.parent();
         if (dragging.length === 0) {
             console.warn('dragDropService.onDrop without dragging');
@@ -114,10 +116,10 @@
         var targetPos = $(target).offset();
         var targetBottom = (targetPos.top + target.offsetHeight);
         var slope = (target.offsetHeight / target.offsetWidth);
-        var relX = (ev.clientX - targetPos.left);
+        var relX = (ev.pageX - targetPos.left);
         var limitY = (targetBottom - relX * slope);
 
-        var isBeforeTarget = ev.clientY < limitY;
+        var isBeforeTarget = ev.pageY < limitY;
         var targetCss = (isBeforeTarget ?
             dragDropCss.dropableTargetPrevious : dragDropCss.dropableTargetAfter)
 
@@ -149,20 +151,20 @@
             var width = child.offsetWidth;
             var height = child.offsetHeight;
 
-            return (ev.clientX < (pos.left + width))
-                && (ev.clientY < pos.top + height);
+            return (ev.pageX < (pos.left + width))
+                && (ev.pageY < pos.top + height);
         }
 
         function byDistance(child1, child2) {
             var c1pos = $(child1).offset();
             var c2pos = $(child2).offset();
 
-            var c1distX = c1pos.left + (child1.offsetWidth / 2) - ev.clientX;
-            var c1distY = c1pos.top + (child1.offsetHeight / 2) - ev.clientY;
+            var c1distX = c1pos.left + (child1.offsetWidth / 2) - ev.pageX;
+            var c1distY = c1pos.top + (child1.offsetHeight / 2) - ev.pageY;
             var c1dist = Math.sqrt(c1distX * c1distX + c1distY * c1distY);
 
-            var c2distX = c2pos.left + (child2.offsetWidth / 2) - ev.clientX;
-            var c2distY = c2pos.top + (child2.offsetHeight / 2) - ev.clientY;
+            var c2distX = c2pos.left + (child2.offsetWidth / 2) - ev.pageX;
+            var c2distY = c2pos.top + (child2.offsetHeight / 2) - ev.pageY;
             var c2dist = Math.sqrt(c2distX * c2distX + c2distY * c2distY);
 
             if (c1dist < c2dist)

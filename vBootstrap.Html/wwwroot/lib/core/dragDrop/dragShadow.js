@@ -1,6 +1,5 @@
 ﻿(function () {
     "use strict";
-    var events = vBootstrap.config.events;
     var selectors = vBootstrap.config.selectors;
     var globalStreams = vBootstrap.config.streams.global;
     var dragDropConfig = vBootstrap.config.dragDrop;
@@ -12,8 +11,7 @@
         var shadow = createShadowElem(elem);
         offset = offset || getOffsetFn(shadow);
 
-        var shadowMousemove = shadow.asEventStream(events.mousemove);
-        dragDropService.startDrag(shadowMousemove, ev);
+        dragDropService.startDrag(ev);
         moveElement(ev);
         var unsubMousemove = globalStreams.mousemove.onValue(moveElement);
         var unsubRemoveShadow = globalStreams.mouseup.onValue(removeShadow);
@@ -22,8 +20,8 @@
 
         function moveElement(ev) {
             var css = {
-                top: ev.clientY - offset.y,
-                left: ev.clientX - offset.x
+                top: ev.pageY - offset.y,
+                left: ev.pageX - offset.x
             };
             shadow.css(css);
         }

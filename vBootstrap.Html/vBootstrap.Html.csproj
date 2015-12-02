@@ -114,6 +114,7 @@
     <Content Include="wwwroot\lib\seedwork\namespace.js" />
     <Content Include="wwwroot\lib\seedwork\utils.js" />
     <Content Include="wwwroot\lib\tools\creation\buttonCreator.js" />
+    <Content Include="wwwroot\lib\tools\removator.js" />
     <Content Include="wwwroot\lib\vBootstrap.js" />
     <None Include="Properties\PublishProfiles\vBootstrap.pubxml" />
     <Content Include="sass\common\shadows.scss" />

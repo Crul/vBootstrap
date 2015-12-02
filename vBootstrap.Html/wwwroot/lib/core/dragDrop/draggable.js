@@ -1,6 +1,7 @@
 ﻿(function () {
     "use strict";
     var events = vBootstrap.config.events;
+    var dragDropConfig = vBootstrap.config.dragDrop;
     var globalStreams = vBootstrap.config.streams.global;
     var lockService = vBootstrap.core.lock.lockService;
 
@@ -13,7 +14,7 @@
         var getShadowTemplate = config.getShadowTemplate;
         var mousedown = elem.asEventStream(events.mousedown);
         var mousedonwNotLocked = mousedown.filter(lockService.isNotLocked);
-        mousedonwNotLocked.onValue(onValueFn);
+        mousedonwNotLocked.debounce(dragDropConfig.dragDebounce).onValue(onValueFn);
 
         var isDragging = mousedonwNotLocked.map(true)
           .merge(globalStreams.mouseup.map(false))

@@ -1,8 +1,9 @@
 ﻿(function (global) {
     "use strict";
     namespace('vBootstrap.config').dragDrop = {
-        threshold: 3,
+        threshold: 0,
         padding: 8,
+        dragDebounce: 150,
         cssClasses: {
             dragging: 'dragging',
             beingDragged: 'being-dragged',

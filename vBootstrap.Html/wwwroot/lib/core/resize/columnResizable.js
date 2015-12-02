@@ -1,7 +1,6 @@
 ﻿(function () {
     "use strict";
     var resizeConfig = vBootstrap.config.resize;
-    var events = vBootstrap.config.events;
 
     namespace('vBootstrap.core.resize').columnResizable = {
         init: initColumnResizable
@@ -33,7 +32,7 @@
         function resizeFromRight(ev) {
             var parentWidth = elem.parent().width();
             var colWidth = parentWidth / 12;
-            var relativeLeft = ev.clientX - elem.offset().left;
+            var relativeLeft = ev.pageX - elem.offset().left;
             var cols = Math.round((relativeLeft / colWidth) || 1);
 
             // TODO sizes

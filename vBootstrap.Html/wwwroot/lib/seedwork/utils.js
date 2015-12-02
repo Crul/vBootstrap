@@ -31,10 +31,10 @@
 
     function isCursorOverElem(ev, elem, threshold) {
         threshold = threshold || 0;
-        return (elem.left < ev.clientX - threshold)
-            && (elem.left + elem.width > ev.clientX + threshold)
-            && (elem.top < ev.clientY - threshold)
-            && (elem.top + elem.height > ev.clientY + threshold);
+        return (elem.left < ev.pageX - threshold)
+            && (elem.left + elem.width > ev.pageX + threshold)
+            && (elem.top < ev.pageY - threshold)
+            && (elem.top + elem.height > ev.pageY + threshold);
     }
 
 })(window);
