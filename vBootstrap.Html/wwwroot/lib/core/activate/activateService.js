@@ -11,9 +11,10 @@
     var childestActivatable = globalStreams.mousemove
         .filter(lockService.isNotLocked)
         .map(getChildestActive)
+        .skipDuplicates()
         .toProperty();
 
-    childestActivatable.skipDuplicates().onValue(function (elem) {
+    childestActivatable.onValue(function (elem) {
         vBUtils.resetCssClass(activateCss.active);
         $(elem).addClass(activateCss.active);
     });

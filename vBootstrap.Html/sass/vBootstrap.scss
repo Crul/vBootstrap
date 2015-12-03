@@ -18,10 +18,8 @@ $locked-border-width: $container-border-width;
 $locked-border-style: dashed;
 
 $resizable-border-width: 6px;
-$resizable-border-color: $blue-light-20;
 
 $resizing-border-width: 3px;
-$resizing-border-color: $blue;
 
 $dropable-border-width: 4px;
 $dropable-border-color: $red;
@@ -86,6 +84,22 @@ body {
                 background-color: rgba($yellow-light-40, $container-dropable-active-alpha);
                 border-color: $yellow;
             }
+            
+            &.resizable-bottom {
+                border-bottom: solid $resizable-border-width $yellow;
+            }
+
+            &.resizable-right {
+                border-right: solid $resizable-border-width $yellow-light-20;
+            }
+            
+            &.resizing-bottom {
+                border-bottom: solid $resizing-border-width $yellow;
+            }
+
+            &.resizing-right {
+                border-right: solid $resizing-border-width $yellow-light-20;
+            }
         }
 
         .row {
@@ -101,6 +115,7 @@ body {
             }
 
             &.dropable-active {
+                background-color: rgba($green-light-40, $container-active-alpha);
                 border-color: $green-dark-10;
             }
 
@@ -108,6 +123,22 @@ body {
                 width: 25%;
                 height: 60px;
                 overflow: hidden;
+            }
+            
+            &.resizable-bottom {
+                border-bottom: solid $resizable-border-width $green;
+            }
+
+            &.resizable-right {
+                border-right: solid $resizable-border-width $green-light-20;
+            }
+            
+            &.resizing-bottom {
+                border-bottom: solid $resizing-border-width $green;
+            }
+
+            &.resizing-right {
+                border-right: solid $resizing-border-width $green-light-20;
             }
         }
 
@@ -132,6 +163,22 @@ body {
                 width: 8%;
                 height: 120px;
                 overflow: hidden;
+            }
+            
+            &.resizable-bottom {
+                border-bottom: solid $resizable-border-width $blue;
+            }
+
+            &.resizable-right {
+                border-right: solid $resizable-border-width $blue-light-20;
+            }
+            
+            &.resizing-bottom {
+                border-bottom: solid $resizing-border-width $blue;
+            }
+
+            &.resizing-right {
+                border-right: solid $resizing-border-width $blue-light-20;
             }
         }
 
@@ -168,13 +215,12 @@ body {
                 border-top: solid 4px $dropable-border-color;
             }
 
+
             &.resizable-bottom {
-                border-bottom: solid $resizable-border-width $resizable-border-color;
                 cursor: ns-resize;
             }
 
             &.resizable-right {
-                border-right: solid $resizable-border-width $resizable-border-color;
                 cursor: ew-resize;
             }
 
@@ -184,12 +230,10 @@ body {
 
 
             &.resizing-bottom {
-                border-bottom: solid $resizing-border-width $resizing-border-color;
                 cursor: ns-resize;
             }
 
             &.resizing-right {
-                border-right: solid $resizing-border-width $resizing-border-color;
                 cursor: ew-resize;
             }
 

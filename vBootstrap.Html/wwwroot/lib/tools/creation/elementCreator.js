@@ -1,11 +1,9 @@
 ﻿(function () {
     "use strict";
-
-    var vBElementCreator = {
+    
+    namespace('vBootstrap.tools.creation').elementCreator = {
         create: createCreatorButton
     };
-
-    namespace('vBootstrap.tools.creation').elementCreator = vBElementCreator;
 
     function createCreatorButton(config) {
         var elementFn = config.elementFn;
@@ -16,11 +14,7 @@
             </div>
         `;
 
-        function getShadowTemplate() {
-            return new elementFn().elem;
-        }
-
-        return {
+        var buttonFactory = {
             create: function () {
                 var button = $(toolbarTemplate);
                 var draggableConfig = {
@@ -31,6 +25,12 @@
                 return button;
             }
         };
+
+        vBootstrap.core.toolbar.addButtonFactory(buttonFactory);
+
+        function getShadowTemplate() {
+            return new elementFn().elem;
+        }
     }
 
 })();

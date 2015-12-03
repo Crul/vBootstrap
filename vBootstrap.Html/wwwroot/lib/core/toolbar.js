@@ -18,13 +18,20 @@
 
     namespace('vBootstrap.core').toolbar = vBToolbar;
 
+    var buttonFactories = [];
+    vBToolbar.addButtonFactory = addButtonFactory;
+
+    function addButtonFactory(buttonFactory) {
+        buttonFactories.push(buttonFactory);
+    }
+
     function vBToolbar(editorElem) {
         var toolbar = createToolbar(editorElem);
-        var toolbarButtons = Object.keys(namespace('vBootstrap.buttonCreators'));
-        $(toolbarButtons).each(createButton);
+        $(buttonFactories).each(createButton);
 
-        function createButton(i, buttonCreator) {
-            createToolbarButton(toolbar, buttonCreator);
+        function createButton(i, buttonFactory) {
+            var button = buttonFactory.create();
+            toolbar.find(buttonsSelector).append(button);
         }
     }
 
@@ -32,10 +39,5 @@
         var toolbar = $(toolbarTemplate);
         editorElem.prepend(toolbar);
         return toolbar;
-    }
-
-    function createToolbarButton(toolbar, buttonCreator) {
-        var button = namespace('vBootstrap.buttonCreators')[buttonCreator].create();
-        toolbar.find(buttonsSelector).append(button);
     }
 })();

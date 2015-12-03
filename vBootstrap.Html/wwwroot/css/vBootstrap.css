@@ -168,24 +168,24 @@ body {
 .v-bootstrap-editor.editing .container,
 .v-bootstrap-editor.editing .row,
 .v-bootstrap-editor.editing [class*="col-"] {
-  -webkit-box-shadow: 0.2px 0.2px 1.2px 0 rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0.2px 0.2px 1.2px 0 rgba(0, 0, 0, 0.75);
-  box-shadow: 0.2px 0.2px 1.2px 0 rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 0.2px 0.2px 1.2px 0 rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0.2px 0.2px 1.2px 0 rgba(0, 0, 0, 0.4);
+  box-shadow: 0.2px 0.2px 1.2px 0 rgba(0, 0, 0, 0.4);
   padding: 12px;
   min-height: 60px; }
   .v-bootstrap-editor.editing .container.locked,
   .v-bootstrap-editor.editing .row.locked,
   .v-bootstrap-editor.editing [class*="col-"].locked {
     border: dashed 1px #bbbbbb;
-    -webkit-box-shadow: 0px 0px 0px 0 rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 0px 0px 0px 0 rgba(0, 0, 0, 0.75);
-    box-shadow: 0px 0px 0px 0 rgba(0, 0, 0, 0.75); }
+    -webkit-box-shadow: 0px 0px 0px 0 rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0px 0px 0px 0 rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 0px 0px 0 rgba(0, 0, 0, 0.4); }
   .v-bootstrap-editor.editing .container.activated,
   .v-bootstrap-editor.editing .row.activated,
   .v-bootstrap-editor.editing [class*="col-"].activated {
-    -webkit-box-shadow: 3px 3px 18px 0 rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 3px 3px 18px 0 rgba(0, 0, 0, 0.75);
-    box-shadow: 3px 3px 18px 0 rgba(0, 0, 0, 0.75); }
+    -webkit-box-shadow: 3px 3px 18px 0 rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 3px 3px 18px 0 rgba(0, 0, 0, 0.4);
+    box-shadow: 3px 3px 18px 0 rgba(0, 0, 0, 0.4); }
 
 .v-bootstrap-editor.editing .container {
   background-color: rgba(241, 245, 165, 0.25);
@@ -197,6 +197,14 @@ body {
   .v-bootstrap-editor.editing .container.dropable-active {
     background-color: rgba(241, 245, 165, 0.5);
     border-color: #b2b915; }
+  .v-bootstrap-editor.editing .container.resizable-bottom {
+    border-bottom: solid 6px #b2b915; }
+  .v-bootstrap-editor.editing .container.resizable-right {
+    border-right: solid 6px #e4ea4a; }
+  .v-bootstrap-editor.editing .container.resizing-bottom {
+    border-bottom: solid 3px #b2b915; }
+  .v-bootstrap-editor.editing .container.resizing-right {
+    border-right: solid 3px #e4ea4a; }
 
 .v-bootstrap-editor.editing .row {
   background-color: rgba(165, 245, 167, 0.25);
@@ -206,11 +214,20 @@ body {
   .v-bootstrap-editor.editing .row.activated {
     border-color: #15b918; }
   .v-bootstrap-editor.editing .row.dropable-active {
+    background-color: rgba(165, 245, 167, 0.8);
     border-color: #108b12; }
   .v-bootstrap-editor.editing .row.dragging {
     width: 25%;
     height: 60px;
     overflow: hidden; }
+  .v-bootstrap-editor.editing .row.resizable-bottom {
+    border-bottom: solid 6px #15b918; }
+  .v-bootstrap-editor.editing .row.resizable-right {
+    border-right: solid 6px #4aea4d; }
+  .v-bootstrap-editor.editing .row.resizing-bottom {
+    border-bottom: solid 3px #15b918; }
+  .v-bootstrap-editor.editing .row.resizing-right {
+    border-right: solid 3px #4aea4d; }
 
 .v-bootstrap-editor.editing [class*="col-"] {
   background-color: rgba(165, 211, 245, 0.25);
@@ -226,11 +243,19 @@ body {
     width: 8%;
     height: 120px;
     overflow: hidden; }
+  .v-bootstrap-editor.editing [class*="col-"].resizable-bottom {
+    border-bottom: solid 6px #1574b9; }
+  .v-bootstrap-editor.editing [class*="col-"].resizable-right {
+    border-right: solid 6px #4aa7ea; }
+  .v-bootstrap-editor.editing [class*="col-"].resizing-bottom {
+    border-bottom: solid 3px #1574b9; }
+  .v-bootstrap-editor.editing [class*="col-"].resizing-right {
+    border-right: solid 3px #4aa7ea; }
 
 .v-bootstrap-editor.editing .btn.activated {
-  -webkit-box-shadow: 3px 3px 18px 0 rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 3px 3px 18px 0 rgba(0, 0, 0, 0.75);
-  box-shadow: 3px 3px 18px 0 rgba(0, 0, 0, 0.75); }
+  -webkit-box-shadow: 3px 3px 18px 0 rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 3px 3px 18px 0 rgba(0, 0, 0, 0.4);
+  box-shadow: 3px 3px 18px 0 rgba(0, 0, 0, 0.4); }
 
 .v-bootstrap-editor.editing .container,
 .v-bootstrap-editor.editing .row,
@@ -251,9 +276,9 @@ body {
     opacity: 1;
     cursor: move;
     position: absolute;
-    -webkit-box-shadow: 5px 5px 30px 0 rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 5px 5px 30px 0 rgba(0, 0, 0, 0.75);
-    box-shadow: 5px 5px 30px 0 rgba(0, 0, 0, 0.75); }
+    -webkit-box-shadow: 5px 5px 30px 0 rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 5px 5px 30px 0 rgba(0, 0, 0, 0.4);
+    box-shadow: 5px 5px 30px 0 rgba(0, 0, 0, 0.4); }
   .v-bootstrap-editor.editing .container.dragging-not-allowed,
   .v-bootstrap-editor.editing .row.dragging-not-allowed,
   .v-bootstrap-editor.editing [class*="col-"].dragging-not-allowed,
@@ -268,13 +293,11 @@ body {
   .v-bootstrap-editor.editing .row.resizable-bottom,
   .v-bootstrap-editor.editing [class*="col-"].resizable-bottom,
   .v-bootstrap-editor.editing .btn.resizable-bottom {
-    border-bottom: solid 6px #4aa7ea;
     cursor: ns-resize; }
   .v-bootstrap-editor.editing .container.resizable-right,
   .v-bootstrap-editor.editing .row.resizable-right,
   .v-bootstrap-editor.editing [class*="col-"].resizable-right,
   .v-bootstrap-editor.editing .btn.resizable-right {
-    border-right: solid 6px #4aa7ea;
     cursor: ew-resize; }
   .v-bootstrap-editor.editing .container.resizable-bottom.resizable-right,
   .v-bootstrap-editor.editing .row.resizable-bottom.resizable-right,
@@ -285,13 +308,11 @@ body {
   .v-bootstrap-editor.editing .row.resizing-bottom,
   .v-bootstrap-editor.editing [class*="col-"].resizing-bottom,
   .v-bootstrap-editor.editing .btn.resizing-bottom {
-    border-bottom: solid 3px #1574b9;
     cursor: ns-resize; }
   .v-bootstrap-editor.editing .container.resizing-right,
   .v-bootstrap-editor.editing .row.resizing-right,
   .v-bootstrap-editor.editing [class*="col-"].resizing-right,
   .v-bootstrap-editor.editing .btn.resizing-right {
-    border-right: solid 3px #1574b9;
     cursor: ew-resize; }
   .v-bootstrap-editor.editing .container.resizing-bottom.resizing-right,
   .v-bootstrap-editor.editing .row.resizing-bottom.resizing-right,

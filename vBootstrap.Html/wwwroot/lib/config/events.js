@@ -6,6 +6,7 @@
         mouseover: 'mouseover',
         mouseout: 'mouseout',
         mousedown: 'mousedown',
-        mouseup: 'mouseup'
+        mouseup: 'mouseup',
+        resize: 'resize'
     };
 })(window);

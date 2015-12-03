@@ -111,6 +111,7 @@
     <Content Include="wwwroot\lib\core\lock\lockable.js" />
     <Content Include="wwwroot\lib\core\resize\resizable.js" />
     <Content Include="wwwroot\lib\core\resize\verticalResizable.js" />
+    <Content Include="wwwroot\lib\core\resize\screenSizeService.js" />
     <Content Include="wwwroot\lib\core\toolbar.js" />
     <Content Include="wwwroot\lib\tools\creation\colCreator.js" />
     <Content Include="wwwroot\lib\tools\creation\containerCreator.js" />
@@ -123,6 +124,7 @@
     <Content Include="wwwroot\lib\tools\inform\informator.js" />
     <Content Include="wwwroot\lib\tools\popup\elementPopup.js" />
     <Content Include="wwwroot\lib\tools\removator.js" />
+    <Content Include="wwwroot\lib\tools\screenSizeDisplay.js" />
     <Content Include="wwwroot\lib\vBootstrap.js" />
     <None Include="Properties\PublishProfiles\vBootstrap.pubxml" />
     <Content Include="sass\common\shadows.scss" />
