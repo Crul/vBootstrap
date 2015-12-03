@@ -9,7 +9,8 @@
         init: initDropable
     };
 
-    function initDropable(elem) {
+    function initDropable(obj) {
+        var elem = obj.elem;
         var jElem = $(elem);
 
         var unsubDragging = dragDropService.onDragging

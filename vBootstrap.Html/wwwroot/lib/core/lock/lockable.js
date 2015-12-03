@@ -8,8 +8,8 @@
         init: initLockable
     };
 
-    function initLockable(elem) {
-        var unsubFn = lockService.isLocked.assign($(elem), 'toggleClass', 'locked');
-        vBUtils.getVBData(elem).onDispose(unsubFn);
+    function initLockable(obj) {
+        var unsubFn = lockService.isLocked.assign($(obj.elem), 'toggleClass', 'locked');
+        vBUtils.getVBData(obj.elem).onDispose(unsubFn);
     }
 })();

@@ -6,22 +6,14 @@
         init: initColumnResizable
     };
 
-    function initColumnResizable(elem, column) {
-        var jElem = $(elem);
+    function initColumnResizable(obj) {
+        var jElem = $(obj.elem);
         var resizableConfig = {
             elem: jElem,
             resize: resizeFromRight,
             isOver: isRight,
             resizableClass: resizeConfig.cssClasses.resizableColumn,
             resizingClass: resizeConfig.cssClasses.resizingColumn
-        };
-
-        var cssClass = jElem.attr('class');
-        column.sizes = {
-            xs: getColSize(cssClass, 'xs'),
-            sm: getColSize(cssClass, 'sm'),
-            md: getColSize(cssClass, 'md'),
-            lg: getColSize(cssClass, 'lg')
         };
 
         function isRight(ev) {
@@ -36,19 +28,14 @@
             var cols = Math.round((relativeLeft / colWidth) || 1);
 
             // TODO sizes
-            if (column.sizes.xs != cols) {
-                jElem.removeClass('col-xs-' + column.sizes.xs);
+            if (obj.sizes.xs != cols) {
+                jElem.removeClass('col-xs-' + obj.sizes.xs);
                 jElem.addClass('col-xs-' + cols);
-                column.sizes.xs = cols;
+                obj.sizes.xs = cols;
             }
         }
 
         vBootstrap.core.resize.resizable.init(resizableConfig);
     }
 
-    function getColSize(cssClass, size) {
-        var regex = new RegExp('col-' + size + '-(\\d{1,2})', 'i');
-        var matches = cssClass.match(regex) || [0, 0];
-        return parseInt(matches[1]);
-    }
 })();

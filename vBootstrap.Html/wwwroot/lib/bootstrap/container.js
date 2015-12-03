@@ -5,14 +5,15 @@
 
     function vBContainer(elem) {
         this.elem = elem || vBContainer.template.clone()[0];
-        vBootstrap.core.disposable.call(this, this.elem);
+        vBootstrap.core.bootstrapElement.call(this);
 
-        vBootstrap.core.lock.lockable.init(this.elem);
-        vBootstrap.core.activate.activatable.init(this.elem);
-        vBootstrap.core.resize.verticalResizable.init(this.elem);
-        vBootstrap.core.dragDrop.dropable.init(this.elem);
-        vBootstrap.core.dragDrop.selfDraggable.init(this.elem);
+        vBootstrap.core.lock.lockable.init(this);
+        vBootstrap.core.activate.activatable.init(this);
+        vBootstrap.core.resize.verticalResizable.init(this);
+        vBootstrap.core.dragDrop.dropable.init(this);
+        vBootstrap.core.dragDrop.selfDraggable.init(this);
+        vBootstrap.tools.inform.informable.init(this, 'container');
     }
 
-    vBContainer.prototype = $.extend(vBContainer.prototype, vBootstrap.core.disposable.prototype);
+    vBContainer.prototype = $.extend(vBContainer.prototype, vBootstrap.core.bootstrapElement.prototype);
 })();

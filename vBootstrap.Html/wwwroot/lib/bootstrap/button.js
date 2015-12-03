@@ -6,13 +6,13 @@
 
     function vBButton(elem) {
         this.elem = elem || vBButton.template.clone()[0];
-        vBootstrap.core.disposable.call(this, this.elem);
+        vBootstrap.core.bootstrapElement.call(this);
 
-        vBootstrap.core.lock.lockable.init(this.elem);
-        vBootstrap.core.activate.activatable.init(this.elem);
-        vBootstrap.core.dragDrop.selfDraggable.init(this.elem);
-
+        vBootstrap.core.lock.lockable.init(this);
+        vBootstrap.core.activate.activatable.init(this);
+        vBootstrap.core.dragDrop.selfDraggable.init(this);
+        vBootstrap.tools.inform.informable.init(this, 'button');
     }
 
-    vBButton.prototype = $.extend(vBButton.prototype, vBootstrap.core.disposable.prototype);
+    vBButton.prototype = $.extend(vBButton.prototype, vBootstrap.core.bootstrapElement.prototype);
 })();

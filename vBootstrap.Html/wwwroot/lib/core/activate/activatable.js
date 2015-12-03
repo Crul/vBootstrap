@@ -10,7 +10,9 @@
         init: initActivatable
     };
 
-    function initActivatable(elem) {
+    function initActivatable(obj) {
+        var elem = obj.elem;
+
         var unsubFn = globalStreams
             .mousemove
             .filter(lockService.isNotLocked)

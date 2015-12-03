@@ -6,15 +6,41 @@
 
     function vBCol(elem) {
         this.elem = elem || vBCol.template.clone()[0];
-        vBootstrap.core.disposable.call(this, this.elem);
+        vBootstrap.core.bootstrapElement.call(this);
 
-        vBootstrap.core.lock.lockable.init(this.elem);
-        vBootstrap.core.activate.activatable.init(this.elem);
-        vBootstrap.core.resize.columnResizable.init(this.elem, this);
-        vBootstrap.core.resize.verticalResizable.init(this.elem);
-        vBootstrap.core.dragDrop.selfDraggable.init(this.elem);
-        vBootstrap.core.dragDrop.dropable.init(this.elem);
+        getColSizes(this);
+
+        vBootstrap.core.lock.lockable.init(this);
+        vBootstrap.core.activate.activatable.init(this);
+        vBootstrap.core.resize.columnResizable.init(this);
+        vBootstrap.core.resize.verticalResizable.init(this);
+        vBootstrap.core.dragDrop.selfDraggable.init(this);
+        vBootstrap.core.dragDrop.dropable.init(this);
+        vBootstrap.tools.inform.informable.init(this, 'col');
     }
 
-    vBCol.prototype = $.extend(vBCol.prototype, vBootstrap.core.disposable.prototype);
+    vBCol.prototype = $.extend(vBCol.prototype, vBootstrap.core.bootstrapElement.prototype);
+
+    vBCol.prototype.getInfo = getInfo;
+    function getInfo() {
+        return 'col-xs-' + this.sizes.xs;
+    }
+
+    function getColSizes(obj) {
+        var jElem = $(obj.elem);
+        var cssClass = jElem.attr('class');
+        obj.sizes = {
+            xs: getColSize(cssClass, 'xs'),
+            sm: getColSize(cssClass, 'sm'),
+            md: getColSize(cssClass, 'md'),
+            lg: getColSize(cssClass, 'lg')
+        };
+    }
+
+    function getColSize(cssClass, size) {
+        var regex = new RegExp('col-' + size + '-(\\d{1,2})', 'i');
+        var matches = cssClass.match(regex) || [0, 0];
+        return parseInt(matches[1]);
+    }
+
 })();

@@ -98,7 +98,7 @@
     <Content Include="wwwroot\lib\config\tools.js" />
     <Content Include="wwwroot\lib\core\activate\activatable.js" />
     <Content Include="wwwroot\lib\core\activate\activateService.js" />
-    <Content Include="wwwroot\lib\core\disposable.js" />
+    <Content Include="wwwroot\lib\core\bootstrapElement.js" />
     <Content Include="wwwroot\lib\core\dragDrop\draggable.js" />
     <Content Include="wwwroot\lib\core\dragDrop\dragDropService.js" />
     <Content Include="wwwroot\lib\core\dragDrop\dragShadow.js" />
@@ -119,6 +119,8 @@
     <Content Include="wwwroot\lib\seedwork\namespace.js" />
     <Content Include="wwwroot\lib\seedwork\utils.js" />
     <Content Include="wwwroot\lib\tools\creation\buttonCreator.js" />
+    <Content Include="wwwroot\lib\tools\inform\informable.js" />
+    <Content Include="wwwroot\lib\tools\inform\informator.js" />
     <Content Include="wwwroot\lib\tools\removator.js" />
     <Content Include="wwwroot\lib\vBootstrap.js" />
     <None Include="Properties\PublishProfiles\vBootstrap.pubxml" />

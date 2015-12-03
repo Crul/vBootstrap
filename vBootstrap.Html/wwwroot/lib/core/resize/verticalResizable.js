@@ -1,13 +1,13 @@
 ﻿(function () {
     "use strict";
     var resizeConfig = vBootstrap.config.resize;
-    var events = vBootstrap.config.events;
 
     namespace('vBootstrap.core.resize').verticalResizable = {
         init: initVerticalResizable
     };
 
-    function initVerticalResizable(elem) {
+    function initVerticalResizable(obj) {
+        var elem = obj.elem;
         var resizableConfig = {
             elem: elem,
             resize: resizeFromBottom,

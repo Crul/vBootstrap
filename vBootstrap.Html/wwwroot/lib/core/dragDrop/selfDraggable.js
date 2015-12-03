@@ -7,8 +7,8 @@
         init: initSelfDraggable
     };
 
-    function initSelfDraggable(elem) {
-        var jElem = $(elem);
+    function initSelfDraggable(obj) {
+        var jElem = $(obj.elem);
 
         var draggableConfig = {
             element: jElem,
