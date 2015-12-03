@@ -1,5 +1,6 @@
 ﻿(function () {
     "use strict";
+    var vBUtils = vBootstrap.utils;
     var events = vBootstrap.config.events;
     var dragDropConfig = vBootstrap.config.dragDrop;
     var globalStreams = vBootstrap.config.streams.global;
@@ -12,9 +13,9 @@
     function initDraggable(config) {
         var elem = config.element;
         var getShadowTemplate = config.getShadowTemplate;
-        var mousedown = elem.asEventStream(events.mousedown);
-        var mousedonwNotLocked = mousedown.filter(lockService.isNotLocked);
-        mousedonwNotLocked.debounce(dragDropConfig.dragDebounce).onValue(onValueFn);
+        var mousedonwNotLocked = elem.asEventStream(events.mousedown).filter(lockService.isNotLocked);
+
+        var unsubFn = mousedonwNotLocked.onValue(onValueFn);
 
         var isDragging = mousedonwNotLocked.map(true)
           .merge(globalStreams.mouseup.map(false))
@@ -22,9 +23,17 @@
 
         lockService.lockOn(isDragging);
 
+        var elemVBData = vBUtils.getVBData(elem);
+        if (elemVBData.onDispose)
+            elemVBData.onDispose([unsubFn, removeLockOn]);
+
         return {
             isDragging: isDragging
         };
+
+        function removeLockOn() {
+            lockService.removeLockOn(isDragging);
+        }
 
         function onValueFn(ev) {
             var offset;

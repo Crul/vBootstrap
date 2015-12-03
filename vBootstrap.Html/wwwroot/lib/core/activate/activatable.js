@@ -11,12 +11,14 @@
     };
 
     function initActivatable(elem) {
-        globalStreams.mousemove
+        var unsubFn = globalStreams
+            .mousemove
             .filter(lockService.isNotLocked)
-            .filter(activateService.isNotLocked)
             .map(isOver)
             .toProperty(false)
             .assign($(elem), 'toggleClass', activateConfig.cssClasses.activatable);
+
+        vBUtils.getVBData(elem).onDispose(unsubFn);
 
         function isOver(ev) {
             var jElem = $(elem);
@@ -24,8 +26,8 @@
             var elemProperties = { 
                 left: offset.left, 
                 top: offset.top, 
-                width: jElem.width() + 2 * activateConfig.padding,
-                height: jElem.height() + 2 * activateConfig.padding
+                width: jElem.outerWidth(),
+                height: jElem.outerHeight()
             };
             return vBUtils.isCursorOverElem(ev, elemProperties);
         }

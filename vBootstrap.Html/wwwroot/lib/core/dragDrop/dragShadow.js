@@ -1,6 +1,6 @@
 ﻿(function () {
     "use strict";
-    var selectors = vBootstrap.config.selectors;
+    var vBUtils = vBootstrap.utils;
     var globalStreams = vBootstrap.config.streams.global;
     var dragDropConfig = vBootstrap.config.dragDrop;
     var dragDropService = vBootstrap.core.dragDrop.dragDropService;
@@ -27,7 +27,7 @@
         }
 
         function removeShadow() {
-            $(elem).data(selectors.vBData).isDragging = false;
+            vBUtils.setVBData(elem, { isDragging: false });
             unsubMousemove();
             unsubRemoveShadow();
         }
@@ -35,33 +35,27 @@
 
     function getOffsetFn(_shadow) {
         return {
-            x: $(_shadow)[0].offsetWidth / 2,
-            y: $(_shadow)[0].offsetHeight / 2
+            x: $(_shadow).outerWidth() / 2,
+            y: $(_shadow).outerHeight() / 2
         };
     }
 
-    function createShadowElem(e) {
-        var elem = $(e);
-        var shadow = elem.clone();
+    function createShadowElem(elem) {
+        var jElem = $(elem);
+        var shadow = jElem.clone();
 
-        if (elem[0].offsetWidth)
-            shadow.width(elem[0].offsetWidth);
-
-        if (elem[0].offsetHeight)
-            shadow.height(elem[0].offsetHeight);
+        if (jElem.outerWidth()) {
+            shadow.width(jElem.outerWidth());
+            shadow.height(jElem.outerHeight());
+        }
 
         shadow.css('position', 'absolute');
         shadow.addClass(dragDropConfig.cssClasses.dragging);
 
-        var shadowVBData = shadow.data(selectors.vBData) || {};
-        shadowVBData.source = elem;
-        shadow.data(selectors.vBData, shadowVBData);
+        vBUtils.setVBData(shadow, { source: jElem });
+        vBUtils.setVBData(elem, { isDragging: true });
 
-        var elemVBData = elem.data(selectors.vBData) || {};
-        elemVBData.isDragging = true;
-        elem.data(selectors.vBData, elemVBData);
-
-        $(selectors.editor).append(shadow);
+        $(vBootstrap.config.selectors.editor).append(shadow);
 
         return shadow;
     }

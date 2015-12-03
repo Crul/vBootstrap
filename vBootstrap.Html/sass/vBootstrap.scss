@@ -1,17 +1,23 @@
 ﻿@import "common/colors";
 @import "common/shadows.scss";
+@import "common/borderRadius.scss";
 
-$editing-border-width: 2px;
+$editing-border-width: 1px;
 $editing-margin: 8px;
-$editing-padding: 8px;
+$editing-padding: 12px;
 $editing-row-min-height: 60px;
-$containers-alpha: 0.25;
-$containers-locked-alpha: 0.25;
-$containers-active-alpha: 0.8;
-$containers-dropable-active-alpha: 0.5;
+
+$container-alpha: 0.25;
+$container-locked-alpha: 0.25;
+$container-active-alpha: 0.8;
+$container-dropable-active-alpha: 0.5;
+$container-border-radius: 8px;
+
 $locked-border-color: $gray-light-20;
+$resizable-border-width: 6px;
 $resizable-border-color: $red-light-20;
 $resizing-border-color: $red;
+$resizing-border-width: 3px;
 $dropable-border-color: $red;
 
 body {
@@ -33,7 +39,6 @@ body {
     }
 
     &.editing {
-
 
         &.resizing-right,
         &.resizing-left {
@@ -57,35 +62,36 @@ body {
         }
 
         .container {
-            background-color: rgba($yellow-light-40, $containers-alpha);
-            border: dashed $editing-border-width $yellow-light-20;
+            background-color: rgba($yellow-light-40, $container-alpha);
 
             &.locked {
-                background-color: rgba($yellow-light-40, $containers-locked-alpha);
-                border-color: $locked-border-color;
+                background-color: rgba($yellow-light-40, $container-locked-alpha);
             }
 
             &.activated {
                 border-color: $yellow;
+                @include shadow(1);
             }
 
             &.dropable-active {
-                background-color: rgba($yellow-light-40, $containers-dropable-active-alpha);
+                background-color: rgba($yellow-light-40, $container-dropable-active-alpha);
                 border-color: $yellow;
             }
         }
 
         .row {
-            background-color: rgba($green-light-40, $containers-alpha);
-            border: dashed $editing-border-width $green-light-20;
+            background-color: rgba($green-light-30, $container-alpha);
+            border-right: none;
+            border-left: none;
 
             &.locked {
-                background-color: rgba($green-light-40, $containers-locked-alpha);
+                background-color: rgba($green-light-40, $container-locked-alpha);
                 border-color: $locked-border-color;
             }
 
             &.activated {
                 border-color: $green;
+                @include shadow(2);
             }
 
             &.dropable-active {
@@ -100,20 +106,21 @@ body {
         }
 
         [class*="col-"] {
-            background-color: rgba($blue-light-40, $containers-alpha);
-            border: dashed $editing-border-width $blue-light-20;
+            background-color: rgba($blue-light-40, $container-alpha);
+            border: solid $editing-border-width $blue-light-60;
 
             &.locked {
-                background-color: rgba($blue-light-40, $containers-locked-alpha);
+                background-color: rgba($blue-light-40, $container-locked-alpha);
                 border-color: $locked-border-color;
             }
 
             &.activated {
                 border-color: $blue;
+                @include shadow(1);
             }
 
             &.dropable-active {
-                background-color: rgba($blue-light-40, $containers-dropable-active-alpha);
+                background-color: rgba($blue-light-40, $container-dropable-active-alpha);
                 border-color: $blue-dark-10;
             }
 
@@ -121,6 +128,12 @@ body {
                 width: 8%;
                 height: 120px;
                 overflow: hidden;
+            }
+        }
+
+        .btn {
+            &.activated {
+                @include shadow(1);
             }
         }
 
@@ -133,6 +146,7 @@ body {
             &.being-dragged {
                 background-color: $gray-light-40;
                 border-color: $gray-light-10;
+                color: $gray-dark-20;
             }
 
             &.dragging-not-allowed {
@@ -144,11 +158,13 @@ body {
             }
 
             &.resizable-bottom {
+                border-bottom-width: $resizable-border-width;
                 border-bottom-color: $resizable-border-color;
                 cursor: ns-resize;
             }
 
             &.resizable-right {
+                border-right-width: $resizable-border-width;
                 border-right-color: $resizable-border-color;
                 cursor: ew-resize;
             }
@@ -159,11 +175,13 @@ body {
 
 
             &.resizing-bottom {
+                border-bottom-width: $resizing-border-width;
                 border-bottom-color: $resizing-border-color;
                 cursor: ns-resize;
             }
 
             &.resizing-right {
+                border-right-width: $resizing-border-width;
                 border-right-color: $resizing-border-color;
                 cursor: ew-resize;
             }
@@ -196,6 +214,11 @@ body {
             &.dropable-target-after {
                 border-right: solid 4px $dropable-border-color;
             }
+        }
+
+        .tool-removator {
+            position: absolute;
+            padding: 0 5.5px;
         }
     }
 }

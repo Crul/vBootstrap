@@ -12,13 +12,16 @@
     function initDropable(elem) {
         var jElem = $(elem);
 
-        dragDropService.onDragging
+        var unsubDragging = dragDropService.onDragging
             .map(isOverAndNotChildren)
             .toProperty(false)
             .assign(jElem, 'toggleClass', dragDropConfig.cssClasses.dropable);
 
-        dragDropService.onStopDrag
+        var unsubStopDrag = dragDropService.onStopDrag
             .assign(jElem, 'removeClass', dragDropConfig.cssClasses.dropable);
+
+        var elemVBData = vBUtils.getVBData(elem);
+        elemVBData.onDispose([unsubDragging, unsubStopDrag]);
 
         function isOverAndNotChildren(ev) {
             var draggedElem = $('.' + dragDropConfig.cssClasses.beingDragged);
@@ -32,8 +35,8 @@
             var elemProperties = {
                 left: offset.left,
                 top: offset.top,
-                width: jElem.width() + 2 * dragDropConfig.padding,
-                height: jElem.height() + 2 * dragDropConfig.padding
+                width: jElem.outerWidth(),
+                height: jElem.outerHeight()
             };
             return vBUtils.isCursorOverElem(ev, elemProperties, dragDropConfig.threshold);
         }

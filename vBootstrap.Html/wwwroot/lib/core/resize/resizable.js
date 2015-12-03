@@ -1,5 +1,6 @@
 ﻿(function () {
     "use strict";
+    var vBUtils = vBootstrap.utils;
     var events = vBootstrap.config.events;
     var globalStreams = vBootstrap.config.streams.global;
     var lockService = vBootstrap.core.lock.lockService;
@@ -32,15 +33,25 @@
 
         lockService.lockOn(isResizing);
 
-        isOver.filter(lockService.isNotLocked).assign(elem, 'toggleClass', resizableClass);
-        mouseout.assign(elem, 'removeClass', resizableClass);
+        var unsubIsOver = isOver.filter(lockService.isNotLocked).assign(elem, 'toggleClass', resizableClass);
+        var unsubMouseout = mouseout.assign(elem, 'removeClass', resizableClass);
 
-        mousedownOnOver.assign(elem, 'addClass', resizingClass);
-        globalStreams.mouseup.assign(elem, 'removeClass', resizingClass);
-        mousedownOnOver.assign($(document.body), 'addClass', resizingClass);
-        globalStreams.mouseup.assign($(document.body), 'removeClass', resizingClass);
+        var unsubMousedownOnOverElem = mousedownOnOver.assign(elem, 'addClass', resizingClass);
+        var unsubMouseupElem = globalStreams.mouseup.assign(elem, 'removeClass', resizingClass);
+        var unsubMousedownOnOverBody = mousedownOnOver.assign($(document.body), 'addClass', resizingClass);
+        var unsubMouseupBody = globalStreams.mouseup.assign($(document.body), 'removeClass', resizingClass);
 
-        mousedownOnOver.flatMap(getMousemoveUntilMouseup).onValue(resizeFn);
+        var unsubResize = mousedownOnOver.flatMap(getMousemoveUntilMouseup).onValue(resizeFn);
+
+        var elemVBData = vBUtils.getVBData(elem);
+        elemVBData.onDispose([
+            unsubIsOver,
+            unsubMouseout,
+            unsubMousedownOnOverElem,
+            unsubMouseupElem,
+            unsubMousedownOnOverBody,
+            unsubMouseupBody,
+            unsubResize]);
     }
 
 })();

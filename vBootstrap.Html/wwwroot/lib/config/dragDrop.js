@@ -2,8 +2,6 @@
     "use strict";
     namespace('vBootstrap.config').dragDrop = {
         threshold: 10,
-        padding: 8,
-        dragDebounce: 150,
         cssClasses: {
             dragging: 'dragging',
             beingDragged: 'being-dragged',

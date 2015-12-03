@@ -1,7 +1,6 @@
 ﻿(function () {
     "use strict";
     var vBUtils = vBootstrap.utils;
-    var selectors = vBootstrap.config.selectors;
     var globalStreams = vBootstrap.config.streams.global;
     var dragDropCss = vBootstrap.config.dragDrop.cssClasses;
 
@@ -63,12 +62,11 @@
             console.warn('dragDropService.onDrop without dragging');
             return;
         }
-        var source = dragging.data(selectors.vBData).source;
+        var source = vBUtils.getVBData(dragging).source;
         if (target.hasClass(dragDropCss.dropableTargetFirst)) {
             targetParent.append(source);
         } else {
-            var vBData = target.data(selectors.vBData) || {};
-            if (vBData.isDraggingBefore) {
+            if (vBUtils.getVBData(target).isDraggingBefore) {
                 target.before(source);
             } else {
                 target.after(source);
@@ -88,7 +86,7 @@
         vBUtils.resetCssClass(dragDropCss.draggingNotAllowed);
         vBUtils.removeCssClass(dragDropCss.dropableTargetFirst);
 
-        var isDraggingElement = (elem.data(selectors.vBData) || {}).isDragging;
+        var isDraggingElement = vBUtils.getVBData(elem).isDragging;
         if (isDraggingElement) {
             $('.' + dragDropCss.draggingNotAllowed)
                 .addClass(dragDropCss.draggingNotAllowed);
@@ -113,9 +111,11 @@
         vBUtils.resetCssClass(dragDropCss.dropableTargetPrevious);
         vBUtils.resetCssClass(dragDropCss.dropableTargetAfter);
 
-        var targetPos = $(target).offset();
-        var targetBottom = (targetPos.top + target.offsetHeight);
-        var slope = (target.offsetHeight / target.offsetWidth);
+        var jTarget = $(target);
+        var targetPos = jTarget.offset();
+        var targetSize = { width: jTarget.outerWidth(), height: jTarget.outerHeight() };
+        var targetBottom = (targetPos.top + targetSize.height);
+        var slope = (targetSize.height / targetSize.width);
         var relX = (ev.pageX - targetPos.left);
         var limitY = (targetBottom - relX * slope);
 
@@ -124,10 +124,7 @@
             dragDropCss.dropableTargetPrevious : dragDropCss.dropableTargetAfter)
 
         $(target).addClass(targetCss);
-
-        var vBData = $(target).data(selectors.vBData) || {};
-        vBData.isDraggingBefore = isBeforeTarget;
-        $(target).data(selectors.vBData, vBData);
+        vBUtils.setVBData(target, { isDraggingBefore: isBeforeTarget });
     }
 
     function createTargetFirst(elem) {
@@ -147,24 +144,27 @@
             return target.sort(byDistance)[0];
 
         function onTopAndLeft(child) {
-            var pos = $(child).offset();
-            var width = child.offsetWidth;
-            var height = child.offsetHeight;
+            var jChild = $(child);
+            var pos = jChild.offset();
+            var width = jChild.outerWidth();
+            var height = jChild.outerHeight();
 
             return (ev.pageX < (pos.left + width))
                 && (ev.pageY < pos.top + height);
         }
 
         function byDistance(child1, child2) {
-            var c1pos = $(child1).offset();
-            var c2pos = $(child2).offset();
+            var jChild1 = $(child1);
+            var jChild2 = $(child2);
+            var c1pos = jChild1.offset();
+            var c2pos = jChild2.offset();
 
-            var c1distX = c1pos.left + (child1.offsetWidth / 2) - ev.pageX;
-            var c1distY = c1pos.top + (child1.offsetHeight / 2) - ev.pageY;
+            var c1distX = c1pos.left + (jChild1.outerWidth() / 2) - ev.pageX;
+            var c1distY = c1pos.top + (jChild1.outerHeight() / 2) - ev.pageY;
             var c1dist = Math.sqrt(c1distX * c1distX + c1distY * c1distY);
 
-            var c2distX = c2pos.left + (child2.offsetWidth / 2) - ev.pageX;
-            var c2distY = c2pos.top + (child2.offsetHeight / 2) - ev.pageY;
+            var c2distX = c2pos.left + (jChild2.outerWidth() / 2) - ev.pageX;
+            var c2distY = c2pos.top + (jChild2.outerHeight() / 2) - ev.pageY;
             var c2dist = Math.sqrt(c2distX * c2distX + c2distY * c2distY);
 
             if (c1dist < c2dist)

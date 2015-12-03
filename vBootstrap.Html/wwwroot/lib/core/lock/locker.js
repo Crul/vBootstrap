@@ -7,7 +7,6 @@
 
         var isLockedBus = new Bacon.Bus();
         var isLockedPublic = isLockedBus.toProperty(false);
-        var isNotLockedPublic = isLockedPublic.not();
 
         var isLocked;
         var locks = [];
@@ -17,7 +16,7 @@
 
         var lockService = {
             isLocked: isLockedPublic,
-            isNotLocked: isNotLockedPublic,
+            isNotLocked: isLockedPublic.not(),
             lockOn: lockOn,
             removeLockOn: removeLockOn
         };
@@ -34,13 +33,15 @@
                 locks.splice(index, 1);
                 unsubscribeBus();
                 subscribeBus();
+            } else {
+                console.warn('lock not found');
             }
         }
 
         function subscribeBus() {
             isLocked = Bacon.constant(false);
             $(locks).each(setLock);
-            unsubscribeBus = isLocked.onValue(function (v) {
+            unsubscribeBus = isLocked.skipDuplicates().onValue(function (v) {
                 isLockedBus.push(v);
             });
         }
@@ -48,6 +49,7 @@
         function setLock(i, lock) {
             isLocked = isLocked.or(lock);
         }
+
         return lockService;
     }
 
