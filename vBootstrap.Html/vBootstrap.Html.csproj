@@ -121,6 +121,7 @@
     <Content Include="wwwroot\lib\tools\creation\buttonCreator.js" />
     <Content Include="wwwroot\lib\tools\inform\informable.js" />
     <Content Include="wwwroot\lib\tools\inform\informator.js" />
+    <Content Include="wwwroot\lib\tools\popup\elementPopup.js" />
     <Content Include="wwwroot\lib\tools\removator.js" />
     <Content Include="wwwroot\lib\vBootstrap.js" />
     <None Include="Properties\PublishProfiles\vBootstrap.pubxml" />

@@ -34,7 +34,7 @@
                 unsubscribeBus();
                 subscribeBus();
             } else {
-                console.warn('lock not found');
+                console.warn('lock not found: ' + lock.id);
             }
         }
 

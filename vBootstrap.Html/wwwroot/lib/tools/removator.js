@@ -2,50 +2,32 @@
     "use strict";
     var vBUtils = vBootstrap.utils;
     var events = vBootstrap.config.events;
-    var selectors = vBootstrap.config.selectors;
-    var activateService = vBootstrap.core.activate.activateService;
     var removatorConfig = vBootstrap.config.tools.removator;
+    var activateService = vBootstrap.core.activate.activateService;
 
-    namespace('vBootstrap.tools').removator = new vBRemovator();
+    var elementPopup = vBootstrap.tools.popup.elementPopup;
+    var popupConfig = removatorConfig;
+    popupConfig.getTemplate = getTemplate;
+    popupConfig.getPosition = getPosition;
+    popupConfig.onCreate = bindEventsOnCreate;
+    popupConfig.onRemove = unbindEventsOnRemove;
 
-    function vBRemovator() {
-        activateService.activeElement
-            .skipDuplicates()
-            .onValue(showRemoveButton);
+    namespace('vBootstrap.tools').removator = new elementPopup(popupConfig);
+
+    function getTemplate(elem) {
+        return removatorConfig.template;
     }
 
-    function showRemoveButton(elem) {
-        $('.' + removatorConfig.cssClass).stop()
-            .fadeOut(removatorConfig.fadeOut, function () {
-                var vBData = vBUtils.getVBData(this);
-                if (vBData.removeBtn)
-                    vBData.removeBtn();
-            });
-
-        if (elem) {
-            var btn = createBtn(elem);
-            bindEvents(btn, elem);
-            $(selectors.editor).append(btn);
-            btn.fadeIn(removatorConfig.fadeIn);
-        }
-    }
-
-    function createBtn(elem) {
-        var btn = $(removatorConfig.template);
-
+    function getPosition(elem) {
         var offset = $(elem).offset();
-        btn.hide()
-            .addClass(removatorConfig.cssClass)
-            .css({
-                top: offset.top - 16,
-                left: offset.left + 4
-            });
-
-        return btn;
+        return {
+            top: offset.top - 16,
+            left: offset.left + 4
+        };
     }
 
-    function bindEvents(btn, elem) {
-        vBUtils.setVBData(btn, { removeBtn: removeBtn });
+    function bindEventsOnCreate(popup, elem) {
+        var btn = popup;
 
         var isOver = btn.asEventStream(events.mouseover).map(true)
             .merge(btn.asEventStream(events.mouseout).map(false))
@@ -56,15 +38,30 @@
         var unsubscribeClick = btn
             .asEventStream(events.mouseclick)
             .onValue(function () {
-                vBUtils.getVBData(elem).dispose();
-                removeBtn();
+                vBUtils.getVBData(elem).dispose(elem);
             });
 
-        vBUtils.getVBData(elem).onDispose(unsubscribeClick);
+        vBUtils.setVBData(btn, {
+            isOverStream: isOver,
+            unsubscribeClick: unsubscribeClick
+        });
 
-        function removeBtn() {
-            activateService.removeLockOn(isOver);
-            btn.remove();
-        }
+        vBUtils.getVBData(elem).onDispose(unsubscribeClick);
+    }
+
+    function unbindEventsOnRemove(elem) {
+        if (elem._isRemoved) debugger;
+        elem._isRemoved = true;
+
+        var elemVBData = vBUtils.getVBData(elem);
+        if (elemVBData.unsubscribeClick)
+            elemVBData.unsubscribeClick();
+        else
+            console.warn('undefined unsubscribeClick');
+
+        if (elemVBData.isOverStream)
+            activateService.removeLockOn(elemVBData.isOverStream);
+        else
+            console.warn('undefined isOverStream');
     }
 })();

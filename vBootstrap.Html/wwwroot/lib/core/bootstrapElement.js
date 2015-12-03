@@ -7,10 +7,12 @@
     function vBBootstrapElement(elem) {
         vBUtils.setVBData(this.elem, {
             dispose: this.dispose,
-            onDispose: this.onDispose
+            onDispose: this.onDispose,
+            removeOnDispose: this.removeOnDispose
         });
     }
 
+    vBBootstrapElement.prototype.removeOnDispose = removeOnDispose;
     vBBootstrapElement.prototype.onDispose = onDispose;
     vBBootstrapElement.prototype.dispose = dispose;
 
@@ -20,9 +22,19 @@
         this.unsubsFn = this.unsubsFn.concat(fn);
     }
 
-    function dispose() {
+    function removeOnDispose(fn) {
+        this.unsubsFn = this.unsubsFn || [];
+        var index = this.unsubsFn.indexOf(fn);
+        if (index > -1) {
+            this.unsubsFn.splice(index, 1);
+        } else {
+            console.warn('onDisponse not found');
+        }
+    }
+
+    function dispose(elem) {
         $(this.unsubsFn).each(unsub);
-        var jElem = $(this.elem);
+        var jElem = $(elem);
         jElem.stop().fadeOut(500, removeElem);
 
         function removeElem() {

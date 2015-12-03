@@ -37,13 +37,6 @@ body {
 
 .v-bootstrap-editor {
 
-    .dragging {
-        opacity: 0.5;
-        cursor: move;
-        position: absolute;
-        @include shadow(3);
-    }
-
     &.editing {
 
         &.resizing-right,
@@ -66,16 +59,15 @@ body {
             @include shadow(0.2);
             padding: $container-padding;
             min-height: $container-min-height;
-            
+
             &.locked {
                 border: $locked-border-style $locked-border-width $locked-border-color;
                 @include shadow(0);
             }
 
             &.activated {
-                @include shadow(1);
+                @include shadow(3);
             }
-
         }
 
         .container {
@@ -121,10 +113,14 @@ body {
 
         [class*="col-"] {
             background-color: rgba($blue-light-40, $container-alpha);
-            border: solid $container-border-width rgba($blue-light-30, $container-border-alpha);
+            border: solid $container-border-width rgba($blue-light-20, $container-border-alpha);
 
             &.locked {
                 background-color: rgba($blue-light-40, $container-locked-alpha);
+            }
+            
+            &.activated {
+                border-color: $blue-light-10;
             }
 
             &.dropable-active {
@@ -141,7 +137,7 @@ body {
 
         .btn {
             &.activated {
-                @include shadow(1);
+                @include shadow(3);
             }
         }
 
@@ -155,6 +151,13 @@ body {
                 background-color: $gray-light-40;
                 border-color: $gray-light-10;
                 color: $gray-dark-20;
+            }
+
+            &.dragging {
+                opacity: 1;
+                cursor: move;
+                position: absolute;
+                @include shadow(5);
             }
 
             &.dragging-not-allowed {
