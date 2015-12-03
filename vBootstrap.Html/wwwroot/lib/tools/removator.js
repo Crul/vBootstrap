@@ -50,7 +50,7 @@
     }
 
     function unbindEventsOnRemove(elem) {
-        if (elem._isRemoved) debugger;
+        if (elem._isRemoved) console.warn('unbind twice');
         elem._isRemoved = true;
 
         var elemVBData = vBUtils.getVBData(elem);

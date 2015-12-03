@@ -7,6 +7,7 @@
     var popupConfig = informatorConfig;
     popupConfig.getTemplate = getTemplate;
     popupConfig.getPosition = getPosition;
+    popupConfig.onCreate = bindRefreshOnCreate;
 
     namespace('vBootstrap.tools.inform').informator = new elementPopup(popupConfig);
 
@@ -21,6 +22,23 @@
             top: offset.top - 12,
             left: offset.left + 28
         };
+    }
+
+    function bindRefreshOnCreate(popup, elem) {
+        var elemVBData = vBUtils.getVBData(elem);
+        if (elemVBData.isResizing) {
+            var unsubResizing = elemVBData.isResizing
+                .sampledBy(vBootstrap.config.streams.global.mousemove)
+                .filter(Bacon._.id)
+                .onValue(refreshInfo);
+
+            elemVBData.onDispose(unsubResizing);
+        }
+
+        function refreshInfo() {
+            var template = getTemplate(elem);
+            popup.html($(template).html());
+        }
     }
 
 })();

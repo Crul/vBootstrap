@@ -109,6 +109,7 @@
     <Content Include="wwwroot\lib\core\lock\lockService.js" />
     <Content Include="wwwroot\lib\core\editor.js" />
     <Content Include="wwwroot\lib\core\lock\lockable.js" />
+    <Content Include="wwwroot\lib\core\resize\columnResizeService.js" />
     <Content Include="wwwroot\lib\core\resize\resizable.js" />
     <Content Include="wwwroot\lib\core\resize\verticalResizable.js" />
     <Content Include="wwwroot\lib\core\resize\screenSizeService.js" />

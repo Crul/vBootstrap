@@ -23,7 +23,15 @@
 
     vBCol.prototype.getInfo = getInfo;
     function getInfo() {
-        return 'col-xs-' + this.sizes.xs;
+        var dis = this;
+        return Object.keys(dis.sizes).map(getColClass).join('');
+
+        function getColClass(size) {
+            if (dis.sizes[size])
+                return ' col-' + size + '-' + dis.sizes[size];
+            else
+                return;
+        }
     }
 
     function getColSizes(obj) {

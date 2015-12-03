@@ -23,17 +23,18 @@
     vBElementPopup.prototype.createPopup = createPopup;
 
     function showPopup(elem) {
+        var dis = this;
+        var config = dis.config;
+        $('.' + config.cssClass).each(removePopup);
+
         if (!elem) return;
 
-        var dis = this;
+        var popup = dis.createPopup(elem);
+
         var elemVBData = vBUtils.getVBData(elem);
         if (elemVBData.onDispose)
             elemVBData.onDispose(removePopupElem);
 
-        var config = dis.config;
-        $('.' + config.cssClass).each(removePopup);
-
-        var popup = dis.createPopup(elem);
         $(selectors.editor).append(popup);
 
         function removePopupElem() {

@@ -27,12 +27,7 @@
             var relativeLeft = ev.pageX - jElem.offset().left;
             var cols = Math.round((relativeLeft / colWidth) || 1);
 
-            // TODO sizes
-            if (obj.sizes.xs != cols) {
-                jElem.removeClass('col-xs-' + obj.sizes.xs);
-                jElem.addClass('col-xs-' + cols);
-                obj.sizes.xs = cols;
-            }
+            vBootstrap.core.resize.columnResizeService.resize(obj, cols);
         }
 
         vBootstrap.core.resize.resizable.init(resizableConfig);

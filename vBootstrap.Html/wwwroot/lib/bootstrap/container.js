@@ -10,8 +10,8 @@
         vBootstrap.core.lock.lockable.init(this);
         vBootstrap.core.activate.activatable.init(this);
         vBootstrap.core.resize.verticalResizable.init(this);
-        vBootstrap.core.dragDrop.dropable.init(this);
         vBootstrap.core.dragDrop.selfDraggable.init(this);
+        vBootstrap.core.dragDrop.dropable.init(this);
         vBootstrap.tools.inform.informable.init(this, 'container');
     }
 

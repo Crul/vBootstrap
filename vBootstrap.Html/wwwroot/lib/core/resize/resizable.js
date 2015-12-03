@@ -31,6 +31,14 @@
           .merge(globalStreams.mouseup.map(false))
           .toProperty(false);
 
+        var elemVBData = vBUtils.getVBData(elem);
+        if (elemVBData.isResizing) {
+            elemVBData.isResizing = elemVBData.isResizing.or(isResizing);
+        } else {
+            elemVBData.isResizing = isResizing;
+        }
+        vBUtils.setVBData(elem, elemVBData);
+
         lockService.lockOn(isResizing);
 
         var unsubIsOver = isOver.filter(lockService.isNotLocked).assign(elem, 'toggleClass', resizableClass);

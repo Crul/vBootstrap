@@ -18,7 +18,6 @@ $locked-border-width: $container-border-width;
 $locked-border-style: dashed;
 
 $resizable-border-width: 6px;
-
 $resizing-border-width: 3px;
 
 $dropable-border-width: 4px;
@@ -86,7 +85,7 @@ body {
             }
             
             &.resizable-bottom {
-                border-bottom: solid $resizable-border-width $yellow;
+                border-bottom: solid $resizable-border-width $yellow-light-20;
             }
 
             &.resizable-right {
@@ -98,7 +97,7 @@ body {
             }
 
             &.resizing-right {
-                border-right: solid $resizing-border-width $yellow-light-20;
+                border-right: solid $resizing-border-width $yellow;
             }
         }
 
@@ -126,7 +125,7 @@ body {
             }
             
             &.resizable-bottom {
-                border-bottom: solid $resizable-border-width $green;
+                border-bottom: solid $resizable-border-width $green-light-20;
             }
 
             &.resizable-right {
@@ -138,7 +137,7 @@ body {
             }
 
             &.resizing-right {
-                border-right: solid $resizing-border-width $green-light-20;
+                border-right: solid $resizing-border-width $green;
             }
         }
 
@@ -166,7 +165,7 @@ body {
             }
             
             &.resizable-bottom {
-                border-bottom: solid $resizable-border-width $blue;
+                border-bottom: solid $resizable-border-width $blue-light-20;
             }
 
             &.resizable-right {
@@ -178,7 +177,7 @@ body {
             }
 
             &.resizing-right {
-                border-right: solid $resizing-border-width $blue-light-20;
+                border-right: solid $resizing-border-width $blue;
             }
         }
 

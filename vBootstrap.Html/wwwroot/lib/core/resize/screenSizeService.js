@@ -4,15 +4,15 @@
     var sizes = Object.keys(resizeConfig.sizeMinLimits);
     var globalStreams = vBootstrap.config.streams.global;
 
-
     var resizeStream = globalStreams.resize
         .merge(Bacon.once())
         .map(getBootstrapSize)
-        .skipDuplicates();
+        .skipDuplicates()
+        .toProperty();
 
     namespace('vBootstrap.core.resize').screenSizeService = {
-        sizes: sizes,
-        screenSize: resizeStream
+        screenSize: resizeStream,
+        sizes: sizes
     };
 
     function getBootstrapSize() {
