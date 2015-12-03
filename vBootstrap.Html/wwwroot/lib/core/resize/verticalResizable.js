@@ -18,13 +18,12 @@
 
         function isBottom(ev) {
             ev.preventDefault();
-            return $(elem).outerHeight() - ev.offsetY < resizeConfig.threshold;
+            return elem.offsetHeight - ev.offsetY < resizeConfig.threshold;
         }
 
         function resizeFromBottom(ev) {
-            var jElem = $(elem);
-            var height = ev.pageY - jElem.offset().top;
-            jElem.css(resizeConfig.verticalCssProperty, height);
+            var height = ev.pageY - $(elem).offset().top;
+            $(elem).css(resizeConfig.verticalCssProperty, height);
         }
 
         vBootstrap.core.resize.resizable.init(resizableConfig);

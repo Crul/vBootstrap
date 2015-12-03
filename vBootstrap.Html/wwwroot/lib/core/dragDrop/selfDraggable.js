@@ -1,28 +1,26 @@
 ﻿(function () {
     "use strict";
-    var vBUtils = vBootstrap.utils;
+    
     var dragDropCss = vBootstrap.config.dragDrop.cssClasses;
-
     namespace('vBootstrap.core.dragDrop').selfDraggable = {
         init: initSelfDraggable
     };
 
-    function initSelfDraggable(elem) {
-        var jElem = $(elem);
+    function initSelfDraggable(e) {
+        var elem = $(e);
 
         var draggableConfig = {
-            element: jElem,
+            element: elem,
             getShadowTemplate: getShadowTemplate,
             getOffset: getOffset
         };
 
         var draggable = vBootstrap.core.dragDrop.draggable.init(draggableConfig);
 
-        var unsubFn = draggable.isDragging.assign(jElem, 'toggleClass', dragDropCss.beingDragged);
-        vBUtils.getVBData(jElem).onDispose(unsubFn);
+        draggable.isDragging.assign(elem, 'toggleClass', dragDropCss.beingDragged);
 
         function getShadowTemplate() {
-            return jElem;
+            return elem;
         }
 
         function getOffset(ev) {

@@ -1,7 +1,8 @@
 ﻿(function (global) {
     "use strict";
     namespace('vBootstrap.config').resize = {
-        threshold: 12,
+        threshold: 6,
+        padding: 8,
         verticalCssProperty: 'min-height',
         cssClasses: {
             resizableBottom: 'resizable-bottom',

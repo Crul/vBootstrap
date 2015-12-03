@@ -3,12 +3,11 @@
     namespace('vBootstrap.core').editor = vBEditor;
 
     function vBEditor(elem) {
-        var jElem = $(elem);
-        jElem.data('vBootstrapEditor', this);
-        jElem.find('*').each(createElem);
-        console.log('init');
+        var editorElem = $(elem);
+        editorElem.data('vBootstrapEditor', this);
+        editorElem.find('*').each(createElem);
 
-        var toolbar = new vBootstrap.core.toolbar(jElem);
+        var toolbar = new vBootstrap.core.toolbar(editorElem);
     }
 
     function createElem(i, elem) {

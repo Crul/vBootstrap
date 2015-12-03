@@ -6,7 +6,6 @@
 
     function vBCol(elem) {
         this.elem = elem || vBCol.template.clone()[0];
-        vBootstrap.core.disposable.call(this, this.elem);
 
         vBootstrap.core.lock.lockable.init(this.elem);
         vBootstrap.core.activate.activatable.init(this.elem);
@@ -16,5 +15,4 @@
         vBootstrap.core.dragDrop.dropable.init(this.elem);
     }
 
-    vBCol.prototype = $.extend(vBCol.prototype, vBootstrap.core.disposable.prototype);
 })();

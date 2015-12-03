@@ -3,24 +3,22 @@
     var vBUtils = vBootstrap.utils;
     var globalStreams = vBootstrap.config.streams.global;
     var activateCss = vBootstrap.config.activate.cssClasses;
-    var lockService = vBootstrap.core.lock.lockService;
 
     var locker = new vBootstrap.core.lock.locker();
-    lockService.lockOn(locker.isLocked);
 
     var childestActivatable = globalStreams.mousemove
-        .filter(lockService.isNotLocked)
+        .filter(locker.isNotLocked)
         .map(getChildestActive)
         .toProperty();
 
-    childestActivatable.skipDuplicates().onValue(function (elem) {
+    childestActivatable.skipDuplicates().onValue(function (e) {
         vBUtils.resetCssClass(activateCss.active);
-        $(elem).addClass(activateCss.active);
+        $(e).addClass(activateCss.active);
     });
     
     var activateService = {
         activeElement: childestActivatable,
-        isLocked: locker.isLocked,
+        isLocked: locker.isLockedPublic,
         isNotLocked: locker.isNotLocked,
         lockOn: locker.lockOn,
         removeLockOn: locker.removeLockOn

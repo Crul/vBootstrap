@@ -1,10 +1,7 @@
 ﻿(function () {
     "use strict";
-    var vBUtils = vBootstrap.utils;
     var events = vBootstrap.config.events;
-    var selectors = vBootstrap.config.selectors;
     var activateService = vBootstrap.core.activate.activateService;
-    var removatorConfig = vBootstrap.config.tools.removator;
 
     namespace('vBootstrap.tools').removator = new vBRemovator();
 
@@ -15,56 +12,34 @@
     }
 
     function showRemoveButton(elem) {
-        $('.' + removatorConfig.cssClass).stop()
-            .fadeOut(removatorConfig.fadeOut, function () {
-                var vBData = vBUtils.getVBData(this);
-                if (vBData.removeBtn)
-                    vBData.removeBtn();
-            });
+        $('.btn-removator').stop().fadeOut();
 
-        if (elem) {
-            var btn = createBtn(elem);
-            bindEvents(btn, elem);
-            $(selectors.editor).append(btn);
-            btn.fadeIn(removatorConfig.fadeIn);
-        }
-    }
+        if (!elem)
+            return;
 
-    function createBtn(elem) {
-        var btn = $(removatorConfig.template);
-
-        var offset = $(elem).offset();
-        btn.hide()
-            .addClass(removatorConfig.cssClass)
-            .css({
-                top: offset.top - 16,
-                left: offset.left + 4
-            });
-
-        return btn;
-    }
-
-    function bindEvents(btn, elem) {
-        vBUtils.setVBData(btn, { removeBtn: removeBtn });
+        var btn = $('<div />');
+        btn.addClass('btn btn-danger btn-removator').html('&times;').css({
+            display: 'none',
+            position: 'absolute',
+            top: $(elem).offset().top - 16,
+            left: $(elem).offset().left + 4,
+            padding: '0 5.5px'
+        });
 
         var isOver = btn.asEventStream(events.mouseover).map(true)
             .merge(btn.asEventStream(events.mouseout).map(false))
             .toProperty(false);
 
+        btn.asEventStream(events.mouseclick).onValue(function () {
+            btn.remove();
+            $(elem).remove();
+            activateService.removeLockOn(isOver);
+        })
+
         activateService.lockOn(isOver);
 
-        var unsubscribeClick = btn
-            .asEventStream(events.mouseclick)
-            .onValue(function () {
-                vBUtils.getVBData(elem).dispose();
-                removeBtn();
-            });
-
-        vBUtils.getVBData(elem).onDispose(unsubscribeClick);
-
-        function removeBtn() {
-            activateService.removeLockOn(isOver);
-            btn.remove();
-        }
+        $(document.body).append(btn);
+        btn.fadeIn();
     }
+
 })();

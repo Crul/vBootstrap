@@ -4,9 +4,7 @@
         removeCssClass: removeCssClass,
         resetCssClass: resetCssClass,
         getChildest: getChildest,
-        isCursorOverElem: isCursorOverElem,
-        getVBData: getVBData,
-        setVBData: setVBData
+        isCursorOverElem: isCursorOverElem
     };
 
     function resetCssClass(cssClass) {
@@ -37,21 +35,6 @@
             && (elem.left + elem.width > ev.pageX + threshold)
             && (elem.top < ev.pageY - threshold)
             && (elem.top + elem.height > ev.pageY + threshold);
-    }
-
-    function getVBData(elem) {
-        var vBDataSelector = vBootstrap.config.selectors.vBData;
-        var jElem = $(elem);
-        var elemVBData = jElem.data(vBDataSelector) || {};
-        jElem.data(vBDataSelector, elemVBData);
-        return elemVBData;
-    }
-
-    function setVBData(elem, data) {
-        var vBDataSelector = vBootstrap.config.selectors.vBData;
-        data = data || {};
-        var elemVBData = $.extend({}, getVBData(elem), data);
-        $(elem).data(vBDataSelector, elemVBData);
     }
 
 })(window);
