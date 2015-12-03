@@ -176,34 +176,43 @@ body {
 .v-bootstrap-editor.editing .container,
 .v-bootstrap-editor.editing .row,
 .v-bootstrap-editor.editing [class*="col-"] {
+  -webkit-box-shadow: 0.2px 0.2px 1.2px 0 rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0.2px 0.2px 1.2px 0 rgba(0, 0, 0, 0.75);
+  box-shadow: 0.2px 0.2px 1.2px 0 rgba(0, 0, 0, 0.75);
   padding: 12px;
   min-height: 60px; }
-
-.v-bootstrap-editor.editing .container {
-  background-color: rgba(241, 245, 165, 0.25); }
-  .v-bootstrap-editor.editing .container.locked {
-    background-color: rgba(241, 245, 165, 0.25); }
-  .v-bootstrap-editor.editing .container.activated {
-    border-color: #b2b915;
+  .v-bootstrap-editor.editing .container.locked,
+  .v-bootstrap-editor.editing .row.locked,
+  .v-bootstrap-editor.editing [class*="col-"].locked {
+    border: dashed 1px #bbbbbb;
+    -webkit-box-shadow: 0px 0px 0px 0 rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 0px 0 rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 0px 0 rgba(0, 0, 0, 0.75); }
+  .v-bootstrap-editor.editing .container.activated,
+  .v-bootstrap-editor.editing .row.activated,
+  .v-bootstrap-editor.editing [class*="col-"].activated {
     -webkit-box-shadow: 1px 1px 6px 0 rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 1px 1px 6px 0 rgba(0, 0, 0, 0.75);
     box-shadow: 1px 1px 6px 0 rgba(0, 0, 0, 0.75); }
+
+.v-bootstrap-editor.editing .container {
+  background-color: rgba(241, 245, 165, 0.25);
+  border: solid 1px rgba(234, 240, 119, 0.3); }
+  .v-bootstrap-editor.editing .container.locked {
+    background-color: rgba(241, 245, 165, 0.25); }
+  .v-bootstrap-editor.editing .container.activated {
+    border-color: #b2b915; }
   .v-bootstrap-editor.editing .container.dropable-active {
     background-color: rgba(241, 245, 165, 0.5);
     border-color: #b2b915; }
 
 .v-bootstrap-editor.editing .row {
-  background-color: rgba(119, 240, 122, 0.25);
-  border-right: none;
-  border-left: none; }
+  background-color: rgba(165, 245, 167, 0.25);
+  border: solid 1px rgba(119, 240, 122, 0.3); }
   .v-bootstrap-editor.editing .row.locked {
-    background-color: rgba(165, 245, 167, 0.25);
-    border-color: #bbbbbb; }
+    background-color: rgba(165, 245, 167, 0.25); }
   .v-bootstrap-editor.editing .row.activated {
-    border-color: #15b918;
-    -webkit-box-shadow: 2px 2px 12px 0 rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 2px 2px 12px 0 rgba(0, 0, 0, 0.75);
-    box-shadow: 2px 2px 12px 0 rgba(0, 0, 0, 0.75); }
+    border-color: #15b918; }
   .v-bootstrap-editor.editing .row.dropable-active {
     border-color: #108b12; }
   .v-bootstrap-editor.editing .row.dragging {
@@ -213,15 +222,9 @@ body {
 
 .v-bootstrap-editor.editing [class*="col-"] {
   background-color: rgba(165, 211, 245, 0.25);
-  border: solid 1px white; }
+  border: solid 1px rgba(119, 189, 240, 0.3); }
   .v-bootstrap-editor.editing [class*="col-"].locked {
-    background-color: rgba(165, 211, 245, 0.25);
-    border-color: #bbbbbb; }
-  .v-bootstrap-editor.editing [class*="col-"].activated {
-    border-color: #1574b9;
-    -webkit-box-shadow: 1px 1px 6px 0 rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 1px 1px 6px 0 rgba(0, 0, 0, 0.75);
-    box-shadow: 1px 1px 6px 0 rgba(0, 0, 0, 0.75); }
+    background-color: rgba(165, 211, 245, 0.25); }
   .v-bootstrap-editor.editing [class*="col-"].dropable-active {
     background-color: rgba(165, 211, 245, 0.5);
     border-color: #10578b; }
@@ -261,13 +264,13 @@ body {
   .v-bootstrap-editor.editing .row.resizable-bottom,
   .v-bootstrap-editor.editing [class*="col-"].resizable-bottom,
   .v-bootstrap-editor.editing .btn.resizable-bottom {
-    border-bottom: solid 6px #ea4a62;
+    border-bottom: solid 6px #4aa7ea;
     cursor: ns-resize; }
   .v-bootstrap-editor.editing .container.resizable-right,
   .v-bootstrap-editor.editing .row.resizable-right,
   .v-bootstrap-editor.editing [class*="col-"].resizable-right,
   .v-bootstrap-editor.editing .btn.resizable-right {
-    border-right: solid 6px #ea4a62;
+    border-right: solid 6px #4aa7ea;
     cursor: ew-resize; }
   .v-bootstrap-editor.editing .container.resizable-bottom.resizable-right,
   .v-bootstrap-editor.editing .row.resizable-bottom.resizable-right,
@@ -278,15 +281,13 @@ body {
   .v-bootstrap-editor.editing .row.resizing-bottom,
   .v-bootstrap-editor.editing [class*="col-"].resizing-bottom,
   .v-bootstrap-editor.editing .btn.resizing-bottom {
-    border-bottom-width: 3px;
-    border-bottom-color: #b9152e;
+    border-bottom: solid 3px #1574b9;
     cursor: ns-resize; }
   .v-bootstrap-editor.editing .container.resizing-right,
   .v-bootstrap-editor.editing .row.resizing-right,
   .v-bootstrap-editor.editing [class*="col-"].resizing-right,
   .v-bootstrap-editor.editing .btn.resizing-right {
-    border-right-width: 3px;
-    border-right-color: #b9152e;
+    border-right: solid 3px #1574b9;
     cursor: ew-resize; }
   .v-bootstrap-editor.editing .container.resizing-bottom.resizing-right,
   .v-bootstrap-editor.editing .row.resizing-bottom.resizing-right,

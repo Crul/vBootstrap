@@ -2,22 +2,28 @@
 @import "common/shadows.scss";
 @import "common/borderRadius.scss";
 
-$editing-border-width: 1px;
-$editing-margin: 8px;
-$editing-padding: 12px;
-$editing-row-min-height: 60px;
-
+$container-margin: 8px;
+$container-padding: 12px;
+$container-min-height: 60px;
+$container-border-radius: 8px;
+$container-border-width: 1px;
+$container-border-alpha: 0.3;
 $container-alpha: 0.25;
 $container-locked-alpha: 0.25;
 $container-active-alpha: 0.8;
 $container-dropable-active-alpha: 0.5;
-$container-border-radius: 8px;
 
 $locked-border-color: $gray-light-20;
+$locked-border-width: $container-border-width;
+$locked-border-style: dashed;
+
 $resizable-border-width: 6px;
-$resizable-border-color: $red-light-20;
-$resizing-border-color: $red;
+$resizable-border-color: $blue-light-20;
+
 $resizing-border-width: 3px;
+$resizing-border-color: $blue;
+
+$dropable-border-width: 4px;
 $dropable-border-color: $red;
 
 body {
@@ -57,12 +63,24 @@ body {
         .container,
         .row,
         [class*="col-"] {
-            padding: $editing-padding;
-            min-height: $editing-row-min-height;
+            @include shadow(0.2);
+            padding: $container-padding;
+            min-height: $container-min-height;
+            
+            &.locked {
+                border: $locked-border-style $locked-border-width $locked-border-color;
+                @include shadow(0);
+            }
+
+            &.activated {
+                @include shadow(1);
+            }
+
         }
 
         .container {
             background-color: rgba($yellow-light-40, $container-alpha);
+            border: solid $container-border-width rgba($yellow-light-30, $container-border-alpha);
 
             &.locked {
                 background-color: rgba($yellow-light-40, $container-locked-alpha);
@@ -70,7 +88,6 @@ body {
 
             &.activated {
                 border-color: $yellow;
-                @include shadow(1);
             }
 
             &.dropable-active {
@@ -80,18 +97,15 @@ body {
         }
 
         .row {
-            background-color: rgba($green-light-30, $container-alpha);
-            border-right: none;
-            border-left: none;
+            background-color: rgba($green-light-40, $container-alpha);
+            border: solid $container-border-width rgba($green-light-30, $container-border-alpha);
 
             &.locked {
                 background-color: rgba($green-light-40, $container-locked-alpha);
-                border-color: $locked-border-color;
             }
 
             &.activated {
                 border-color: $green;
-                @include shadow(2);
             }
 
             &.dropable-active {
@@ -107,16 +121,10 @@ body {
 
         [class*="col-"] {
             background-color: rgba($blue-light-40, $container-alpha);
-            border: solid $editing-border-width $blue-light-60;
+            border: solid $container-border-width rgba($blue-light-30, $container-border-alpha);
 
             &.locked {
                 background-color: rgba($blue-light-40, $container-locked-alpha);
-                border-color: $locked-border-color;
-            }
-
-            &.activated {
-                border-color: $blue;
-                @include shadow(1);
             }
 
             &.dropable-active {
@@ -158,14 +166,12 @@ body {
             }
 
             &.resizable-bottom {
-                border-bottom-width: $resizable-border-width;
-                border-bottom-color: $resizable-border-color;
+                border-bottom: solid $resizable-border-width $resizable-border-color;
                 cursor: ns-resize;
             }
 
             &.resizable-right {
-                border-right-width: $resizable-border-width;
-                border-right-color: $resizable-border-color;
+                border-right: solid $resizable-border-width $resizable-border-color;
                 cursor: ew-resize;
             }
 
@@ -175,14 +181,12 @@ body {
 
 
             &.resizing-bottom {
-                border-bottom-width: $resizing-border-width;
-                border-bottom-color: $resizing-border-color;
+                border-bottom: solid $resizing-border-width $resizing-border-color;
                 cursor: ns-resize;
             }
 
             &.resizing-right {
-                border-right-width: $resizing-border-width;
-                border-right-color: $resizing-border-color;
+                border-right: solid $resizing-border-width $resizing-border-color;
                 cursor: ew-resize;
             }
 
@@ -193,26 +197,26 @@ body {
 
         .container,
         .row {
-            margin-top: $editing-margin;
-            margin-bottom: $editing-margin;
+            margin-top: $container-margin;
+            margin-bottom: $container-margin;
 
             &.dropable-target-previous {
-                border-top: solid 4px $dropable-border-color;
+                border-top: solid $dropable-border-width $dropable-border-color;
             }
 
             &.dropable-target-after {
-                border-bottom: solid 4px $dropable-border-color;
+                border-bottom: solid $dropable-border-width $dropable-border-color;
             }
         }
 
         .btn,
         [class*="col-"] {
             &.dropable-target-previous {
-                border-left: solid 4px $dropable-border-color;
+                border-left: solid $dropable-border-width $dropable-border-color;
             }
 
             &.dropable-target-after {
-                border-right: solid 4px $dropable-border-color;
+                border-right: solid $dropable-border-width $dropable-border-color;
             }
         }
 
