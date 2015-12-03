@@ -6,17 +6,17 @@
         init: initColumnResizable
     };
 
-    function initColumnResizable(e, column) {
-        var elem = $(e);
+    function initColumnResizable(elem, column) {
+        var jElem = $(elem);
         var resizableConfig = {
-            elem: elem,
+            elem: jElem,
             resize: resizeFromRight,
             isOver: isRight,
             resizableClass: resizeConfig.cssClasses.resizableColumn,
             resizingClass: resizeConfig.cssClasses.resizingColumn
         };
 
-        var cssClass = elem.attr('class');
+        var cssClass = jElem.attr('class');
         column.sizes = {
             xs: getColSize(cssClass, 'xs'),
             sm: getColSize(cssClass, 'sm'),
@@ -26,19 +26,19 @@
 
         function isRight(ev) {
             ev.preventDefault();
-            return elem[0].offsetWidth - ev.offsetX < resizeConfig.threshold;
+            return jElem.outerWidth() - ev.offsetX < resizeConfig.threshold;
         }
 
         function resizeFromRight(ev) {
-            var parentWidth = elem.parent().width();
+            var parentWidth = jElem.parent().width();
             var colWidth = parentWidth / 12;
-            var relativeLeft = ev.pageX - elem.offset().left;
+            var relativeLeft = ev.pageX - jElem.offset().left;
             var cols = Math.round((relativeLeft / colWidth) || 1);
 
             // TODO sizes
             if (column.sizes.xs != cols) {
-                elem.removeClass('col-xs-' + column.sizes.xs);
-                elem.addClass('col-xs-' + cols);
+                jElem.removeClass('col-xs-' + column.sizes.xs);
+                jElem.addClass('col-xs-' + cols);
                 column.sizes.xs = cols;
             }
         }

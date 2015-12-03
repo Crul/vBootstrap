@@ -95,8 +95,10 @@
     <Content Include="wwwroot\lib\config\resize.js" />
     <Content Include="wwwroot\lib\config\selectors.js" />
     <Content Include="wwwroot\lib\config\streams.js" />
+    <Content Include="wwwroot\lib\config\tools.js" />
     <Content Include="wwwroot\lib\core\activate\activatable.js" />
     <Content Include="wwwroot\lib\core\activate\activateService.js" />
+    <Content Include="wwwroot\lib\core\disposable.js" />
     <Content Include="wwwroot\lib\core\dragDrop\draggable.js" />
     <Content Include="wwwroot\lib\core\dragDrop\dragDropService.js" />
     <Content Include="wwwroot\lib\core\dragDrop\dragShadow.js" />
@@ -121,6 +123,7 @@
     <Content Include="wwwroot\lib\vBootstrap.js" />
     <None Include="Properties\PublishProfiles\vBootstrap.pubxml" />
     <Content Include="sass\common\shadows.scss" />
+    <Content Include="sass\common\borderRadius.scss" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
