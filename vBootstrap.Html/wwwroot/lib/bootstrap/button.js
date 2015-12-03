@@ -2,7 +2,7 @@
     "use strict";
     namespace('vBootstrap.bootstrap').button = vBButton;
     vBButton.selector = vBootstrap.config.selectors.bootstrap.button;
-    vBButton.template = $('<div />').addClass('btn btn-default').html('Accept');
+    vBButton.template = $('<button />').attr('type', 'button').addClass('btn btn-success').html('Accept');
 
     function vBButton(elem) {
         this.elem = elem || vBButton.template.clone()[0];
