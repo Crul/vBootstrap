@@ -3,13 +3,12 @@
     var vBUtils = vBootstrap.utils;
     var selectors = vBootstrap.config.selectors;
     var dragDropConfig = vBootstrap.config.dragDrop;
-    var dragDropService = vBootstrap.core.dragDrop.dragDropService;
 
     namespace('vBootstrap.core.dragDrop').dropable = {
         init: initDropable
     };
 
-    function initDropable(obj) {
+    function initDropable(dragDropService, obj) {
         var elem = obj.elem;
         var jElem = $(elem);
 

@@ -5,8 +5,10 @@
         buttonText: '+ row',
         elementFn: vBootstrap.bootstrap.row
     };
-    var vBRowCreator = vBootstrap.tools.creation.elementCreator
-        .create(creatorConfig);
 
-    namespace('vBootstrap.buttonCreators').rowCreator = vBRowCreator;
+    function vBRowCreator(editor) {
+        return vBootstrap.tools.creation.elementCreator.create(editor, creatorConfig);
+    }
+
+    namespace('vBootstrap.tools.creation').rowCreator = vBRowCreator;
 })();

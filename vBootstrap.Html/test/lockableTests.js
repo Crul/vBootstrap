@@ -11,18 +11,18 @@
 describe("lockable", function () {
     var testUtils = vBootstrap.test.utils;
 
-    var obj;
+    var bootstrapElement;
     beforeEach(initBeforeEach);
 
     function initBeforeEach() {
-        vBootstrap.config.streams.mock.setGlobalMousemove();
-        obj = testUtils.getObject();
+        vBootstrap.config.streams.mock.setGlobalByCount('mousemove', 1);
+        bootstrapElement = testUtils.getBootstrapElement();
     }
 
     it("should NOT lock when NOT locked", function () {
         var lockService = testUtils.lock.getNotLockedService();
 
-        vBootstrap.core.lock.lockable.init(lockService, obj);
+        vBootstrap.core.lock.lockable.init(lockService, bootstrapElement);
 
         expectLockedToBe(false);
     });
@@ -30,13 +30,13 @@ describe("lockable", function () {
     it("should lock when IS locked", function () {
         var lockService = testUtils.lock.getLockedService();
 
-        vBootstrap.core.lock.lockable.init(lockService, obj);
+        vBootstrap.core.lock.lockable.init(lockService, bootstrapElement);
 
         expectLockedToBe(true);
     });
 
     function expectLockedToBe(value) {
-        testUtils.expect.matchCssClass(obj.elem, 'locked').toBe(value);
+        testUtils.expect.matchCssClass(bootstrapElement.elem, 'locked').toBe(value);
     }
 
 });

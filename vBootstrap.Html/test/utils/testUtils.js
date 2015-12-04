@@ -1,7 +1,8 @@
 ﻿(function () {
     "use strict";
     namespace('vBootstrap.test').utils = {
-        getObject: getObject,
+        getBootstrapElement: getBootstrapElement,
+        getDomElement: getDomElement,
         lock: {
             getLockedService: getLockedService,
             getNotLockedService: getNotLockedService
@@ -11,8 +12,12 @@
         }
     };
 
-    function getObject() {
-        return { elem: $('<div />')[0] };
+    function getDomElement() {
+        return $('<div />')[0];
+    }
+
+    function getBootstrapElement() {
+        return { elem: getDomElement() };
     }
 
     function getLockedService() {

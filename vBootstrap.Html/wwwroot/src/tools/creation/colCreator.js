@@ -5,8 +5,10 @@
         buttonText: '+ col',
         elementFn: vBootstrap.bootstrap.col
     };
-    var vBColCreator = vBootstrap.tools.creation.elementCreator
-        .create(creatorConfig);
 
-    namespace('vBootstrap.buttonCreators').colCreator = vBColCreator;
+    function vBColCreator(editor) {
+        return vBootstrap.tools.creation.elementCreator.create(editor, creatorConfig);
+    }
+
+    namespace('vBootstrap.tools.creation').colCreator = vBColCreator;
 })();

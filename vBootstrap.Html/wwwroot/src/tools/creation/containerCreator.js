@@ -5,8 +5,10 @@
         buttonText: '+ container',
         elementFn: vBootstrap.bootstrap.container
     };
-    var vContainerCreator = vBootstrap.tools.creation.elementCreator
-        .create(creatorConfig);
 
-    namespace('vBootstrap.buttonCreators').containerCreator = vContainerCreator;
+    function vContainerCreator(editor) {
+        return vBootstrap.tools.creation.elementCreator.create(editor, creatorConfig);
+    }
+
+    namespace('vBootstrap.tools.creation').containerCreator = vContainerCreator;
 })();

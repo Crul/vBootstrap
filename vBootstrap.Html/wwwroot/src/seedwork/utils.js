@@ -17,8 +17,8 @@
         $('.' + cssClass).remove();
     }
 
-    function getChildest(cssClass) {
-        var candidates = $('.' + cssClass);
+    function getChildest(obj, cssClass) {
+        var candidates = $(obj).find('.' + cssClass);
         if (candidates.length === 0)
             return;
 

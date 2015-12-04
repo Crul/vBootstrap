@@ -5,8 +5,10 @@
         buttonText: '+ button',
         elementFn: vBootstrap.bootstrap.button
     };
-    var vBButtonCreator = vBootstrap.tools.creation.elementCreator
-        .create(creatorConfig);
 
-    namespace('vBootstrap.buttonCreators').buttonCreator = vBButtonCreator;
+    function vBButtonCreator(editor) {
+        return vBootstrap.tools.creation.elementCreator.create(editor, creatorConfig);
+    }
+
+    namespace('vBootstrap.tools.creation').buttonCreator = vBButtonCreator;
 })();

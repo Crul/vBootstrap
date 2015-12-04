@@ -27,6 +27,6 @@
             }
         };
 
-        vBootstrap.core.toolbar.addButtonFactory(buttonFactory);
+        return buttonFactory;
     }
 })();

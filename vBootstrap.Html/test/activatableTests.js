@@ -12,29 +12,29 @@
 describe("activatable", function () {
     var testUtils = vBootstrap.test.utils;
 
-    var obj;
+    var bootstrapElem;
     beforeEach(initBeforeEach);
 
     function initBeforeEach() {
-        vBootstrap.config.streams.mock.setGlobalMousemove();
-        obj = testUtils.getObject();
+        vBootstrap.config.streams.mock.setGlobalByCount('mousemove', 1);
+        bootstrapElem = testUtils.getBootstrapElement();
     }
         
     it("should activatable when NOT locked and IS over elem", function () {
         vBootstrap.utils.mock.setIsCursorOverElem(true);
         var lockService = testUtils.lock.getNotLockedService();
 
-        vBootstrap.core.activate.activatable.init(lockService, obj);
+        vBootstrap.core.activate.activatable.init(lockService, bootstrapElem);
 
         expectActivatableToBe(true);
     });
 
     it("should NOT activatable when no events", function () {
-        vBootstrap.config.streams.mock.setGlobalMousemove(0);
+        vBootstrap.config.streams.mock.setGlobalByCount('mousemove', 0);
         vBootstrap.utils.mock.setIsCursorOverElem(true);
         var lockService = testUtils.lock.getNotLockedService();
 
-        vBootstrap.core.activate.activatable.init(lockService, obj);
+        vBootstrap.core.activate.activatable.init(lockService, bootstrapElem);
 
         expectActivatableToBe(false);
     });
@@ -43,7 +43,7 @@ describe("activatable", function () {
         vBootstrap.utils.mock.setIsCursorOverElem(true);
         var lockService = testUtils.lock.getLockedService();
 
-        vBootstrap.core.activate.activatable.init(lockService, obj);
+        vBootstrap.core.activate.activatable.init(lockService, bootstrapElem);
 
         expectActivatableToBe(false);
     });
@@ -52,7 +52,7 @@ describe("activatable", function () {
         vBootstrap.utils.mock.setIsCursorOverElem(false);
         var lockService = testUtils.lock.getNotLockedService();
 
-        vBootstrap.core.activate.activatable.init(lockService, obj);
+        vBootstrap.core.activate.activatable.init(lockService, bootstrapElem);
 
         expectActivatableToBe(false);
     });
@@ -61,13 +61,13 @@ describe("activatable", function () {
         vBootstrap.utils.mock.setIsCursorOverElem(false);
         var lockService = testUtils.lock.getLockedService();
 
-        vBootstrap.core.activate.activatable.init(lockService, obj);
+        vBootstrap.core.activate.activatable.init(lockService, bootstrapElem);
 
         expectActivatableToBe(false);
     });
 
     function expectActivatableToBe(value) {
-        testUtils.expect.matchCssClass(obj.elem, 'activatable').toBe(value);
+        testUtils.expect.matchCssClass(bootstrapElem.elem, 'activatable').toBe(value);
     }
 
 });

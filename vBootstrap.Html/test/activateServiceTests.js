@@ -13,28 +13,32 @@
 describe("activate service", function () {
     var testUtils = vBootstrap.test.utils;
 
-    var childest;
+    var editor;
+    var childestElem;
     beforeEach(initBeforeEach);
 
     function initBeforeEach() {
-        vBootstrap.config.streams.mock.setGlobalMousemove();
-        childest = testUtils.getObject();
-        vBootstrap.utils.mock.setChildestElement(childest.elem);
+        vBootstrap.config.streams.mock.setGlobalByCount('mousemove', 1);
+        editor = { elem: testUtils.getDomElement() };
+        childestElem = testUtils.getDomElement();
+        $(document.body).append(editor.elem);
+        $(editor.elem).append(childestElem);
+        vBootstrap.utils.mock.setChildestElement(childestElem);
     }
 
     it("should activate when NOT locked", function () {
         var lockService = testUtils.lock.getNotLockedService();
 
-        var activateService = new vBootstrap.core.activate.activateService(lockService);
+        var activateService = new vBootstrap.core.activate.activateService(editor, lockService);
 
         expectActivatedToBe(true);
     });
 
     it("should NOT activate when NO events", function () {
-        vBootstrap.config.streams.mock.setGlobalMousemove(0);
+        vBootstrap.config.streams.mock.setGlobalByCount('mousemove', 0);
         var lockService = testUtils.lock.getNotLockedService();
 
-        var activateService = new vBootstrap.core.activate.activateService(lockService);
+        var activateService = new vBootstrap.core.activate.activateService(editor, lockService);
 
         expectActivatedToBe(false);
     });
@@ -42,12 +46,12 @@ describe("activate service", function () {
     it("should NOT activate when IS locked", function () {
         var lockService = testUtils.lock.getLockedService();
 
-        var activateService = new vBootstrap.core.activate.activateService(lockService);
+        var activateService = new vBootstrap.core.activate.activateService(editor, lockService);
 
         expectActivatedToBe(false);
     });
 
     function expectActivatedToBe(value) {
-        testUtils.expect.matchCssClass(childest.elem, 'activated').toBe(value);
+        testUtils.expect.matchCssClass(childestElem, 'activated').toBe(value);
     }
 });

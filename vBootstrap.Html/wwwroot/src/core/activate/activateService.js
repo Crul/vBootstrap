@@ -6,7 +6,7 @@
 
     namespace('vBootstrap.core.activate').activateService = vBActivateService;
 
-    function vBActivateService(lockService) {
+    function vBActivateService(editor, lockService) {
         var locker = new vBootstrap.core.lock.locker();
         lockService.lockOn(locker.isLocked);
 
@@ -24,6 +24,10 @@
             $(elem).addClass(activateCss.active);
         }
 
+        function getChildestActive() {
+            return vBUtils.getChildest(editor.elem, activateCss.activatable);
+        }
+
         return {
             dispose: dispose,
             activeElement: childestActivatable,
@@ -32,9 +36,5 @@
             lockOn: locker.lockOn,
             removeLockOn: locker.removeLockOn
         };
-    }
-
-    function getChildestActive() {
-        return vBUtils.getChildest(activateCss.activatable);
     }
 })();

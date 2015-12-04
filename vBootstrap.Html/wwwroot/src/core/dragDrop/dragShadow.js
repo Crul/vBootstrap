@@ -3,11 +3,10 @@
     var vBUtils = vBootstrap.utils;
     var globalStreams = vBootstrap.config.streams.global;
     var dragDropConfig = vBootstrap.config.dragDrop;
-    var dragDropService = vBootstrap.core.dragDrop.dragDropService;
 
     namespace('vBootstrap.core.dragDrop').dragShadow = vBDragShadow;
 
-    function vBDragShadow(elem, ev, offset) {
+    function vBDragShadow(dragDropService, elem, ev, offset) {
         var shadow = createShadowElem(elem);
         offset = offset || getOffsetFn(shadow);
 

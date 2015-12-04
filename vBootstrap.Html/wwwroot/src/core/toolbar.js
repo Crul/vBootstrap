@@ -18,26 +18,20 @@
 
     namespace('vBootstrap.core').toolbar = vBToolbar;
 
-    var buttonFactories = [];
-    vBToolbar.addButtonFactory = addButtonFactory;
+    vBToolbar.prototype.addButton = addButton;
 
-    function addButtonFactory(buttonFactory) {
-        buttonFactories.push(buttonFactory);
+    function addButton(buttonFactory) {
+        var button = buttonFactory.create();
+        this.toolbar.find(buttonsSelector).append(button);
     }
 
-    function vBToolbar(editorElem) {
-        var toolbar = createToolbar(editorElem);
-        $(buttonFactories).each(createButton);
-
-        function createButton(i, buttonFactory) {
-            var button = buttonFactory.create();
-            toolbar.find(buttonsSelector).append(button);
-        }
+    function vBToolbar(editorElem, creators) {
+        this.toolbar = createToolbar(editorElem);
     }
 
     function createToolbar(editorElem) {
         var toolbar = $(toolbarTemplate);
-        editorElem.prepend(toolbar);
+        $(editorElem).prepend(toolbar);
         return toolbar;
     }
 })();

@@ -1,5 +1,7 @@
 ﻿(function (global) {
     "use strict";
+    var fixedVBData;
+
     namespace('vBootstrap').utils = {
         isCursorOverElem: isCursorOverElem,
         getVBData: getVBData,
@@ -8,7 +10,8 @@
         removeCssClass: removeCssClass,
         mock: {
             setIsCursorOverElem: setIsCursorOverElem,
-            setChildestElement: setChildestElement
+            setChildestElement: setChildestElement,
+            setVBData: setVBData
         }
     };
 
@@ -19,11 +22,15 @@
     function removeCssClass(cssClass) { }
 
     function getVBData() {
-        return { onDispose: function () { } }
+        return fixedVBData || { onDispose: function () { } }
     }
 
     function getChildest() {
         return {};
+    }
+
+    function setVBData(vBData) {
+        fixedVBData = vBData;
     }
 
     function setIsCursorOverElem(isOver) {

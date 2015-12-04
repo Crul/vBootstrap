@@ -5,7 +5,7 @@
         create: createCreatorButton
     };
 
-    function createCreatorButton(config) {
+    function createCreatorButton(editor, config) {
         var elementFn = config.elementFn;
         var buttonText = config.buttonText;
         var toolbarTemplate = `
@@ -21,15 +21,15 @@
                     element: button,
                     getShadowTemplate: getShadowTemplate
                 };
-                vBootstrap.core.dragDrop.draggable.init(draggableConfig);
+                vBootstrap.core.dragDrop.draggable.init(editor.dragDropService, draggableConfig);
                 return button;
             }
         };
 
-        vBootstrap.core.toolbar.addButtonFactory(buttonFactory);
+        return buttonFactory;
 
         function getShadowTemplate() {
-            return new elementFn().elem;
+            return new elementFn(editor).elem;
         }
     }
 

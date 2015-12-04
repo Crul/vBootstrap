@@ -71,10 +71,12 @@
     <Content Include="packages.config" />
     <Content Include="package.json" />
     <Content Include="test\activateServiceTests.js" />
+    <Content Include="test\dragDropServiceTests.js" />
     <Content Include="test\lockableTests.js" />
     <Content Include="test\activatableTests.js" />
     <Content Include="test\jasmine\jasmine.js" />
     <Content Include="test\lockerTests.js" />
+    <Content Include="test\mock\core\dropTargetSelector.js" />
     <Content Include="test\mock\core\lockService.js" />
     <Content Include="test\mock\config\streams.js" />
     <Content Include="test\mock\seedwork\utils.js" />
@@ -112,6 +114,7 @@
     <Content Include="wwwroot\src\core\dragDrop\dragDropService.js" />
     <Content Include="wwwroot\src\core\dragDrop\dragShadow.js" />
     <Content Include="wwwroot\src\core\dragDrop\dropable.js" />
+    <Content Include="wwwroot\src\core\dragDrop\dropTargetSelector.js" />
     <Content Include="wwwroot\src\core\dragDrop\selfDraggable.js" />
     <Content Include="wwwroot\src\core\lock\locker.js" />
     <Content Include="wwwroot\src\core\resize\columnResizable.js" />
