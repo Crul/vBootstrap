@@ -1,14 +1,14 @@
 ﻿/// <reference path="jasmine/jasmine.js"/>
 /// <reference path="../wwwroot/js/jquery.js"/>
 /// <reference path="../wwwroot/js/Bacon.js"/>
-/// <reference path="../wwwroot/lib/seedwork/namespace.js" />
+/// <reference path="../wwwroot/src/seedwork/namespace.js" />
 /// <reference path="utils/testUtils.js" />
 /// <reference path="mock/seedwork/utils.js" />
 /// <reference path="mock/config/streams.js" />
 /// <reference path="mock/core/lockService.js" />
-/// <reference path="../wwwroot/lib/config/activate.js" />
-/// <reference path="../wwwroot/lib/core/lock/locker.js" />
-/// <reference path="../wwwroot/lib/core/activate/activateService.js" />
+/// <reference path="../wwwroot/src/config/activate.js" />
+/// <reference path="../wwwroot/src/core/lock/locker.js" />
+/// <reference path="../wwwroot/src/core/activate/activateService.js" />
 
 describe("activate service", function () {
     var testUtils = vBootstrap.test.utils;

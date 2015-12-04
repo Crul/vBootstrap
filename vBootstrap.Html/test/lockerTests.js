@@ -1,8 +1,8 @@
 ﻿/// <reference path="jasmine/jasmine.js"/>
 /// <reference path="../wwwroot/js/jquery.js"/>
 /// <reference path="../wwwroot/js/Bacon.js"/>
-/// <reference path="../wwwroot/lib/seedwork/namespace.js" />
-/// <reference path="../wwwroot/lib/core/lock/locker.js" />
+/// <reference path="../wwwroot/src/seedwork/namespace.js" />
+/// <reference path="../wwwroot/src/core/lock/locker.js" />
 
 describe("locker", function () {
     var locker;
