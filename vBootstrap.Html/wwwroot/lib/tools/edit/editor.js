@@ -12,7 +12,7 @@
     popupConfig.onCreate = bindEventsOnCreate;
     popupConfig.onRemove = unbindEventsOnRemove;
 
-    namespace('vBootstrap.tools.inform').informator = new elementPopup(popupConfig);
+    namespace('vBootstrap.tools.edit').editor = new elementPopup(popupConfig);
 
     function getTemplate(elem) {
         return editorConfig.template;

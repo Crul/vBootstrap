@@ -32,14 +32,7 @@
                     return false;
             }
 
-            var offset = jElem.offset();
-            var elemProperties = {
-                left: offset.left,
-                top: offset.top,
-                width: jElem.outerWidth(),
-                height: jElem.outerHeight()
-            };
-            return vBUtils.isCursorOverElem(ev, elemProperties, dragDropConfig.threshold);
+            return vBUtils.isCursorOverElem(ev, jElem, dragDropConfig.threshold);
         }
     }
 })();

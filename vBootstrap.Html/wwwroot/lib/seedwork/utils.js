@@ -31,12 +31,19 @@
         throw 'utils.getChildest: error';
     }
 
-    function isCursorOverElem(ev, elem, threshold) {
+    function isCursorOverElem(ev, jElem, threshold) {
+        var offset = jElem.offset();
+        var elemProperties = {
+            left: offset.left,
+            top: offset.top,
+            width: jElem.outerWidth(),
+            height: jElem.outerHeight()
+        };
         threshold = threshold || 0;
-        return (elem.left < ev.pageX - threshold)
-            && (elem.left + elem.width > ev.pageX + threshold)
-            && (elem.top < ev.pageY - threshold)
-            && (elem.top + elem.height > ev.pageY + threshold);
+        return (elemProperties.left < ev.pageX - threshold)
+            && (elemProperties.left + elemProperties.width > ev.pageX + threshold)
+            && (elemProperties.top < ev.pageY - threshold)
+            && (elemProperties.top + elemProperties.height > ev.pageY + threshold);
     }
 
     function getVBData(elem) {
