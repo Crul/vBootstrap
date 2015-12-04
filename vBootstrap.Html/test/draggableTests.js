@@ -9,7 +9,7 @@
 /// <reference path="mock/core/lockService.js" />
 /// <reference path="../wwwroot/src/core/dragDrop/draggable.js" />
 
-describe("lockable", function () {
+describe("draggable", function () {
     var testUtils = vBootstrap.test.utils;
     var events = vBootstrap.config.events;
     var draggable = vBootstrap.core.dragDrop.draggable;
@@ -44,7 +44,8 @@ describe("lockable", function () {
 
     it("should NOT drag when NO mousedown", function () {
         var lockService = testUtils.lock.getNotLockedService();
-        var draggableElem = draggable.init(dragDropService, lockService, draggableConfig);
+        var editor = { lockService: lockService };
+        var draggableElem = draggable.init(editor, draggableConfig);
 
         draggableElem.isDragging.onValue(setIsDragging);
 
@@ -55,7 +56,8 @@ describe("lockable", function () {
 
     it("should drag when mousedown", function () {
         var lockService = testUtils.lock.getNotLockedService();
-        var draggableElem = draggable.init(dragDropService, lockService, draggableConfig);
+        var editor = { lockService: lockService };
+        var draggableElem = draggable.init(editor, draggableConfig);
 
         draggableElem.isDragging.onValue(setIsDragging);
         mousedownStream.push({});
@@ -66,9 +68,10 @@ describe("lockable", function () {
     });
 
     it("should NOT drag when mousedown and mouseup", function () {
-        var lockService = testUtils.lock.getNotLockedService();
         var mouseUpBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
-        var draggableElem = draggable.init(dragDropService, lockService, draggableConfig);
+        var lockService = testUtils.lock.getNotLockedService();
+        var editor = { lockService: lockService };
+        var draggableElem = draggable.init(editor, draggableConfig);
 
         draggableElem.isDragging.onValue(setIsDragging);
         mousedownStream.push({});

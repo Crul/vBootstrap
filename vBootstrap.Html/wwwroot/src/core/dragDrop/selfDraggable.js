@@ -7,7 +7,7 @@
         init: initSelfDraggable
     };
 
-    function initSelfDraggable(dragDropService, lockService, obj) {
+    function initSelfDraggable(editor, obj) {
         var jElem = $(obj.elem);
 
         var draggableConfig = {
@@ -16,7 +16,7 @@
             getOffset: getOffset
         };
 
-        var draggable = vBootstrap.core.dragDrop.draggable.init(dragDropService, lockService, draggableConfig);
+        var draggable = vBootstrap.core.dragDrop.draggable.init(editor, draggableConfig);
 
         var unsubFn = draggable.isDragging.assign(jElem, 'toggleClass', dragDropCss.beingDragged);
         vBUtils.getVBData(jElem).onDispose(unsubFn);

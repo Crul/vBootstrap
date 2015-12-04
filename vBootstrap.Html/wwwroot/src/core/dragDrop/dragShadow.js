@@ -6,7 +6,7 @@
 
     namespace('vBootstrap.core.dragDrop').dragShadow = vBDragShadow;
 
-    function vBDragShadow(dragDropService, elem, ev, offset) {
+    function vBDragShadow(editor, dragDropService, elem, ev, offset) {
         var shadow = createShadowElem(elem);
         offset = offset || getOffsetFn(shadow);
 
@@ -30,6 +30,27 @@
             unsubMousemove();
             unsubRemoveShadow();
         }
+
+        function createShadowElem(elem) {
+            var jElem = $(elem);
+            var shadow = jElem.clone();
+
+            if (jElem.outerWidth()) {
+                shadow.width(jElem.outerWidth());
+                shadow.height(jElem.outerHeight());
+            }
+
+            shadow.css('position', 'absolute');
+            shadow.addClass(dragDropConfig.cssClasses.dragging);
+
+            vBUtils.setVBData(shadow, { source: jElem });
+            vBUtils.setVBData(elem, { isDragging: true });
+
+            $(editor.elem).append(shadow);
+
+            return shadow;
+        }
+
     }
 
     function getOffsetFn(_shadow) {
@@ -37,26 +58,6 @@
             x: $(_shadow).outerWidth() / 2,
             y: $(_shadow).outerHeight() / 2
         };
-    }
-
-    function createShadowElem(elem) {
-        var jElem = $(elem);
-        var shadow = jElem.clone();
-
-        if (jElem.outerWidth()) {
-            shadow.width(jElem.outerWidth());
-            shadow.height(jElem.outerHeight());
-        }
-
-        shadow.css('position', 'absolute');
-        shadow.addClass(dragDropConfig.cssClasses.dragging);
-
-        vBUtils.setVBData(shadow, { source: jElem });
-        vBUtils.setVBData(elem, { isDragging: true });
-
-        $(vBootstrap.config.selectors.editor).append(shadow);
-
-        return shadow;
     }
 
 })();

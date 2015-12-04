@@ -85,7 +85,7 @@ describe("drag&drop service", function () {
         checkTargetDropped(targetParentElem, source, target);
     });
 
-    it("should append source to target parent", function (done) {
+    it("should append source to target parent", function () {
         var mouseUpBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
         initBeforeEach(); // because overriding mouseup stream
         initDomElements({ isDraggingBefore: true });
@@ -95,10 +95,20 @@ describe("drag&drop service", function () {
         dropTargetSelector.mock.targetBus.push($(target));
         mouseUpBus.push({});
 
-        setTimeout(function () {
-            checkTargetDropped(targetParentElem, target, source);
-            done();
-        }, 500);
+        checkTargetDropped(targetParentElem, target, source);
+    });
+
+    it("should remove shadow", function () {
+        var mouseUpBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
+        initBeforeEach(); // because overriding mouseup stream
+        $(editor.elem).append(draggingElem);
+        expect($(editor.elem).children().length).toBe(1);
+
+        dragDropService.startDrag({});
+        mouseUpBus.push({});
+
+        expect($(editor.elem).children().length).toBe(0);
+        
     });
 
     function initDomElements(config) {

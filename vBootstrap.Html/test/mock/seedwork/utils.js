@@ -5,6 +5,7 @@
     namespace('vBootstrap').utils = {
         isCursorOverElem: isCursorOverElem,
         getVBData: getVBData,
+        setVBData: jasmine.createSpy('setVBData'),
         getChildest: getChildest,
         resetCssClass: resetCssClass,
         removeCssClass: removeCssClass,

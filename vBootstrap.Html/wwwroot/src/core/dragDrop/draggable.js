@@ -9,7 +9,9 @@
         init: initDraggable
     };
 
-    function initDraggable(dragDropService, lockService, config) {
+    function initDraggable(editor, config) {
+        var dragDropService = editor.dragDropService;
+        var lockService = editor.lockService;
         var elem = config.element;
         var mousedonwNotLocked = elem.asEventStream(events.mousedown).filter(lockService.isNotLocked);
 
@@ -39,7 +41,7 @@
                 offset = config.getOffset(ev);
 
             var shadowTemplate = config.getShadowTemplate();
-            var shadow = vBootstrap.core.dragDrop.dragShadow(dragDropService, shadowTemplate, ev, offset);
+            var shadow = vBootstrap.core.dragDrop.dragShadow(editor, dragDropService, shadowTemplate, ev, offset);
         }
 
     }
