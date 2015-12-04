@@ -72,6 +72,7 @@
     <Content Include="package.json" />
     <Content Include="test\activateServiceTests.js" />
     <Content Include="test\dragDropServiceTests.js" />
+    <Content Include="test\draggableTests.js" />
     <Content Include="test\lockableTests.js" />
     <Content Include="test\activatableTests.js" />
     <Content Include="test\jasmine\jasmine.js" />

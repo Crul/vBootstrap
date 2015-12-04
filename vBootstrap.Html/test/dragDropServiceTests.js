@@ -30,6 +30,7 @@ describe("drag&drop service", function () {
     function initBeforeEach() {
         if (unsubBefore) unsubBefore();
 
+        isDragging = undefined;
         editor = { elem: testUtils.getDomElement() };
         dragDropService = new vBootstrap.core.dragDrop.dragDropService(editor);
         unsubBefore = dragDropService.isDragging.onValue(setIsDragging);

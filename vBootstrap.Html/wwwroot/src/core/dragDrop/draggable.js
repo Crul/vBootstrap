@@ -4,15 +4,13 @@
     var events = vBootstrap.config.events;
     var dragDropConfig = vBootstrap.config.dragDrop;
     var globalStreams = vBootstrap.config.streams.global;
-    var lockService = vBootstrap.core.lock.lockService;
 
     namespace('vBootstrap.core.dragDrop').draggable = {
         init: initDraggable
     };
 
-    function initDraggable(dragDropService, config) {
+    function initDraggable(dragDropService, lockService, config) {
         var elem = config.element;
-        var getShadowTemplate = config.getShadowTemplate;
         var mousedonwNotLocked = elem.asEventStream(events.mousedown).filter(lockService.isNotLocked);
 
         var unsubFn = mousedonwNotLocked.onValue(onValueFn);
@@ -40,7 +38,7 @@
             if (config.getOffset)
                 offset = config.getOffset(ev);
 
-            var shadowTemplate = getShadowTemplate();
+            var shadowTemplate = config.getShadowTemplate();
             var shadow = vBootstrap.core.dragDrop.dragShadow(dragDropService, shadowTemplate, ev, offset);
         }
 

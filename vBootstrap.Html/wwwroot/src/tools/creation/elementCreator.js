@@ -21,7 +21,7 @@
                     element: button,
                     getShadowTemplate: getShadowTemplate
                 };
-                vBootstrap.core.dragDrop.draggable.init(editor.dragDropService, draggableConfig);
+                vBootstrap.core.dragDrop.draggable.init(editor.dragDropService, editor.lockService, draggableConfig);
                 return button;
             }
         };
