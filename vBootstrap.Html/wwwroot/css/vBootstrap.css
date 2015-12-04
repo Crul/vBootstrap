@@ -171,8 +171,8 @@ body {
   -webkit-box-shadow: 0.2px 0.2px 1.2px 0 rgba(0, 0, 0, 0.4);
   -moz-box-shadow: 0.2px 0.2px 1.2px 0 rgba(0, 0, 0, 0.4);
   box-shadow: 0.2px 0.2px 1.2px 0 rgba(0, 0, 0, 0.4);
-  padding: 12px;
-  min-height: 60px; }
+  padding: 8px;
+  min-height: 40px; }
   .v-bootstrap-editor.editing .container.locked,
   .v-bootstrap-editor.editing .row.locked,
   .v-bootstrap-editor.editing [class*="col-"].locked {
@@ -251,6 +251,9 @@ body {
     border-bottom: solid 3px #1574b9; }
   .v-bootstrap-editor.editing [class*="col-"].resizing-right {
     border-right: solid 3px #1574b9; }
+  .v-bootstrap-editor.editing [class*="col-"] > .row {
+    margin-top: 0;
+    margin-bottom: 0; }
 
 .v-bootstrap-editor.editing .btn.activated {
   -webkit-box-shadow: 3px 3px 18px 0 rgba(0, 0, 0, 0.4);
@@ -339,8 +342,27 @@ body {
 .v-bootstrap-editor.editing [class*="col-"].dropable-target-after {
   border-right: solid 4px #b9152e; }
 
-.v-bootstrap-editor.editing .tool-removator {
+.v-bootstrap-editor.editing [class*="tool-"] {
   position: absolute;
-  padding: 0 5.5px; }
+  cursor: pointer;
+  margin: 0; }
+  .v-bootstrap-editor.editing [class*="tool-"] .label {
+    display: block; }
+
+.v-bootstrap-editor.editing .tool-removator,
+.v-bootstrap-editor.editing .tool-editor {
+  opacity: 0.66;
+  border: solid 2px rgba(255, 255, 255, 0);
+  margin: -2px; }
+  .v-bootstrap-editor.editing .tool-removator:hover,
+  .v-bootstrap-editor.editing .tool-editor:hover {
+    opacity: 1; }
+
+.v-bootstrap-editor.editing .tool-removator .label {
+  padding-top: 4px;
+  padding-bottom: 2px; }
+
+.v-bootstrap-editor.editing .tool-editor .label {
+  padding: 2px 4px; }
 
 /*# sourceMappingURL=vBootstrap.css.map */

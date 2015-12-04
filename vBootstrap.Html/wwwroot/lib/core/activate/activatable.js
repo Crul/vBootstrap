@@ -13,8 +13,7 @@
     function initActivatable(obj) {
         var elem = obj.elem;
 
-        var unsubFn = globalStreams
-            .mousemove
+        var unsubFn = globalStreams.mousemove
             .filter(lockService.isNotLocked)
             .map(isOver)
             .toProperty(false)

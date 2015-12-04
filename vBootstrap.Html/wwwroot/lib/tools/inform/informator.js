@@ -19,8 +19,8 @@
     function getPosition(elem) {
         var offset = $(elem).offset();
         return {
-            top: offset.top - 12,
-            left: offset.left + 28
+            top: offset.top - popupConfig.position.top,
+            left: offset.left + popupConfig.position.right
         };
     }
 

@@ -121,6 +121,7 @@
     <Content Include="wwwroot\lib\seedwork\namespace.js" />
     <Content Include="wwwroot\lib\seedwork\utils.js" />
     <Content Include="wwwroot\lib\tools\creation\buttonCreator.js" />
+    <Content Include="wwwroot\lib\tools\edit\editor.js" />
     <Content Include="wwwroot\lib\tools\inform\informable.js" />
     <Content Include="wwwroot\lib\tools\inform\informator.js" />
     <Content Include="wwwroot\lib\tools\popup\elementPopup.js" />

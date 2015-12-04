@@ -3,8 +3,8 @@
 @import "common/borderRadius.scss";
 
 $container-margin: 8px;
-$container-padding: 12px;
-$container-min-height: 60px;
+$container-padding: 8px;
+$container-min-height: 40px;
 $container-border-radius: 8px;
 $container-border-width: 1px;
 $container-border-alpha: 0.3;
@@ -83,7 +83,7 @@ body {
                 background-color: rgba($yellow-light-40, $container-dropable-active-alpha);
                 border-color: $yellow;
             }
-            
+
             &.resizable-bottom {
                 border-bottom: solid $resizable-border-width $yellow-light-20;
             }
@@ -91,7 +91,7 @@ body {
             &.resizable-right {
                 border-right: solid $resizable-border-width $yellow-light-20;
             }
-            
+
             &.resizing-bottom {
                 border-bottom: solid $resizing-border-width $yellow;
             }
@@ -123,7 +123,7 @@ body {
                 height: 60px;
                 overflow: hidden;
             }
-            
+
             &.resizable-bottom {
                 border-bottom: solid $resizable-border-width $green-light-20;
             }
@@ -131,7 +131,7 @@ body {
             &.resizable-right {
                 border-right: solid $resizable-border-width $green-light-20;
             }
-            
+
             &.resizing-bottom {
                 border-bottom: solid $resizing-border-width $green;
             }
@@ -148,7 +148,7 @@ body {
             &.locked {
                 background-color: rgba($blue-light-40, $container-locked-alpha);
             }
-            
+
             &.activated {
                 border-color: $blue-light-10;
             }
@@ -163,7 +163,7 @@ body {
                 height: 120px;
                 overflow: hidden;
             }
-            
+
             &.resizable-bottom {
                 border-bottom: solid $resizable-border-width $blue-light-20;
             }
@@ -171,13 +171,18 @@ body {
             &.resizable-right {
                 border-right: solid $resizable-border-width $blue-light-20;
             }
-            
+
             &.resizing-bottom {
                 border-bottom: solid $resizing-border-width $blue;
             }
 
             &.resizing-right {
                 border-right: solid $resizing-border-width $blue;
+            }
+
+            > .row {
+                margin-top: 0;
+                margin-bottom: 0;
             }
         }
 
@@ -266,9 +271,37 @@ body {
             }
         }
 
-        .tool-removator {
+        [class*="tool-"] {
             position: absolute;
-            padding: 0 5.5px;
+            cursor: pointer;
+            margin: 0;
+
+            .label {
+                display: block;
+            }
+        }
+
+        .tool-informator {
+        }
+
+        .tool-removator,
+        .tool-editor {
+            opacity: 0.66;
+            border: solid 2px rgba(255,255,255,0);
+            margin: -2px;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+
+        .tool-removator .label {
+            padding-top: 4px;
+            padding-bottom: 2px;
+        }
+
+        .tool-editor .label {
+            padding: 2px 4px;
         }
     }
 }

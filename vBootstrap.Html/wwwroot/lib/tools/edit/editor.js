@@ -2,20 +2,20 @@
     "use strict";
     var vBUtils = vBootstrap.utils;
     var events = vBootstrap.config.events;
-    var removatorConfig = vBootstrap.config.tools.removator;
+    var editorConfig = vBootstrap.config.tools.editor;
     var activateService = vBootstrap.core.activate.activateService;
 
     var elementPopup = vBootstrap.tools.popup.elementPopup;
-    var popupConfig = removatorConfig;
+    var popupConfig = editorConfig;
     popupConfig.getTemplate = getTemplate;
     popupConfig.getPosition = getPosition;
     popupConfig.onCreate = bindEventsOnCreate;
     popupConfig.onRemove = unbindEventsOnRemove;
 
-    namespace('vBootstrap.tools').removator = new elementPopup(popupConfig);
+    namespace('vBootstrap.tools.inform').informator = new elementPopup(popupConfig);
 
     function getTemplate(elem) {
-        return removatorConfig.template;
+        return editorConfig.template;
     }
 
     function getPosition(elem) {
@@ -38,7 +38,7 @@
         var unsubscribeClick = btn
             .asEventStream(events.mouseclick)
             .onValue(function () {
-                vBUtils.getVBData(elem).dispose(elem);
+
             });
 
         vBUtils.setVBData(btn, {
@@ -64,4 +64,5 @@
         else
             console.warn('undefined isOverStream');
     }
+
 })();

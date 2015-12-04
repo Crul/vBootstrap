@@ -9,6 +9,7 @@
     lockService.lockOn(locker.isLocked);
 
     var childestActivatable = globalStreams.mousemove
+        .debounceImmediate(50)
         .filter(lockService.isNotLocked)
         .map(getChildestActive)
         .skipDuplicates()
