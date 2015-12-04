@@ -4,7 +4,7 @@
 
 $container-margin: 8px;
 $container-padding: 8px;
-$container-min-height: 40px;
+$container-min-height: 48px;
 $container-border-radius: 8px;
 $container-border-width: 1px;
 $container-border-alpha: 0.3;
@@ -85,6 +85,7 @@ body {
             }
 
             &.resizable-bottom {
+                margin-bottom: -5px;
                 border-bottom: solid $resizable-border-width $yellow-light-20;
             }
 
@@ -125,6 +126,7 @@ body {
             }
 
             &.resizable-bottom {
+                margin-bottom: 9px - $resizable-border-width;
                 border-bottom: solid $resizable-border-width $green-light-20;
             }
 
@@ -165,6 +167,7 @@ body {
             }
 
             &.resizable-bottom {
+                margin-bottom: 0;
                 border-bottom: solid $resizable-border-width $blue-light-20;
             }
 
