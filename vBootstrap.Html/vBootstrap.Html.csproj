@@ -75,6 +75,7 @@
     <Content Include="test\draggableTests.js" />
     <Content Include="test\dragShadowTests.js" />
     <Content Include="test\dropableTests.js" />
+    <Content Include="test\dropTargetSelectorTests.js" />
     <Content Include="test\lockableTests.js" />
     <Content Include="test\activatableTests.js" />
     <Content Include="test\jasmine\jasmine.js" />

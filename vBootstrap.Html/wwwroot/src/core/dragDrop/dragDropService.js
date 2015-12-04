@@ -22,8 +22,8 @@
             onDragging: draggingBus,
             onStopDrag: globalStreams.mouseup
         };
-        var dropTargetSelector = new vBootstrap.core.dragDrop
-            .dropTargetSelector(editor, dragDropService);
+        editor.dragDropService = dragDropService;
+        var dropTargetSelector = new vBootstrap.core.dragDrop.dropTargetSelector(editor);
 
         return dragDropService;
 
