@@ -4,14 +4,14 @@
     vBCol.selector = vBootstrap.config.selectors.bootstrap.col;
     vBCol.template = $('<div />').addClass('col-xs-4');
 
-    function vBCol(elem) {
+    function vBCol(editor, elem) {
         this.elem = elem || vBCol.template.clone()[0];
         vBootstrap.core.bootstrapElement.call(this);
 
         getColSizes(this);
 
-        vBootstrap.core.lock.lockable.init(this);
-        vBootstrap.core.activate.activatable.init(this);
+        vBootstrap.core.lock.lockable.init(editor.lockService, this);
+        vBootstrap.core.activate.activatable.init(editor.lockService, this);
         vBootstrap.core.resize.columnResizable.init(this);
         vBootstrap.core.resize.verticalResizable.init(this);
         vBootstrap.core.dragDrop.selfDraggable.init(this);

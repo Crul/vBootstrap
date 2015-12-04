@@ -9,7 +9,11 @@
     popupConfig.getPosition = getPosition;
     popupConfig.onCreate = bindRefreshOnCreate;
 
-    namespace('vBootstrap.tools.inform').informator = new elementPopup(popupConfig);
+    namespace('vBootstrap.tools.inform').informator = vBInformator;
+
+    function vBInformator(activateService) {
+        return new elementPopup(activateService, popupConfig);
+    }
 
     function getTemplate(elem) {
         var getInfoFn = vBUtils.getVBData(elem).getInfo || defaultInfo;

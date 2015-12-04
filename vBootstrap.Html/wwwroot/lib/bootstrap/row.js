@@ -3,12 +3,12 @@
     namespace('vBootstrap.bootstrap').row = vBRow;
     vBRow.template = $('<div />').addClass('row');
 
-    function vBRow(elem) {
+    function vBRow(editor, elem) {
         this.elem = elem || vBRow.template.clone()[0];
         vBootstrap.core.bootstrapElement.call(this);
 
-        vBootstrap.core.lock.lockable.init(this);
-        vBootstrap.core.activate.activatable.init(this);
+        vBootstrap.core.lock.lockable.init(editor.lockService, this);
+        vBootstrap.core.activate.activatable.init(editor.lockService, this);
         vBootstrap.core.resize.verticalResizable.init(this);
         vBootstrap.core.dragDrop.selfDraggable.init(this);
         vBootstrap.core.dragDrop.dropable.init(this);

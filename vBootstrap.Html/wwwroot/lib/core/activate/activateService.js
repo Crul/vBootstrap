@@ -3,32 +3,36 @@
     var vBUtils = vBootstrap.utils;
     var globalStreams = vBootstrap.config.streams.global;
     var activateCss = vBootstrap.config.activate.cssClasses;
-    var lockService = vBootstrap.core.lock.lockService;
 
-    var locker = new vBootstrap.core.lock.locker();
-    lockService.lockOn(locker.isLocked);
+    namespace('vBootstrap.core.activate').activateService = vBActivateService;
 
-    var childestActivatable = globalStreams.mousemove
-        .debounceImmediate(50)
-        .filter(lockService.isNotLocked)
-        .map(getChildestActive)
-        .skipDuplicates()
-        .toProperty();
+    function vBActivateService(lockService) {
+        var locker = new vBootstrap.core.lock.locker();
+        lockService.lockOn(locker.isLocked);
 
-    childestActivatable.onValue(function (elem) {
-        vBUtils.resetCssClass(activateCss.active);
-        $(elem).addClass(activateCss.active);
-    });
-    
-    var activateService = {
-        activeElement: childestActivatable,
-        isLocked: locker.isLocked,
-        isNotLocked: locker.isNotLocked,
-        lockOn: locker.lockOn,
-        removeLockOn: locker.removeLockOn
-    };
+        var childestActivatable = globalStreams.mousemove
+            .debounceImmediate(50)
+            .filter(lockService.isNotLocked)
+            .map(getChildestActive)
+            .skipDuplicates()
+            .toProperty();
 
-    namespace('vBootstrap.core.activate').activateService = activateService;
+        var dispose = childestActivatable.onValue(setActivated);
+        
+        function setActivated(elem) {
+            vBUtils.resetCssClass(activateCss.active);
+            $(elem).addClass(activateCss.active);
+        }
+
+        return {
+            dispose: dispose,
+            activeElement: childestActivatable,
+            isLocked: locker.isLocked,
+            isNotLocked: locker.isNotLocked,
+            lockOn: locker.lockOn,
+            removeLockOn: locker.removeLockOn
+        };
+    }
 
     function getChildestActive() {
         return vBUtils.getChildest(activateCss.activatable);

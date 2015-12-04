@@ -35,6 +35,11 @@ module.exports = function (grunt) {
                     cwd: 'node_modules/jquery/dist/',
                     src: ['**'],
                     dest: 'wwwroot/js/'
+                }, {
+                    expand: true,
+                    cwd: 'node_modules/jasmine/bin/',
+                    src: ['**'],
+                    dest: 'test/jasmine/'
                 }]
             }
         },

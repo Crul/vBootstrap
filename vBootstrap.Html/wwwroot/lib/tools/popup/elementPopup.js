@@ -2,11 +2,10 @@
     "use strict";
     var vBUtils = vBootstrap.utils;
     var selectors = vBootstrap.config.selectors;
-    var activateService = vBootstrap.core.activate.activateService;
 
     namespace('vBootstrap.tools.popup').elementPopup = vBElementPopup;
 
-    function vBElementPopup(config) {
+    function vBElementPopup(activateService, config) {
         this.config = config;
 
         var dis = this;

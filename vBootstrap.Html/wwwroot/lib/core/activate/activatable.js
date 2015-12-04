@@ -3,14 +3,12 @@
     var vBUtils = vBootstrap.utils;
     var activateConfig = vBootstrap.config.activate;
     var globalStreams = vBootstrap.config.streams.global;
-    var lockService = vBootstrap.core.lock.lockService;
-    var activateService = vBootstrap.core.activate.activateService;
 
     namespace('vBootstrap.core.activate').activatable = {
         init: initActivatable
     };
 
-    function initActivatable(obj) {
+    function initActivatable(lockService, obj) {
         var elem = obj.elem;
         var jElem = $(elem);
 

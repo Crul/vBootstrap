@@ -70,6 +70,15 @@
     <Content Include="sass\common\colors.scss" />
     <Content Include="packages.config" />
     <Content Include="package.json" />
+    <Content Include="test\activateServiceTests.js" />
+    <Content Include="test\lockableTests.js" />
+    <Content Include="test\activatableTests.js" />
+    <Content Include="test\jasmine\jasmine.js" />
+    <Content Include="test\lockerTests.js" />
+    <Content Include="test\mock\core\lockService.js" />
+    <Content Include="test\mock\config\streams.js" />
+    <Content Include="test\mock\seedwork\utils.js" />
+    <Content Include="test\utils\testUtils.js" />
     <Content Include="wwwroot\css\bootstrap-theme.css" />
     <Content Include="wwwroot\css\bootstrap-theme.min.css" />
     <Content Include="wwwroot\css\bootstrap.css" />
@@ -121,7 +130,7 @@
     <Content Include="wwwroot\lib\seedwork\namespace.js" />
     <Content Include="wwwroot\lib\seedwork\utils.js" />
     <Content Include="wwwroot\lib\tools\creation\buttonCreator.js" />
-    <Content Include="wwwroot\lib\tools\edit\editor.js" />
+    <Content Include="wwwroot\lib\tools\edit\editator.js" />
     <Content Include="wwwroot\lib\tools\inform\informable.js" />
     <Content Include="wwwroot\lib\tools\inform\informator.js" />
     <Content Include="wwwroot\lib\tools\popup\elementPopup.js" />
@@ -156,6 +165,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
