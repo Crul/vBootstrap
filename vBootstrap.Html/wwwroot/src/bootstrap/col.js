@@ -15,7 +15,7 @@
         vBootstrap.core.resize.columnResizable.init(this);
         vBootstrap.core.resize.verticalResizable.init(this);
         vBootstrap.core.dragDrop.selfDraggable.init(editor, this);
-        vBootstrap.core.dragDrop.dropable.init(editor.dragDropService, this);
+        vBootstrap.core.dragDrop.dropable.init(editor, this);
         vBootstrap.tools.inform.informable.init(this, 'col');
     }
 

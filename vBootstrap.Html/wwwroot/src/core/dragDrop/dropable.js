@@ -8,10 +8,11 @@
         init: initDropable
     };
 
-    function initDropable(dragDropService, obj) {
+    function initDropable(editor, obj) {
         var elem = obj.elem;
         var jElem = $(elem);
 
+        var dragDropService = editor.dragDropService;
         var unsubDragging = dragDropService.onDragging
             .map(isOverAndNotChildren)
             .toProperty(false)
@@ -24,11 +25,10 @@
         elemVBData.onDispose([unsubDragging, unsubStopDrag]);
 
         function isOverAndNotChildren(ev) {
-            var draggedElem = $('.' + dragDropConfig.cssClasses.beingDragged);
-            if (draggedElem) {
+            var draggedElem = $(editor.elem).find('.' + dragDropConfig.cssClasses.beingDragged);
+            if (draggedElem.length) {
                 var isDescendant = draggedElem.find(elem).length > 0;
-                if (isDescendant)
-                    return false;
+                if (isDescendant) return false;
             }
 
             return vBUtils.isCursorOverElem(ev, jElem, dragDropConfig.threshold);
