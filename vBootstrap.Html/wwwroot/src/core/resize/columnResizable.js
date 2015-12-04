@@ -6,7 +6,7 @@
         init: initColumnResizable
     };
 
-    function initColumnResizable(obj) {
+    function initColumnResizable(editor, obj) {
         var jElem = $(obj.elem);
         var resizableConfig = {
             elem: jElem,
@@ -30,7 +30,7 @@
             vBootstrap.core.resize.columnResizeService.resize(obj, cols);
         }
 
-        vBootstrap.core.resize.resizable.init(resizableConfig);
+        vBootstrap.core.resize.resizable.init(editor.lockService, resizableConfig);
     }
 
 })();

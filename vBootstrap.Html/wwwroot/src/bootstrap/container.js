@@ -9,7 +9,7 @@
 
         vBootstrap.core.lock.lockable.init(editor.lockService, this);
         vBootstrap.core.activate.activatable.init(editor.lockService, this);
-        vBootstrap.core.resize.verticalResizable.init(this);
+        vBootstrap.core.resize.verticalResizable.init(editor, this);
         vBootstrap.core.dragDrop.selfDraggable.init(editor, this);
         vBootstrap.core.dragDrop.dropable.init(editor, this);
         vBootstrap.tools.inform.informable.init(this, 'container');

@@ -2,6 +2,7 @@
     "use strict";
     var lockService = {
         lockOn: jasmine.createSpy('lockOn'),
+        removeLockOn: jasmine.createSpy('removeLockOn'),
         mock: {
             setIsLocked: setIsLocked
         }

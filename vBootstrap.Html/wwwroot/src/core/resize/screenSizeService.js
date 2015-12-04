@@ -5,10 +5,9 @@
     var globalStreams = vBootstrap.config.streams.global;
 
     var resizeStream = globalStreams.resize
-        .merge(Bacon.once())
         .map(getBootstrapSize)
         .skipDuplicates()
-        .toProperty();
+        .toProperty(getBootstrapSize());
 
     namespace('vBootstrap.core.resize').screenSizeService = {
         screenSize: resizeStream,

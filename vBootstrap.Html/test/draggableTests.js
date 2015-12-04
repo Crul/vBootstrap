@@ -19,9 +19,16 @@ describe("draggable", function () {
     var dragShadowSpy;
     var dragDropService = {};
     var mousedownStream;
+    var onDispose;
+    vBootstrap.utils.getVBData = function () {
+        return { onDispose: setOnDispose };
+    };
+
     beforeEach(initBeforeEach);
+    afterEach(initAfterEach);
 
     function initBeforeEach() {
+        onDispose = undefined;
         isDragging = undefined;
         vBootstrap.config.streams.mock.setGlobalByCount(events.mousemove, 1);
 
@@ -42,7 +49,14 @@ describe("draggable", function () {
         }
     }
 
-    it("should NOT drag when NO mousedown", function () {
+    function initAfterEach() {
+        if (onDispose) {
+            for (var i = 0; i < onDispose.length; i++)
+                onDispose[i]();
+        }
+    }
+
+    it("should NOT drag when NO mousedown", function (done) {
         var lockService = testUtils.lock.getNotLockedService();
         var editor = { lockService: lockService };
         var draggableElem = draggable.init(editor, draggableConfig);
@@ -52,9 +66,11 @@ describe("draggable", function () {
         expect(isDragging).toBe(false);
         expect(draggableConfig.getOffset).not.toHaveBeenCalled();
         expect(draggableConfig.getShadowTemplate).not.toHaveBeenCalled();
+
+        done();
     });
 
-    it("should drag when mousedown", function () {
+    it("should drag when mousedown", function (done) {
         var lockService = testUtils.lock.getNotLockedService();
         var editor = { lockService: lockService };
         var draggableElem = draggable.init(editor, draggableConfig);
@@ -65,25 +81,33 @@ describe("draggable", function () {
         expect(isDragging).toBe(true);
         expect(draggableConfig.getOffset).toHaveBeenCalled();
         expect(draggableConfig.getShadowTemplate).toHaveBeenCalled();
+
+        done();
     });
 
-    it("should NOT drag when mousedown and mouseup", function () {
-        var mouseUpBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
+    it("should NOT drag when mousedown and mouseup", function (done) {
+        var mouseupBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
         var lockService = testUtils.lock.getNotLockedService();
         var editor = { lockService: lockService };
         var draggableElem = draggable.init(editor, draggableConfig);
 
         draggableElem.isDragging.onValue(setIsDragging);
         mousedownStream.push({});
-        mouseUpBus.push({});
+        mouseupBus.push({});
 
         expect(isDragging).toBe(false);
         expect(draggableConfig.getOffset).toHaveBeenCalled();
         expect(draggableConfig.getShadowTemplate).toHaveBeenCalled();
         expect(lockService.lockOn).toHaveBeenCalledWith(draggableElem.isDragging);
+
+        done();
     });
 
     function setIsDragging(value) {
         isDragging = value;
+    }
+
+    function setOnDispose(value) {
+        onDispose = value;
     }
 });

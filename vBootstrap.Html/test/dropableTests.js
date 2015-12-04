@@ -15,12 +15,16 @@ describe("dropable", function () {
     var bootstrapElem;
     var onDraggingBus;
     var onStopDragBus;
+    var onDispose;
     vBootstrap.utils.getVBData = function () {
-        return { onDispose: function () { } };
+        return { onDispose: setOnDispose };
     };
+
     beforeEach(initBeforeEach);
+    afterEach(initAfterEach);
 
     function initBeforeEach() {
+        onDispose = undefined;
         bootstrapElem = testUtils.getBootstrapElement();
         onDraggingBus = new Bacon.Bus();
         onStopDragBus = new Bacon.Bus();
@@ -33,7 +37,14 @@ describe("dropable", function () {
         };
     }
 
-    it("should have dropable class when dragging over elem", function () {
+    function initAfterEach() {
+        if (onDispose) {
+            for (var i = 0; i < onDispose.length; i++)
+                onDispose[i]();
+        }
+    }
+
+    it("should have dropable class when dragging over elem", function (done) {
         spyOn(vBootstrap.utils, 'isCursorOverElem').and.returnValue(true);
         var ev = {};
 
@@ -43,18 +54,22 @@ describe("dropable", function () {
         expectDropableClass(bootstrapElem, true);
         expect(vBootstrap.utils.isCursorOverElem)
             .toHaveBeenCalledWith(ev, jasmine.any(Object), jasmine.any(Number));
+
+        done();
     });
 
-    it("should NOT have dropable class when NO dragging", function () {
+    it("should NOT have dropable class when NO dragging", function (done) {
         spyOn(vBootstrap.utils, 'isCursorOverElem').and.returnValue(true);
 
         vBootstrap.core.dragDrop.dropable.init(editor, bootstrapElem);
 
         expectDropableClass(bootstrapElem, false);
         expect(vBootstrap.utils.isCursorOverElem).not.toHaveBeenCalled();
+
+        done();
     });
 
-    it("should NOT have dropable class when is NOT over elem", function () {
+    it("should NOT have dropable class when is NOT over elem", function (done) {
         spyOn(vBootstrap.utils, 'isCursorOverElem').and.returnValue(false);
         var ev = {};
 
@@ -64,9 +79,11 @@ describe("dropable", function () {
         expectDropableClass(bootstrapElem, false);
         expect(vBootstrap.utils.isCursorOverElem)
             .toHaveBeenCalledWith(ev, jasmine.any(Object), jasmine.any(Number));
+
+        done();
     });
 
-    it("should NOT have dropable class when is descendant of dragging", function () {
+    it("should NOT have dropable class when is descendant of dragging", function (done) {
         vBootstrap.utils.mock.setIsCursorOverElem(true);
         spyOn(vBootstrap.utils, 'isCursorOverElem').and.returnValue(true);
         var beingDragged = $(testUtils.getDomElement());
@@ -79,9 +96,15 @@ describe("dropable", function () {
 
         expectDropableClass(bootstrapElem, false);
         expect(vBootstrap.utils.isCursorOverElem).not.toHaveBeenCalled();
+
+        done();
     });
 
     function expectDropableClass(bootstrapElem, value) {
         expect($(bootstrapElem.elem).hasClass(dragDropCss.dropable)).toBe(value);
+    }
+
+    function setOnDispose(value) {
+        onDispose = value;
     }
 });

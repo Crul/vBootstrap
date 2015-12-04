@@ -3,7 +3,6 @@
     var vBUtils = vBootstrap.utils;
     var events = vBootstrap.config.events;
     var globalStreams = vBootstrap.config.streams.global;
-    var lockService = vBootstrap.core.lock.lockService;
 
     function getMousemoveUntilMouseup() {
         return globalStreams.mousemove.takeUntil(globalStreams.mouseup);
@@ -13,8 +12,8 @@
         init: initResizable
     };
 
-    function initResizable(config) {
-        var elem = $(config.elem);
+    function initResizable(lockService, config) {
+        var elem = config.elem;
         var resizeFn = config.resize;
         var isOverFn = config.isOver;
         var resizableClass = config.resizableClass;

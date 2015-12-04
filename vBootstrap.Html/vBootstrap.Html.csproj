@@ -84,6 +84,7 @@
     <Content Include="test\mock\core\lockService.js" />
     <Content Include="test\mock\config\streams.js" />
     <Content Include="test\mock\seedwork\utils.js" />
+    <Content Include="test\resizableTests.js" />
     <Content Include="test\utils\testUtils.js" />
     <Content Include="wwwroot\css\bootstrap-theme.css" />
     <Content Include="wwwroot\css\bootstrap-theme.min.css" />

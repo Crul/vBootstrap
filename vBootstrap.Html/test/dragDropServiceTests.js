@@ -29,7 +29,7 @@ describe("drag&drop service", function () {
 
     function initBeforeEach() {
         if (unsubBefore) unsubBefore();
-
+        
         isDragging = undefined;
         editor = { elem: testUtils.getDomElement() };
         dragDropService = new vBootstrap.core.dragDrop.dragDropService(editor);
@@ -51,61 +51,61 @@ describe("drag&drop service", function () {
     });
 
     it("should NOT be dragging when dragging starts and ends", function () {
-        var mouseUpBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
+        var mouseupBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
         initBeforeEach(); // because overriding mouseup stream
 
         dragDropService.startDrag({});
-        mouseUpBus.push({});
+        mouseupBus.push({});
 
         expect(isDragging).toBe(false);
         expect(dropTargetSelector.stopBindingTarget).toHaveBeenCalled();
     });
 
     it("should insert source after target", function () {
-        var mouseUpBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
+        var mouseupBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
         initBeforeEach(); // because overriding mouseup stream
         initDomElements();
 
         dragDropService.startDrag({});
         dropTargetSelector.mock.targetBus.push($(target));
-        mouseUpBus.push({});
+        mouseupBus.push({});
 
         checkTargetDropped(targetParentElem, target, source);
     });
 
     it("should insert source before target", function () {
-        var mouseUpBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
+        var mouseupBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
         initBeforeEach(); // because overriding mouseup stream
         initDomElements({ isDraggingBefore: true });
 
         dragDropService.startDrag({});
         dropTargetSelector.mock.targetBus.push($(target));
-        mouseUpBus.push({});
+        mouseupBus.push({});
 
         checkTargetDropped(targetParentElem, source, target);
     });
 
     it("should append source to target parent", function () {
-        var mouseUpBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
+        var mouseupBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
         initBeforeEach(); // because overriding mouseup stream
         initDomElements({ isDraggingBefore: true });
         $(target).addClass(dragDropCss.dropableTargetFirst);
 
         dragDropService.startDrag({});
         dropTargetSelector.mock.targetBus.push($(target));
-        mouseUpBus.push({});
+        mouseupBus.push({});
 
         checkTargetDropped(targetParentElem, target, source);
     });
 
     it("should remove shadow", function () {
-        var mouseUpBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
+        var mouseupBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
         initBeforeEach(); // because overriding mouseup stream
         $(editor.elem).append(draggingElem);
         expect($(editor.elem).children().length).toBe(1);
 
         dragDropService.startDrag({});
-        mouseUpBus.push({});
+        mouseupBus.push({});
 
         expect($(editor.elem).children().length).toBe(0);
         
