@@ -23,8 +23,13 @@
         var mousemove = elem.asEventStream(events.mousemove);
         var mousedown = elem.asEventStream(events.mousedown);
 
-        var isOver = mousemove.map(isOverFn).toProperty(false);
-        var mousedownOnOver = mousedown.filter(isOver);
+        var isOver = mousemove
+            .map(isOverFn)
+            .toProperty(false);
+
+        var mousedownOnOver = mousedown
+            .filter(lockService.isNotLocked)
+            .filter(isOver);
 
         var isResizing = mousedownOnOver.map(true)
           .merge(globalStreams.mouseup.map(false))
@@ -40,7 +45,10 @@
 
         lockService.lockOn(isResizing);
 
-        var unsubIsOver = isOver.filter(lockService.isNotLocked).assign(elem, 'toggleClass', resizableClass);
+        var unsubIsOver = isOver
+            .filter(lockService.isNotLocked)
+            .assign(elem, 'toggleClass', resizableClass);
+
         var unsubMouseout = mouseout.assign(elem, 'removeClass', resizableClass);
 
         var unsubMousedownOnOverElem = mousedownOnOver.assign(elem, 'addClass', resizingClass);

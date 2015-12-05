@@ -12,7 +12,7 @@
         mock: {
             setIsCursorOverElem: setIsCursorOverElem,
             setChildestElement: setChildestElement,
-            setVBData: setVBData
+            setVBData: setVBFixedData
         }
     };
 
@@ -30,7 +30,7 @@
         return {};
     }
 
-    function setVBData(vBData) {
+    function setVBFixedData(vBData) {
         fixedVBData = vBData;
     }
 
