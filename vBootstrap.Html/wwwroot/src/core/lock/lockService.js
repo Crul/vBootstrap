@@ -1,5 +1,6 @@
 ﻿(function () {
     "use strict";
-    var locker = new vBootstrap.core.lock.locker();
-    namespace('vBootstrap.core.lock').lockService = locker;
+    var Locker = new vBootstrap.core.lock.Locker();
+    namespace('vBootstrap.core.lock').LockService = Locker;
+    vBootstrap.addFactory(vBootstrap.core.lock.Locker);
 })();

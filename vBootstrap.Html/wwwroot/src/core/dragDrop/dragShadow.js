@@ -1,63 +1,54 @@
 ﻿(function () {
     "use strict";
-    var vBUtils = vBootstrap.utils;
     var globalStreams = vBootstrap.config.streams.global;
-    var dragDropConfig = vBootstrap.config.dragDrop;
+    var dragDropCss = vBootstrap.config.dragDrop.cssClasses;
 
-    namespace('vBootstrap.core.dragDrop').dragShadow = vBDragShadow;
+    namespace('vBootstrap.core.dragDrop').DragShadow = DragShadow;
 
-    function vBDragShadow(editor, dragDropService, elem, ev, offset) {
-        var shadow = createShadowElem(elem);
-        offset = offset || getOffsetFn(shadow);
+    function DragShadow(editor, jElem, ev, offset) {
+        var jShadow = createShadowElem(jElem);
 
-        dragDropService.startDrag(ev);
+        this.jElem = jShadow;
+        this.source = jElem;
+        this.remove = removeShadow;
+
+        offset = offset || getOffsetFn(jShadow);
         moveElement(ev);
         var unsubMousemove = globalStreams.mousemove.onValue(moveElement);
-        var unsubRemoveShadow = globalStreams.mouseup.onValue(removeShadow);
-
-        return shadow;
 
         function moveElement(ev) {
             var css = {
                 top: ev.pageY - offset.y,
                 left: ev.pageX - offset.x
             };
-            shadow.css(css);
+            jShadow.css(css);
         }
 
         function removeShadow() {
-            vBUtils.setVBData(elem, { isDragging: false });
+            this.jElem.remove();
             unsubMousemove();
-            unsubRemoveShadow();
         }
 
-        function createShadowElem(elem) {
-            var jElem = $(elem);
-            var shadow = jElem.clone();
+        function createShadowElem(jElem) {
+            var jShadow = jElem.clone();
 
             if (jElem.outerWidth()) {
-                shadow.width(jElem.outerWidth());
-                shadow.height(jElem.outerHeight());
+                jShadow.width(jElem.outerWidth());
+                jShadow.height(jElem.outerHeight());
             }
 
-            shadow.css('position', 'absolute');
-            shadow.addClass(dragDropConfig.cssClasses.dragging);
+            jShadow.css('position', 'absolute');
+            jShadow.addClass(dragDropCss.dragging);
+            editor.jElem.append(jShadow);
 
-            vBUtils.setVBData(shadow, { source: jElem });
-            vBUtils.setVBData(elem, { isDragging: true });
-
-            $(editor.elem).append(shadow);
-
-            return shadow;
+            return jShadow;
         }
-
     }
 
     function getOffsetFn(_shadow) {
         return {
-            x: $(_shadow).outerWidth() / 2,
-            y: $(_shadow).outerHeight() / 2
+            x: _shadow.outerWidth() / 2,
+            y: _shadow.outerHeight() / 2
         };
     }
-
 })();

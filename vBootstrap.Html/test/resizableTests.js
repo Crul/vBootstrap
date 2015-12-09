@@ -4,164 +4,330 @@
 /// <reference path="../wwwroot/src/seedwork/namespace.js" />
 /// <reference path="../wwwroot/src/config/events.js" />
 /// <reference path="utils/testUtils.js" />
-/// <reference path="mock/config/streams.js" />
-/// <reference path="mock/seedwork/utils.js" />
-/// <reference path="mock/core/lockService.js" />
+/// <reference path="mock/streamsMock.js" />
+/// <reference path="mock/lockServiceMock.js" />
 /// <reference path="../wwwroot/src/core/resize/resizable.js" />
 
 describe("resizable", function () {
     var testUtils = vBootstrap.test.utils;
     var events = vBootstrap.config.events;
 
-    var mouseupBus;
-    var mouseoutBus;
-    var mousemoveBus;
-    var mousedownBus;
-    var onDispose;
-    var eventBuses;
-    var isResizingProp;
-    var elemVBData;
-    var elem;
+    var globalMouseupBus;
+    var globalMousemoveBus;
+    var isResizing;
+    var element;
     var resizeFn;
     var isOverFn;
     var config;
 
     beforeEach(initBeforeEach);
-    afterEach(initAfterEach);
 
     function initBeforeEach() {
-        onDispose = undefined;
-        mouseupBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
-        mouseoutBus = new Bacon.Bus();
-        mousemoveBus = new Bacon.Bus();
-        mousedownBus = new Bacon.Bus();
-        eventBuses = {};
-        eventBuses[events.mouseout] = mouseoutBus;
-        eventBuses[events.mousemove] = mousemoveBus;
-        eventBuses[events.mousedown] = mousedownBus;
-        //isResizingProp = Bacon.constant(true);
-        elemVBData = {
-            //isResizing: isResizingProp,
-            onDispose: setOnDispose
-        };
-        spyOn(vBootstrap.utils, 'getVBData').and.returnValue(elemVBData);
-        elem = $(testUtils.getDomElement());
-        resizeFn = jasmine.createSpy('resizeFn');
-        isOverFn = jasmine.createSpy('isOverFn');
+        isResizing = undefined;
+        globalMouseupBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
+        globalMousemoveBus = vBootstrap.config.streams.mock.setGlobalPushable('mousemove');
         config = {
-            elem: elem,
-            resize: resizeFn,
-            isOver: isOverFn,
+            element: testUtils.getBootstrapElement(),
+            resize: jasmine.createSpy('resizeFn'),
+            isOver: jasmine.createSpy('isOverFn'),
             resizableClass: 'resizableClass',
             resizingClass: 'resizingClass'
         };
-        elem.asEventStream = function (event) {
-            return eventBuses[event];
-        }
+        $(document.body).attr('class', '');
     }
 
-    function initAfterEach() {
-        if (onDispose) {
-            for (var i = 0; i < onDispose.length; i++)
-                onDispose[i]();
-        }
-    }
-
-    it("should set isResizing on vBData", function () {
+    it("should set resizing on element", function () {
         var lockService = testUtils.lock.getNotLockedService();
+        config.element.isResizing = undefined;
+        config.element.editor.mock.setDependencies(lockService);
 
-        vBootstrap.core.resize.resizable.init(lockService, config);
+        vBootstrap.core.resize.resizable.init(config);
 
-        expect(elemVBData.isResizing).not.toBe(undefined);
-        expect(vBootstrap.utils.setVBData).toHaveBeenCalledWith(elem, elemVBData);
+        expect(config.element.isResizing).not.toBe(undefined);
     });
 
     it("should lock on resizing", function () {
         var lockService = testUtils.lock.getNotLockedService();
+        config.element.editor.mock.setDependencies(lockService);
 
-        vBootstrap.core.resize.resizable.init(lockService, config);
+        vBootstrap.core.resize.resizable.init(config);
 
-        expect(elemVBData.isResizing).not.toBe(undefined);
-        expect(lockService.lockOn).toHaveBeenCalledWith(elemVBData.isResizing);
+        expect(lockService.lockOn).toHaveBeenCalled();
     });
 
     it("should set unsub function on dispose", function () {
         var lockService = testUtils.lock.getNotLockedService();
+        config.element.editor.mock.setDependencies(lockService);
 
-        vBootstrap.core.resize.resizable.init(lockService, config);
+        vBootstrap.core.resize.resizable.init(config);
 
-        expect(onDispose.length).toBe(7);
+        var onDisposeArgs = config.element.onDispose.calls.allArgs()[0][0];
+        expect(onDisposeArgs.length).toBe(7);
     });
 
     it("should set isResizing TRUE when mouse down on over and NOT locked", function () {
-        fail('too late');
+        var lockService = testUtils.lock.getNotLockedService();
+        config.element.editor.mock.setDependencies(lockService);
+        config.isOver.and.returnValue(true);
+
+        vBootstrap.core.resize.resizable.init(config);
+        config.element.isResizing.onValue(setIsResizing);
+        config.element.elemStreams.mousemove.push({});
+        config.element.elemStreams.mousedown.push({});
+
+        expect(isResizing).toBe(true);
     });
 
     it("should NOT set isResizing TRUE when mouse down on over and IS locked", function () {
-        fail('too late');
+        var lockService = testUtils.lock.getLockedService();
+        config.element.editor.mock.setDependencies(lockService);
+        config.isOver.and.returnValue(true);
+
+        vBootstrap.core.resize.resizable.init(config);
+        config.element.isResizing.onValue(setIsResizing);
+        config.element.elemStreams.mousemove.push({});
+        config.element.elemStreams.mousedown.push({});
+
+        expect(isResizing).toBe(false);
     });
 
     it("should NOT set isResizing TRUE when NO mouse down and NOT locked", function () {
-        fail('too late');
+        var lockService = testUtils.lock.getNotLockedService();
+        config.element.editor.mock.setDependencies(lockService);
+        config.isOver.and.returnValue(true);
+
+        vBootstrap.core.resize.resizable.init(config);
+        config.element.isResizing.onValue(setIsResizing);
+        config.element.elemStreams.mousemove.push({});
+
+        expect(isResizing).toBe(false);
     });
 
     it("should NOT set isResizing TRUE when mouse down NOT over and NOT locked", function () {
-        fail('too late');
+        var lockService = testUtils.lock.getNotLockedService();
+        config.element.editor.mock.setDependencies(lockService);
+        config.isOver.and.returnValue(false);
+
+        vBootstrap.core.resize.resizable.init(config);
+        config.element.isResizing.onValue(setIsResizing);
+        config.element.elemStreams.mousemove.push({});
+        config.element.elemStreams.mousedown.push({});
+
+        expect(isResizing).toBe(false);
     });
 
     it("should set isResizing FALSE when mouse up", function () {
-        fail('too late');
+        var lockService = testUtils.lock.getNotLockedService();
+        config.element.editor.mock.setDependencies(lockService);
+        config.isOver.and.returnValue(true);
+
+        vBootstrap.core.resize.resizable.init(config);
+        config.element.isResizing.onValue(setIsResizing);
+        config.element.elemStreams.mousemove.push({});
+        config.element.elemStreams.mousedown.push({});
+        globalMouseupBus.push({});
+
+        expect(isResizing).toBe(false);
     });
 
     it("should set resizable class when is over and NOT locked", function () {
-        fail('too late');
+        var lockService = testUtils.lock.getNotLockedService();
+        config.element.editor.mock.setDependencies(lockService);
+        config.isOver.and.returnValue(true);
+
+        vBootstrap.core.resize.resizable.init(config);
+        config.element.elemStreams.mousemove.push({});
+
+        expect(config.element.jElem.attr('class')).toMatch(config.resizableClass);
     });
 
     it("should NOT set resizable class when is NOT over and NOT locked", function () {
-        fail('too late');
+        var lockService = testUtils.lock.getNotLockedService();
+        config.element.editor.mock.setDependencies(lockService);
+        config.isOver.and.returnValue(false);
+
+        vBootstrap.core.resize.resizable.init(config);
+        config.element.elemStreams.mousemove.push({});
+
+        expect(config.element.jElem.attr('class')).not.toMatch(config.resizableClass);
     });
 
     it("should NOT set resizable class when is over and IS locked", function () {
-        fail('too late');
+        var lockService = testUtils.lock.getLockedService();
+        config.element.editor.mock.setDependencies(lockService);
+        config.isOver.and.returnValue(true);
+
+        vBootstrap.core.resize.resizable.init(config);
+        config.element.elemStreams.mousemove.push({});
+
+        expect(config.element.jElem.attr('class')).not.toMatch(config.resizableClass);
     });
 
     it("should remove resizable class when mouse out", function () {
-        fail('too late');
+        var lockService = testUtils.lock.getNotLockedService();
+        config.element.editor.mock.setDependencies(lockService);
+        config.isOver.and.returnValue(true);
+
+        vBootstrap.core.resize.resizable.init(config);
+        config.element.elemStreams.mousemove.push({});
+        config.element.elemStreams.mouseout.push({});
+
+        expect(config.element.jElem.attr('class')).not.toMatch(config.resizableClass);
     });
 
     it("should add resizing class when mouse down over and NOT locked", function () {
-        fail('too late');
+        var lockService = testUtils.lock.getNotLockedService();
+        config.element.editor.mock.setDependencies(lockService);
+        config.isOver.and.returnValue(true);
+
+        vBootstrap.core.resize.resizable.init(config);
+        config.element.elemStreams.mousemove.push({});
+        config.element.elemStreams.mousedown.push({});
+
+        expect(config.element.jElem.attr('class')).toMatch(config.resizingClass);
     });
 
     it("should NOT add resizing class when mouse down NOT over and NOT locked", function () {
-        fail('too late');
+        var lockService = testUtils.lock.getNotLockedService();
+        config.element.editor.mock.setDependencies(lockService);
+        config.isOver.and.returnValue(false);
+
+        vBootstrap.core.resize.resizable.init(config);
+        config.element.elemStreams.mousemove.push({});
+        config.element.elemStreams.mousedown.push({});
+
+        expect(config.element.jElem.attr('class')).not.toMatch(config.resizingClass);
     });
 
     it("should NOT add resizing class when mouse down over and IS locked", function () {
-        fail('too late');
+        var lockService = testUtils.lock.getLockedService();
+        config.element.editor.mock.setDependencies(lockService);
+        config.isOver.and.returnValue(true);
+
+        vBootstrap.core.resize.resizable.init(config);
+        config.element.elemStreams.mousemove.push({});
+        config.element.elemStreams.mousedown.push({});
+
+        expect(config.element.jElem.attr('class')).not.toMatch(config.resizingClass);
     });
 
     it("should remove resizing class when mouse up", function () {
-        fail('too late');
+        var lockService = testUtils.lock.getNotLockedService();
+        config.element.editor.mock.setDependencies(lockService);
+        config.isOver.and.returnValue(true);
+
+        vBootstrap.core.resize.resizable.init(config);
+        config.element.elemStreams.mousemove.push({});
+        config.element.elemStreams.mousedown.push({});
+        globalMouseupBus.push({});
+
+        expect(config.element.jElem.attr('class')).not.toMatch(config.resizingClass);
     });
 
     it("should add resizing class to BODY when mouse down over and NOT locked", function () {
-        fail('too late');
+        var lockService = testUtils.lock.getNotLockedService();
+        config.element.editor.mock.setDependencies(lockService);
+        config.isOver.and.returnValue(true);
+
+        vBootstrap.core.resize.resizable.init(config);
+        config.element.elemStreams.mousemove.push({});
+        config.element.elemStreams.mousedown.push({});
+
+        expect($(document.body).attr('class')).toMatch(config.resizingClass);
+    });
+
+    it("should NOT add resizing class to BODY when mouse down NOT over and NOT locked", function () {
+        var lockService = testUtils.lock.getNotLockedService();
+        config.element.editor.mock.setDependencies(lockService);
+        config.isOver.and.returnValue(false);
+
+        vBootstrap.core.resize.resizable.init(config);
+        config.element.elemStreams.mousemove.push({});
+        config.element.elemStreams.mousedown.push({});
+
+        expect($(document.body).attr('class')).not.toMatch(config.resizingClass);
     });
 
     it("should NOT add resizing class to BODY when mouse down over and IS locked", function () {
-        fail('too late');
+        var lockService = testUtils.lock.getLockedService();
+        config.element.editor.mock.setDependencies(lockService);
+        config.isOver.and.returnValue(true);
+
+        vBootstrap.core.resize.resizable.init(config);
+        config.element.elemStreams.mousemove.push({});
+        config.element.elemStreams.mousedown.push({});
+
+        expect($(document.body).attr('class')).not.toMatch(config.resizingClass);
     });
 
     it("should remove resizing class from BODY when mouse up", function () {
-        fail('too late');
+        var lockService = testUtils.lock.getNotLockedService();
+        config.element.editor.mock.setDependencies(lockService);
+        config.isOver.and.returnValue(true);
+
+        vBootstrap.core.resize.resizable.init(config);
+        config.element.elemStreams.mousemove.push({});
+        config.element.elemStreams.mousedown.push({});
+        globalMouseupBus.push({});
+
+        expect($(document.body).attr('class')).not.toMatch(config.resizingClass);
     });
 
-    it("should resize on mouse move", function () {
-        fail('too late');
+    it("should resize on mouse down over and mouse move", function () {
+        var lockService = testUtils.lock.getNotLockedService();
+        config.element.editor.mock.setDependencies(lockService);
+        config.isOver.and.returnValue(true);
+
+        vBootstrap.core.resize.resizable.init(config);
+        config.element.isResizing.onValue(setIsResizing);
+        config.element.elemStreams.mousemove.push({});
+        config.element.elemStreams.mousedown.push({});
+        var globalMousemoveEv = {};
+        globalMousemoveBus.push(globalMousemoveEv);
+
+        expect(config.resize).toHaveBeenCalledWith(globalMousemoveEv);
     });
 
-    function setOnDispose(value) {
-        onDispose = value;
+    it("should NOT resize on mouse move when mouse up", function () {
+        var lockService = testUtils.lock.getNotLockedService();
+        config.element.editor.mock.setDependencies(lockService);
+        config.isOver.and.returnValue(true);
+
+        vBootstrap.core.resize.resizable.init(config);
+        config.element.isResizing.onValue(setIsResizing);
+        config.element.elemStreams.mousemove.push({});
+        config.element.elemStreams.mousedown.push({});
+        globalMousemoveBus.push({});
+        var resizeCallsBeforeMouseup = config.resize.calls.count();
+        globalMouseupBus.push({});
+        globalMousemoveBus.push({});
+
+        expect(config.resize.calls.count()).toBe(resizeCallsBeforeMouseup);
+    });
+
+    it("should stop doing things on dispose", function () {
+        var lockService = testUtils.lock.getNotLockedService();
+        config.element.editor.mock.setDependencies(lockService);
+        config.isOver.and.returnValue(true);
+
+        vBootstrap.core.resize.resizable.init(config);
+        config.element.isResizing.onValue(setIsResizing);
+        config.element.elemStreams.mousemove.push({});
+        config.element.elemStreams.mousedown.push({});
+        globalMousemoveBus.push({});
+        var resizeCallsBeforeMouseup = config.resize.calls.count();
+        var onDisposeFns = config.element.onDispose.calls.argsFor(0)[0];
+        $(onDisposeFns).each(executeFn);
+        globalMousemoveBus.push({});
+
+        expect(config.resize.calls.count()).toBe(resizeCallsBeforeMouseup);
+    });
+
+    function setIsResizing(value) {
+        isResizing = value;
+    }
+
+    function executeFn(i, fn) {
+        fn();
     }
 });

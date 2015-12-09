@@ -1,40 +1,43 @@
 ﻿(function () {
     "use strict";
-    var vBUtils = vBootstrap.utils;
-    var globalStreams = vBootstrap.config.streams.global;
-    var activateCss = vBootstrap.config.activate.cssClasses;
+    var vBUtils = namespace('vBootstrap.utils');
+    var activateCss = namespace('vBootstrap.config.activate.cssClasses');
 
-    namespace('vBootstrap.core.activate').activateService = vBActivateService;
+    namespace('vBootstrap.core.activate').ActivateService = ActivateService;
+    vBootstrap.addFactory(ActivateService);
 
-    function vBActivateService(editor, lockService) {
-        var locker = new vBootstrap.core.lock.locker();
-        lockService.lockOn(locker.isLocked);
+    function ActivateService(editor) {
+        this.editor = editor;
+        this.activatables = new vBootstrap.CustomStreamArray();
 
-        var childestActivatable = globalStreams.mousemove
-            .debounceImmediate(50)
+        var dependencies = {
+            lockService: namespace('vBootstrap.core.lock.Locker')
+        };
+        editor.resolve(dependencies, load, this);
+    }
+
+    function load(lockService) {
+        var childestActivatable = this.activatables.bus
             .filter(lockService.isNotLocked)
-            .map(getChildestActive)
+            .map(vBUtils.getChildest)
+            .map(getElement)
             .skipDuplicates()
             .toProperty();
 
+        this.activeElement = childestActivatable;
+
         var dispose = childestActivatable.onValue(setActivated);
-        
-        function setActivated(elem) {
-            vBUtils.resetCssClass(activateCss.active);
-            $(elem).addClass(activateCss.active);
-        }
+        this.editor.activateService = this;
+        this.editor.bus.onEnd(dispose);
+    }
 
-        function getChildestActive() {
-            return vBUtils.getChildest(editor.elem, activateCss.activatable);
-        }
+    function setActivated(element) {
+        vBUtils.resetCssClass(activateCss.active);
+        if (element)
+            $(element.jElem).addClass(activateCss.active);
+    }
 
-        return {
-            dispose: dispose,
-            activeElement: childestActivatable,
-            isLocked: locker.isLocked,
-            isNotLocked: locker.isNotLocked,
-            lockOn: locker.lockOn,
-            removeLockOn: locker.removeLockOn
-        };
+    function getElement(activatable) {
+        return activatable ? activatable.element : undefined;
     }
 })();

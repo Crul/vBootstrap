@@ -1,105 +1,116 @@
 ﻿(function () {
     "use strict";
-    var vBUtils = vBootstrap.utils;
-    var globalStreams = vBootstrap.config.streams.global;
-    var dragDropCss = vBootstrap.config.dragDrop.cssClasses;
+    var vBUtils = namespace('vBootstrap.utils');
+    var dragDropCss = namespace('vBootstrap.config.dragDrop.cssClasses');
 
-    namespace('vBootstrap.core.dragDrop').dropTargetSelector = vBDropTargetSelector;
-
-    function vBDropTargetSelector(editor) {
-        var draggingBus = new Bacon.Bus();
-
-        var childestDropable = globalStreams.mousemove
-            .filter(editor.dragDropService.isDragging)
-            .map(getChildestDropable)
-            .toProperty();
-
-        var dropableTarget = childestDropable
-            .sampledBy(globalStreams.mousemove, mapDropableAndEvent)
-            .map(getDropableTarget)
-            .toProperty();
-
-        var unsubBindingTarget;
-        function startBindingTarget() {
-            unsubBindingTarget = dropableTarget
-                .sampledBy(globalStreams.mousemove, mapDropableAndEvent)
-                .onValue(setDropableTarget);
-        }
-
-        function stopBindingTarget() {
-            if (unsubBindingTarget)
-                unsubBindingTarget();
-        }
-
-        return {
-            startBindingTarget: startBindingTarget,
-            stopBindingTarget: stopBindingTarget,
-            target: dropableTarget
+    function FooElementFactory(editor) {
+        this.config = {
+            selector: dragDropCss.droppable,
+            features: []
         };
+        vBootstrap.core.ElementFactory.call(this, editor);
+    };
+    FooElementFactory.prototype = namespace('vBootstrap.core.ElementFactory').prototype;
 
-        function getDropableTarget(val) {
-            if (!val.dropable) return;
-            var elem = $(val.dropable);
+    namespace('vBootstrap.core.dragDrop').DropTargetSelector = DropTargetSelector;
+    vBootstrap.addFactory(DropTargetSelector);
 
-            vBUtils.resetCssClass(dragDropCss.dropableActive);
-            vBUtils.resetCssClass(dragDropCss.draggingNotAllowed);
-            vBUtils.removeCssClass(dragDropCss.dropableTargetFirst);
+    function DropTargetSelector(editor) {
+        this.editor = editor;
+        this.droppables = new vBootstrap.CustomStreamArray();
+        this.droppables.add(Bacon.constant());
+        editor.dropTargetSelector = this;
 
-            var isDraggingElement = vBUtils.getVBData(elem).isDragging;
-            if (isDraggingElement) {
-                $(editor.elem).find('.' + dragDropCss.dragging)
-                    .addClass(dragDropCss.draggingNotAllowed);
-                elem = elem.parent();
-            }
+        addExistingDroppables(editor);
 
-            elem.addClass(dragDropCss.dropableActive);
+        var dependencies = {
+            dragDropService: namespace('vBootstrap.core.dragDrop.DragDropService')
+        };
+        editor.resolve(dependencies, load, this);
 
-            var children = elem.children().toArray();
-            if (children.length === 0) {
-                return createTargetFirst(elem);
-            } else {
-                return children.sort(vBUtils.getSortByDistanceFn(val.ev))[0];
-            }
+    }
+
+    function addExistingDroppables(editor) {
+        var elementFactory = new FooElementFactory(editor);
+        elementFactory.resetFeatures([namespace('vBootstrap.core.dragDrop.droppable')]);
+        $('.' + dragDropCss.droppable).each(addDroppableStream);
+
+        function addDroppableStream(i, elem) {
+            elementFactory.create(elem);
+        }
+    }
+
+    function load(dragDropService) {
+        var droppableTarget = this.droppables.bus
+            .filter(dragDropService.isDragging)
+            .filter(vBUtils.hasArrayElems)
+            .map(vBUtils.getChildest)
+            .map(getTarget)
+            .skipDuplicates()
+            .toProperty();
+
+        var disposeTargetCss = droppableTarget.onValue(setTargetCss);
+        dragDropService.droppableBus.plug(droppableTarget);
+        this.editor.bus.onEnd(disposeTargetCss);
+
+        var disposeResetNotAllowed = droppableTarget.map(getElement)
+            .toProperty()
+            .skipDuplicates()
+            .onValue(resetNotAllowed);
+        this.editor.bus.onEnd(disposeResetNotAllowed);
+    }
+
+    function getTarget(droppable) {
+        if (!droppable.element) return;
+
+        var jElem = droppable.element.jElem;
+
+        vBUtils.resetCssClass(dragDropCss.droppableActive);
+        vBUtils.removeCssClass(dragDropCss.droppableTargetFirst);
+
+        jElem.addClass(dragDropCss.droppableActive);
+
+        var children = jElem.children().toArray();
+        if (children.length === 0) {
+            droppable.isFakeTarget = true;
+            droppable.jTarget = createFakeTarget(jElem);
+        } else {
+            var sortByDistFn = vBUtils.getSortByDistanceFn(droppable.ev);
+            droppable.jTarget = $(children.sort(sortByDistFn)[0]);
         }
 
-        function setDropableTarget(val) {
-            if (!val.dropable) return;
-            var target = val.dropable;
-            var ev = val.ev;
+        return droppable;
+    }
 
-            vBUtils.resetCssClass(dragDropCss.dropableTargetPrevious);
-            vBUtils.resetCssClass(dragDropCss.dropableTargetAfter);
+    function setTargetCss(droppable) {
+        vBUtils.resetCssClass(dragDropCss.droppableTargetPrevious);
+        vBUtils.resetCssClass(dragDropCss.droppableTargetAfter);
 
-            var isBeforeTarget = false;
-            if (!$(target).hasClass(dragDropCss.dropableTargetFirst)) {
-                isBeforeTarget = vBUtils.getIsEvBeforeElem(ev, target);
-                var targetCss = (isBeforeTarget ?
-                    dragDropCss.dropableTargetPrevious : dragDropCss.dropableTargetAfter)
+        if (!droppable.isFakeTarget) {
+            var jTarget = droppable.jTarget;
+            droppable.isDraggingBefore = vBUtils.getIsEvBeforeElem(droppable.ev, jTarget[0]);
 
-                $(target).addClass(targetCss);
-            }
-            vBUtils.setVBData(target, { isDraggingBefore: isBeforeTarget });
+            var targetCss = (droppable.isDraggingBefore ?
+                dragDropCss.droppableTargetPrevious : dragDropCss.droppableTargetAfter)
+
+            jTarget.addClass(targetCss);
         }
+    }
 
-        function createTargetFirst(elem) {
-            var targetFirst = $('<div />')
-                .html('&nbsp;')
-                .addClass(dragDropCss.dropableTargetFirst);
+    function createFakeTarget(elem) {
+        var fakeTarget = $('<div />')
+            .html('&nbsp;')
+            .addClass(dragDropCss.droppableTargetFirst);
 
-            elem.append(targetFirst);
-            return targetFirst[0];
-        }
+        elem.append(fakeTarget);
+        return fakeTarget;
+    }
 
-        function getChildestDropable() {
-            return vBUtils.getChildest(editor.elem, dragDropCss.dropable);
-        }
+    function getElement(droppable) {
+        return droppable.element.jElem;
+    }
 
-        function mapDropableAndEvent(dropable, ev) {
-            return {
-                dropable: dropable,
-                ev: ev
-            };
-        }
-
+    function resetNotAllowed() {
+        vBUtils.resetCssClass(dragDropCss.draggingNotAllowed);
     }
 })();

@@ -3,9 +3,10 @@
     namespace('vBootstrap.config').selectors = {
         editor: '.v-bootstrap-editor',
         bootstrap: {
-            col: '[class*="col-"]',
+            container: '.container',
+            row: '.row',
+            column: '[class*="col-"]',
             button: '.btn'
-        },
-        vBData: 'vBootstrapData'
+        }
     };
 })(window);

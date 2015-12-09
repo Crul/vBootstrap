@@ -9,7 +9,7 @@
 <body>
     <div class="output"></div>
     <div class="v-bootstrap-editor editing">
-        <div class="dropable" style="min-height: 600px">
+        <div class="droppable" style="min-height: 600px">
             <div class="container">
                 <div class="row">
 
@@ -33,6 +33,8 @@
 
             </div>
             <div class="container">
+                <div class="row">
+                </div>
                 <div class="row">
                     <div class="col-xs-8">
                         <div class="btn btn-primary">Go</div>
@@ -106,7 +108,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -116,14 +117,18 @@
 
     <script type="text/javascript" src="src/seedwork/namespace.js"></script>
     <script type="text/javascript" src="src/seedwork/utils.js"></script>
+    <script type="text/javascript" src="src/seedwork/customStreamArray.js"></script>
+
+    <script type="text/javascript" src="src/vBootstrap.js"></script>
 
     <script type="text/javascript" src="src/config/selectors.js"></script>
     <script type="text/javascript" src="src/config/events.js"></script>
     <script type="text/javascript" src="src/config/streams.js"></script>
 
-    <script type="text/javascript" src="src/core/bootstrapElement.js"></script>
-    <script type="text/javascript" src="src/core/toolbar.js"></script>
     <script type="text/javascript" src="src/core/editor.js"></script>
+    <script type="text/javascript" src="src/core/toolbar.js"></script>
+    <script type="text/javascript" src="src/core/element.js"></script>
+    <script type="text/javascript" src="src/core/elementFactory.js"></script>
 
     <script type="text/javascript" src="src/core/lock/locker.js"></script>
     <script type="text/javascript" src="src/core/lock/lockService.js"></script>
@@ -134,11 +139,10 @@
     <script type="text/javascript" src="src/core/activate/activatable.js"></script>
 
     <script type="text/javascript" src="src/config/resize.js"></script>
-    <script type="text/javascript" src="src/core/resize/resizable.js"></script>
     <script type="text/javascript" src="src/core/resize/screenSizeService.js"></script>
-    <script type="text/javascript" src="src/core/resize/columnResizeService.js"></script>
-    <script type="text/javascript" src="src/core/resize/columnResizable.js"></script>
+    <script type="text/javascript" src="src/core/resize/resizable.js"></script>
     <script type="text/javascript" src="src/core/resize/verticalResizable.js"></script>
+    <script type="text/javascript" src="src/core/resize/columnResizable.js"></script>
 
     <script type="text/javascript" src="src/config/dragDrop.js"></script>
     <script type="text/javascript" src="src/core/dragDrop/dropTargetSelector.js"></script>
@@ -146,28 +150,28 @@
     <script type="text/javascript" src="src/core/dragDrop/dragShadow.js"></script>
     <script type="text/javascript" src="src/core/dragDrop/draggable.js"></script>
     <script type="text/javascript" src="src/core/dragDrop/selfDraggable.js"></script>
-    <script type="text/javascript" src="src/core/dragDrop/dropable.js"></script>
-
-    <script type="text/javascript" src="src/bootstrap/container.js"></script>
-    <script type="text/javascript" src="src/bootstrap/row.js"></script>
-    <script type="text/javascript" src="src/bootstrap/col.js"></script>
-    <script type="text/javascript" src="src/bootstrap/button.js"></script>
+    <script type="text/javascript" src="src/core/dragDrop/droppable.js"></script>
 
     <script type="text/javascript" src="src/config/tools.js"></script>
-    <script type="text/javascript" src="src/tools/popup/elementPopup.js"></script>
-    <script type="text/javascript" src="src/tools/removator.js"></script>
-    <script type="text/javascript" src="src/tools/inform/informable.js"></script>
-    <script type="text/javascript" src="src/tools/inform/informator.js"></script>
-    <script type="text/javascript" src="src/tools/edit/editator.js"></script>
+    <script type="text/javascript" src="src/core/popup/activePopupService.js"></script>
+    <script type="text/javascript" src="src/core/popup/popupElement.js"></script>
 
-    <script type="text/javascript" src="src/tools/screenSizeDisplay.js"></script>
-    <script type="text/javascript" src="src/tools/creation/elementCreator.js"></script>
-    <script type="text/javascript" src="src/tools/creation/containerCreator.js"></script>
-    <script type="text/javascript" src="src/tools/creation/rowCreator.js"></script>
-    <script type="text/javascript" src="src/tools/creation/colCreator.js"></script>
-    <script type="text/javascript" src="src/tools/creation/buttonCreator.js"></script>
-    
-    <script type="text/javascript" src="src/vBootstrap.js"></script>
+    <script type="text/javascript" src="src/tools/popup/removatorPopup.js"></script>
+    <script type="text/javascript" src="src/tools/popup/editorPopup.js"></script>
+    <script type="text/javascript" src="src/tools/popup/informatorPopup.js"></script>
+
+    <script type="text/javascript" src="src/bootstrap/containerFactory.js"></script>
+    <script type="text/javascript" src="src/bootstrap/rowFactory.js"></script>
+    <script type="text/javascript" src="src/bootstrap/columnFactory.js"></script>
+    <script type="text/javascript" src="src/bootstrap/buttonFactory.js"></script>
+
+    <script type="text/javascript" src="src/tools/toolbar/screenSizeDisplay.js"></script>
+
+    <script type="text/javascript" src="src/tools/toolbar/elementCreator.js"></script>
+    <script type="text/javascript" src="src/tools/toolbar/containerCreator.js"></script>
+    <script type="text/javascript" src="src/tools/toolbar/columnCreator.js"></script>
+    <script type="text/javascript" src="src/tools/toolbar/rowCreator.js"></script>
+    <script type="text/javascript" src="src/tools/toolbar/buttonCreator.js"></script>
 
     <script type="text/javascript">
         $(function () {

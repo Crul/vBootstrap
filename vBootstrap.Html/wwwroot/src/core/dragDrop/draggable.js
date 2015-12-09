@@ -1,48 +1,48 @@
 ﻿(function () {
     "use strict";
-    var vBUtils = vBootstrap.utils;
-    var events = vBootstrap.config.events;
-    var dragDropConfig = vBootstrap.config.dragDrop;
-    var globalStreams = vBootstrap.config.streams.global;
+    var vBUtils = namespace('vBootstrap.utils');
+    var events = namespace('vBootstrap.config.events');
+    var globalStreams = namespace('vBootstrap.config.streams.global');
+    var dragDropConfig = namespace('vBootstrap.config.dragDrop');
+    var dragDrop = namespace('vBootstrap.core.dragDrop');
 
     namespace('vBootstrap.core.dragDrop').draggable = {
         init: initDraggable
     };
 
-    function initDraggable(editor, config) {
-        var dragDropService = editor.dragDropService;
-        var lockService = editor.lockService;
-        var elem = config.element;
-        var mousedonwNotLocked = elem.asEventStream(events.mousedown).filter(lockService.isNotLocked);
+    function initDraggable(config) {
+        var draggable = { config: config };
+        var dependencies = {
+            lockService: namespace('vBootstrap.core.lock.Locker'),
+            dragDropService: namespace('vBootstrap.core.dragDrop.DragDropService')
+        };
+        config.element.editor.resolve(dependencies, load, draggable);
+        return draggable;
+    }
 
-        var unsubFn = mousedonwNotLocked.onValue(onValueFn);
+    function load(lockService, dragDropService) {
+        var config = this.config;
+        var element = config.element;
 
-        var isDragging = mousedonwNotLocked.map(true)
+        var mousedownNotLocked = element.jElem
+            .asEventStream(events.mousedown)
+            .filter(lockService.isNotLocked);
+
+        var draggingStream = mousedownNotLocked.map(createDragging);
+        dragDropService.draggingBus.plug(draggingStream);
+
+        this.isDragging = mousedownNotLocked.map(true)
           .merge(globalStreams.mouseup.map(false))
           .toProperty(false);
 
-        lockService.lockOn(isDragging);
+        var dispose = this.isDragging.assign(element.jElem, 'toggleClass', dragDropConfig.cssClasses.beingDragged);
+        if (element.onDispose)
+            element.onDispose(dispose);
 
-        var elemVBData = vBUtils.getVBData(elem);
-        if (elemVBData.onDispose)
-            elemVBData.onDispose([unsubFn, removeLockOn]);
-
-        return {
-            isDragging: isDragging
-        };
-
-        function removeLockOn() {
-            lockService.removeLockOn(isDragging);
-        }
-
-        function onValueFn(ev) {
-            var offset;
-            if (config.getOffset)
-                offset = config.getOffset(ev);
-
+        function createDragging(ev) {
+            var offset = (config.getOffset ? config.getOffset(ev) : undefined);
             var shadowTemplate = config.getShadowTemplate();
-            var shadow = vBootstrap.core.dragDrop.dragShadow(editor, dragDropService, shadowTemplate, ev, offset);
+            return new dragDrop.DragShadow(element.editor, shadowTemplate, ev, offset);
         }
-
     }
 })();

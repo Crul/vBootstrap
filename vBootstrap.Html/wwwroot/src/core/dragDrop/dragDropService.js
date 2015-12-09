@@ -1,95 +1,95 @@
 ﻿(function () {
     "use strict";
-    var vBUtils = vBootstrap.utils;
-    var globalStreams = vBootstrap.config.streams.global;
-    var dragDropCss = vBootstrap.config.dragDrop.cssClasses;
+    var vBUtils = namespace('vBootstrap.utils');
+    var globalStreams = namespace('vBootstrap.config.streams.global');
+    var dragDropCss = namespace('vBootstrap.config.dragDrop.cssClasses');
 
-    namespace('vBootstrap.core.dragDrop').dragDropService = vBDragDropService;
+    namespace('vBootstrap.core.dragDrop').DragDropService = DragDropService;
+    vBootstrap.addFactory(DragDropService);
 
-    function vBDragDropService(editor) {
-        var unsubscribeDragMove;
-        var unsubscribeOnDrop;
+    function DragDropService(editor) {
+        this.editor = editor;
+        editor.dragDropService = this;
 
-        var draggingBus = new Bacon.Bus();
+        this.draggingBus = new Bacon.Bus();
+        this.dragging = this.draggingBus.toProperty();
 
-        var isDragging = draggingBus.map(true)
-          .merge(globalStreams.mouseup.map(false))
-          .toProperty(false);
+        this.droppableBus = new Bacon.Bus();
+        this.droppable = this.droppableBus.toProperty();
 
-        var dragDropService = {
-            isDragging: isDragging,
-            startDrag: startDrag,
-            onDragging: draggingBus,
-            onStopDrag: globalStreams.mouseup
+        this.isDragging = this.draggingBus
+            .filter(Bacon._.id).map(true)
+            .merge(globalStreams.mouseup.map(false))
+            .toProperty(false);
+
+        this.onStopDrag = globalStreams.mouseup;
+
+        var dependencies = {
+            lockService: namespace('vBootstrap.core.lock.Locker')
         };
-        editor.dragDropService = dragDropService;
-        var dropTargetSelector = new vBootstrap.core.dragDrop.dropTargetSelector(editor);
+        editor.resolve(dependencies, load, this);
+    }
 
-        return dragDropService;
+    function load(lockService) {
+        lockService.lockOn(this.isDragging);
 
-        function startDrag(ev) {
-            dropTargetSelector.startBindingTarget();
+        var dragDropService = this;
+        this.dragging.skipDuplicates().onValue(function (dragging) {
+            if (dragging) startDrag.call(dragDropService, dragging);
+        });
+    }
 
-            unsubscribeOnDrop = dropTargetSelector.target
-                .sampledBy(globalStreams.mouseup, mapDropableAndEvent)
-                .onValue(onDrop);
+    function startDrag(dragging) {
+        if (this.unsubscribeOnDrop)
+            this.unsubscribeOnDrop()
 
-            unsubscribeDragMove = globalStreams.mousemove.onValue(pushBus);
-            
-            function pushBus(ev) {
-                draggingBus.push(ev);
-            }
+        if (!dragging) return;
 
-            if (ev)
-                draggingBus.push(ev);
+        var dragDropService = this;
+        var draggingAndDroppable = Bacon.combineAsArray(Bacon.constant(dragging), this.droppable);
+
+        this.unsubscribeOnDrop = draggingAndDroppable
+            .skipDuplicates()
+            .sampledBy(globalStreams.mouseup)
+            .onValue(function (value) {
+                onDrop.call(dragDropService, value);
+            });
+
+        this.droppableBus.push();
+    }
+
+    function onDrop(draggingAndDroppable) {
+        this.unsubscribeOnDrop();
+
+        var dragging = draggingAndDroppable[0];
+        if (!dragging)
+            throw 'dragDropService.onDrop without dragging';
+
+        var droppable = draggingAndDroppable[1];
+        if (droppable && droppable.jTarget.length > 0)
+            addToTarget(dragging, droppable);
+        else
+            console.info('dragDropService.onDrop without droppable');
+
+        dragging.remove();
+
+        resetDroppables();
+    }
+
+    function addToTarget(dragging, droppable) {
+        var source = dragging.source;
+        if (droppable.isDraggingBefore) {
+            droppable.jTarget.before(source);
+        } else {
+            droppable.jTarget.after(source);
         }
+    }
 
-        function onDrop(val) {
-            var target = $(val.dropable);
-            var dragging = $(editor.elem).find('.' + dragDropCss.dragging);
-
-            unsubscribeDragMove();
-            unsubscribeOnDrop();
-            dropTargetSelector.stopBindingTarget();
-
-            if (target.length === 0) {
-                console.warn('dragDropService.onDrop without target');
-            }
-
-            var targetParent = target.parent();
-            if (dragging.length === 0) {
-                console.warn('dragDropService.onDrop without dragging');
-                return;
-            }
-            var source = vBUtils.getVBData(dragging).source;
-            if (target.hasClass(dragDropCss.dropableTargetFirst)) {
-                targetParent.append(source);
-            } else {
-                if (vBUtils.getVBData(target).isDraggingBefore) {
-                    target.before(source);
-                } else {
-                    target.after(source);
-                }
-            }
-
-            dragging.remove();
-            resetDropables();
-        }
-
-        function mapDropableAndEvent(dropable, ev) {
-            return {
-                dropable: dropable,
-                ev: ev
-            };
-        }
-
-        function resetDropables() {
-            vBUtils.resetCssClass(dragDropCss.dropableActive);
-            vBUtils.resetCssClass(dragDropCss.draggingNotAllowed);
-            vBUtils.resetCssClass(dragDropCss.dropableTargetPrevious);
-            vBUtils.resetCssClass(dragDropCss.dropableTargetAfter);
-            vBUtils.removeCssClass(dragDropCss.dropableTargetFirst);
-        }
-
+    function resetDroppables() {
+        vBUtils.resetCssClass(dragDropCss.droppableActive);
+        vBUtils.resetCssClass(dragDropCss.draggingNotAllowed);
+        vBUtils.resetCssClass(dragDropCss.droppableTargetPrevious);
+        vBUtils.resetCssClass(dragDropCss.droppableTargetAfter);
+        vBUtils.removeCssClass(dragDropCss.droppableTargetFirst);
     }
 })();

@@ -4,11 +4,10 @@
         removeCssClass: removeCssClass,
         resetCssClass: resetCssClass,
         getChildest: getChildest,
-        isCursorOverElem: isCursorOverElem,
+        getElementAndEventIfIsOverFn: getElementAndEventIfIsOverFn,
         getSortByDistanceFn: getSortByDistanceFn,
         getIsEvBeforeElem: getIsEvBeforeElem,
-        getVBData: getVBData,
-        setVBData: setVBData
+        hasArrayElems: hasArrayElems
     };
 
     function resetCssClass(cssClass) {
@@ -19,18 +18,32 @@
         $('.' + cssClass).remove();
     }
 
-    function getChildest(obj, cssClass) {
-        var candidates = $(obj).find('.' + cssClass);
-        if (candidates.length === 0)
-            return;
-
-        var ascendants = candidates.parents();
-        for (var i = 0; i < candidates.length; i++) {
-            var candidate = candidates[i];
-            if (ascendants.index(candidate) < 0)
-                return candidate;
+    function getChildest(candidates) {
+        if (candidates.length === 0) return;
+        var ascendants = getAscendants(candidates);
+        for (var i = candidates.length - 1; i >= 0; i--) {
+            var elem = candidates[i].element.jElem[0];
+            if (ascendants.indexOf(elem) < 0)
+                return candidates[i];
         }
         throw 'utils.getChildest: error';
+    }
+
+    function getAscendants(candidates) {
+        var ascendants = [];
+        for (var i = 0; i < candidates.length; i++) {
+            var parents = candidates[i].element.jElem.parents().toArray();
+            ascendants = ascendants.concat(parents);
+        }
+        return ascendants;
+    }
+
+    function getElementAndEventIfIsOverFn(element, threshold) {
+        var jElem = element.jElem;
+        return function getElementAndEventIfIsOver(ev) {
+            if (isCursorOverElem(ev, jElem, threshold))
+                return ev ? { element: element, ev: ev } : undefined;
+        }
     }
 
     function isCursorOverElem(ev, jElem, threshold) {
@@ -47,22 +60,6 @@
             && (elemProperties.top < ev.pageY - threshold)
             && (elemProperties.top + elemProperties.height > ev.pageY + threshold);
     }
-
-    function getVBData(elem) {
-        var vBDataSelector = vBootstrap.config.selectors.vBData;
-        var jElem = $(elem);
-        var elemVBData = jElem.data(vBDataSelector) || {};
-        jElem.data(vBDataSelector, elemVBData);
-        return elemVBData;
-    }
-
-    function setVBData(elem, data) {
-        var vBDataSelector = vBootstrap.config.selectors.vBData;
-        data = data || {};
-        var elemVBData = $.extend({}, getVBData(elem), data);
-        $(elem).data(vBDataSelector, elemVBData);
-    }
-
 
     function getSortByDistanceFn(ev) {
         return function byDistance(child1, child2) {
@@ -134,6 +131,10 @@
 
         var isBeforeTarget = ev.pageY < limitY;
         return isBeforeTarget;
+    }
+
+    function hasArrayElems(array) {
+        return array && array.length > 0;
     }
 
 })(window);

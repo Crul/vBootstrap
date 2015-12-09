@@ -3,196 +3,197 @@
 /// <reference path="../wwwroot/js/Bacon.js"/>
 /// <reference path="../wwwroot/src/seedwork/namespace.js" />
 /// <reference path="utils/testUtils.js" />
-/// <reference path="mock/seedwork/utils.js" />
-/// <reference path="mock/config/streams.js" />
+/// <reference path="mock/streamsMock.js" />
 /// <reference path="../wwwroot/src/config/dragDrop.js" />
 /// <reference path="../wwwroot/src/core/dragDrop/dropTargetSelector.js" />
+/// <reference path="../wwwroot/src/core/elementFactory.js" />
 
 describe("drop target selector", function () {
+    namespace('vBootstrap.utils');
     var testUtils = vBootstrap.test.utils;
     var dragDropCss = vBootstrap.config.dragDrop.cssClasses;
 
+    var droppableBus;
     var dropTargetSelector;
     var target;
     var editor;
-    var mousemoveBus;
-    var mousemoveEvent;
-    var candidate;
+    var droppable;
+    var otherDroppable;
+    var createElementSpy;
 
     beforeEach(initBeforeEach);
     function initBeforeEach() {
-        mousemoveEvent = { pageX: 0, pageY: 0 };
-        mousemoveBus = vBootstrap.config.streams.mock.setGlobalPushable('mousemove');
         target = undefined;
-        candidate = testUtils.getDomElement();
-        otherCandidate = testUtils.getDomElement();
-        editor = {
-            elem: testUtils.getDomElement(),
-            dragDropService: {}
+        droppable = { element: testUtils.getBootstrapElement() };
+        otherDroppable = { element: testUtils.getBootstrapElement() };
+        editor = testUtils.getEditor();
+        editor.dragDropService = {
+            droppableBus: {
+                plug: jasmine.createSpy('plug')
+            }
         };
-        $(editor.elem).append(candidate);
-        $(editor.elem).append(otherCandidate);
-        spyOn(vBootstrap.utils, 'getChildest').and.returnValue(candidate);
+        droppableBus = new Bacon.Bus();
+        vBootstrap.CustomStreamArray = function () {
+            return {
+                add: jasmine.createSpy('addCustomStreamArray'),
+                bus: droppableBus
+            };
+        };
+        vBootstrap.utils.hasArrayElems = jasmine.createSpy('hasArrayElems').and.returnValue(true);
+        vBootstrap.utils.getChildest = jasmine.createSpy('getChildest').and.returnValue(droppable);
         vBootstrap.utils.getIsEvBeforeElem = jasmine.createSpy('getIsEvBeforeElem').and.returnValue(true);
         vBootstrap.utils.getSortByDistanceFn = jasmine.createSpy('getSortByDistanceFn');
+        vBootstrap.utils.resetCssClass = jasmine.createSpy('resetCssClass');
+        vBootstrap.utils.removeCssClass = jasmine.createSpy('removeCssClass');
+        createElementSpy = jasmine.createSpy('createElement');
+        vBootstrap.core.ElementFactory = ElementFactory;
+
+        function ElementFactory() {
+            this.create = createElementSpy
+            this.resetFeatures = jasmine.createSpy('resetFeatures');
+        };
     }
 
-    it("should set dropable target", function () {
+    it("should set droppable target", function () {
         setConstantDraggingDropTargetSelector(true);
 
         startDropTargetSelectorWithEvents();
 
         expect(vBootstrap.utils.getChildest).toHaveBeenCalled();
-        expect(vBootstrap.utils.getChildest).toHaveBeenCalledWith(editor.elem, 'dropable');
         expect(target).not.toBe(undefined);
-        expect($(candidate).hasClass(dragDropCss.dropableActive)).toBe(true);
-        expect($(target).attr('class')).toMatch(/dropable-target-/);
+        expect(droppable.element.jElem.hasClass(dragDropCss.droppableActive)).toBe(true);
+        expect(target.jTarget.attr('class')).toMatch(/droppable-target-/);
     });
     
-    it("should set dropable target first when target has no children", function () {
+    it("should set droppable target first when target has no children", function () {
         setConstantDraggingDropTargetSelector(true);
 
         startDropTargetSelectorWithEvents();
 
-        expectCandidateHasDropableTargetFirstChild();
+        expectDropabbleHasDroppableTargetFirstChild();
     });
 
-    it("should set dropable child when target has children", function () {
-        var candidateChild = addCandidateChild();
+    it("should set droppable child when target has children", function () {
+        var droppableChild = addDroppableChild();
         setConstantDraggingDropTargetSelector(true);
 
         startDropTargetSelectorWithEvents();
 
-        expect($(candidate).hasClass(dragDropCss.dropableActive)).toBe(true);
-        expect(target).toBe(candidateChild);
+        expect(droppable.element.jElem.hasClass(dragDropCss.droppableActive)).toBe(true);
+        expect(target.jTarget[0]).toBe(droppableChild.element.jElem[0]);
     });
 
-    it("should set dropable-previous when mouse is before target", function () {
-        var candidateChild = addCandidateChild();
+    it("should set droppable-previous when mouse is before target", function () {
+        var droppableChild = addDroppableChild();
         setConstantDraggingDropTargetSelector(true);
-        vBootstrap.utils.setVBData = jasmine.createSpy();
         vBootstrap.utils.getIsEvBeforeElem = jasmine.createSpy('getIsEvBeforeElem').and.returnValue(true);
 
         startDropTargetSelectorWithEvents();
 
-        expect($(candidateChild).attr('class')).toBe(dragDropCss.dropableTargetPrevious);
-        var vBDataArg = jasmine.objectContaining({ isDraggingBefore: true });
-        expect(vBootstrap.utils.setVBData).toHaveBeenCalledWith(candidateChild, vBDataArg);
+        expect(droppableChild.element.jElem.attr('class')).toBe(dragDropCss.droppableTargetPrevious);
     });
 
-    it("should set dropable-after when mouse is NOT before target", function () {
-        var candidateChild = addCandidateChild();
+    it("should set droppable-after when mouse is NOT before target", function () {
+        var droppableChild = addDroppableChild();
         setConstantDraggingDropTargetSelector(true);
-        vBootstrap.utils.setVBData = jasmine.createSpy();
+
         vBootstrap.utils.getIsEvBeforeElem = jasmine.createSpy('getIsEvBeforeElem').and.returnValue(false);
 
         startDropTargetSelectorWithEvents();
 
-        expect($(candidateChild).attr('class')).toBe(dragDropCss.dropableTargetAfter);
-        var vBDataArg = jasmine.objectContaining({ isDraggingBefore: false });
-        expect(vBootstrap.utils.setVBData).toHaveBeenCalledWith(candidateChild, vBDataArg);
-    });
-
-    it("should set dropable in parent when target is dragging", function () {
-        var candidateChild = addCandidateChild();
-        var draggingElement = $(testUtils.getDomElement()).addClass(dragDropCss.dragging);
-        $(editor.elem).append(draggingElement);
-        var candidateParent = testUtils.getDomElement();
-        $(candidateParent).append(candidate);
-        $(editor.elem).append(candidateParent);
-        setConstantDraggingDropTargetSelector(true);
-        vBootstrap.utils.getVBData = jasmine.createSpy('getVBData').and.returnValue({ isDragging: true });
-
-        startDropTargetSelectorWithEvents();
-
-        expect($(candidate).attr('class')).toMatch(/dropable-target-/);
-        expect($(draggingElement).hasClass(dragDropCss.draggingNotAllowed)).toBe(true);
+        expect(droppableChild.element.jElem.attr('class')).toBe(dragDropCss.droppableTargetAfter);
     });
 
     it("should change target when changed", function () {
         setConstantDraggingDropTargetSelector(true);
-        vBootstrap.utils.getVBData = jasmine.createSpy('getVBData').and.returnValue({ isDragging: false });
-
+        
         startDropTargetSelectorWithEvents();
 
-        var otherCandidateChild = addOtherCandidateChild();
-        vBootstrap.utils.getChildest.and.returnValue(otherCandidate);
+        var otherDroppableChild = addOtherDroppableChild();
+        droppableBus.push(otherDroppable);
 
-        mousemoveBus.push(mousemoveEvent);
-
-        expect($(otherCandidate).hasClass(dragDropCss.dropableActive)).toBe(true);
-        expect(target).toBe(otherCandidateChild);
-        expect($(target).attr('class')).toMatch(/dropable-target-/);
+        expect(otherDroppable.element.jElem.attr('class')).toMatch(dragDropCss.droppableActive);
+        expect(target.jTarget[0]).toBe(otherDroppableChild.element.jElem[0]);
+        expect(target.jTarget.attr('class')).toMatch(/droppable-target-/);
     });
 
-    it("should stop setting dropable when stop binding", function () {
+    it("should stop setting droppable when stop binding", function () {
         setConstantDraggingDropTargetSelector(true);
-        vBootstrap.utils.getVBData = jasmine.createSpy('getVBData').and.returnValue({ isDragging: false });
-
+        
         startDropTargetSelectorWithEvents();
-        dropTargetSelector.stopBindingTarget();
 
-        var otherCandidateChild = addOtherCandidateChild();
-        vBootstrap.utils.getChildest.and.returnValue(otherCandidate);
+        var otherDroppableChild = addOtherDroppableChild();
+        vBootstrap.utils.getChildest.and.returnValue(otherDroppableChild);
+        droppableBus.push(otherDroppableChild);
 
-        mousemoveBus.push(mousemoveEvent);
-
-        expectCandidateHasDropableTargetFirstChild();
+        expectDropabbleHasDroppableTargetFirstChild();
     });
 
-    it("should stop setting dropable when NO mousemove", function () {
+    it("should stop setting droppable when NO mousemove", function () {
         setConstantDraggingDropTargetSelector(true);
-        vBootstrap.utils.getVBData = jasmine.createSpy('getVBData').and.returnValue({ isDragging: false });
-
+        
         startDropTargetSelectorWithEvents();
 
-        var otherCandidateChild = addOtherCandidateChild();
-        vBootstrap.utils.getChildest.and.returnValue(otherCandidate);
+        var otherDroppableChild = addOtherDroppableChild();
+        vBootstrap.utils.getChildest.and.returnValue(otherDroppableChild);
+        droppableBus.push(otherDroppableChild);
 
-        expectCandidateHasDropableTargetFirstChild();
+        expectDropabbleHasDroppableTargetFirstChild();
     });
 
-    it("should NOT set dropable when is NOT dragging", function () {
+    it("should NOT set droppable when is NOT dragging", function () {
         setConstantDraggingDropTargetSelector(false);
 
         startDropTargetSelectorWithEvents();
 
         expect(target).toBe(undefined);
-        expect($(candidate).hasClass(dragDropCss.dropableActive)).toBe(false);
+        expect(droppable.element.jElem.hasClass(dragDropCss.droppableActive)).toBe(false);
     });
 
-    function expectCandidateHasDropableTargetFirstChild() {
-        var candidateChildren = $(candidate).children();
-        expect(candidateChildren.length).toBe(1);
-        expect($(candidate).hasClass(dragDropCss.dropableActive)).toBe(true);
-        expect(candidateChildren.hasClass(dragDropCss.dropableTargetFirst)).toBe(true);
+    it("should set droppable to existing elements", function () {
+        editor.dragDropService.isDragging = Bacon.constant();
+        editor.mock.setDependencies(editor.dragDropService);
+        var existingDroppable = testUtils.getDomElement().addClass(dragDropCss.droppable);
+        editor.jElem.append(existingDroppable);
+        dropTargetSelector = new vBootstrap.core.dragDrop.DropTargetSelector(editor);
+
+        expect(createElementSpy).toHaveBeenCalledWith(existingDroppable[0]);
+    });
+    
+    function addDroppableChild() {
+        var droppableChild = testUtils.getDomElement();
+        droppable.element.jElem.append(droppableChild);
+        function getDroppables() { return [droppableChild]; }
+        vBootstrap.utils.getSortByDistanceFn.and.returnValue(getDroppables);
+        return { element: { jElem: droppableChild } };
     }
 
-    function addCandidateChild() {
-        var candidateChild = testUtils.getDomElement();
-        $(candidate).append(candidateChild);
-        function getCandidates() { return [candidateChild]; }
-        vBootstrap.utils.getSortByDistanceFn.and.returnValue(getCandidates);
-        return candidateChild;
-    }
-
-    function addOtherCandidateChild() {
-        var otherCandidateChild = testUtils.getDomElement();
-        $(otherCandidate).append(otherCandidateChild);
-        function getCandidates() { return [otherCandidateChild]; }
-        vBootstrap.utils.getSortByDistanceFn.and.returnValue(getCandidates);
-        return otherCandidateChild;
+    function addOtherDroppableChild() {
+        var otherDroppableChild = testUtils.getDomElement();
+        otherDroppable.element.jElem.append(otherDroppableChild);
+        function getDroppables() { return [otherDroppableChild]; }
+        vBootstrap.utils.getSortByDistanceFn.and.returnValue(getDroppables);
+        vBootstrap.utils.getChildest.and.returnValue(otherDroppable);
+        return { element: { jElem: otherDroppableChild } };
     }
 
     function setConstantDraggingDropTargetSelector(isDragging) {
         editor.dragDropService.isDragging = Bacon.constant(isDragging);
-        dropTargetSelector = new vBootstrap.core.dragDrop.dropTargetSelector(editor);
+        editor.mock.setDependencies(editor.dragDropService);
+        dropTargetSelector = new vBootstrap.core.dragDrop.DropTargetSelector(editor);
     }
 
     function startDropTargetSelectorWithEvents() {
-        dropTargetSelector.target.onValue(setTargetValue);
-        dropTargetSelector.startBindingTarget();
-        mousemoveBus.push(mousemoveEvent);
+        var droppableTarget = editor.dragDropService.droppableBus.plug.calls.allArgs()[0][0];
+        droppableTarget.onValue(setTargetValue);
+        droppableBus.push(droppable);
+    }
+
+    function expectDropabbleHasDroppableTargetFirstChild() {
+        var droppableChildren = droppable.element.jElem.children();
+        expect(droppableChildren.length).toBe(1);
+        expect(droppable.element.jElem.hasClass(dragDropCss.droppableActive)).toBe(true);
+        expect(droppableChildren.hasClass(dragDropCss.droppableTargetFirst)).toBe(true);
     }
 
     function setTargetValue(value) {

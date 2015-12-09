@@ -6,11 +6,11 @@
             dragging: 'dragging',
             beingDragged: 'being-dragged',
             draggingNotAllowed: 'dragging-not-allowed',
-            dropable: 'dropable',
-            dropableActive: 'dropable-active',
-            dropableTargetFirst: 'dropable-target-first',
-            dropableTargetPrevious: 'dropable-target-previous',
-            dropableTargetAfter: 'dropable-target-after'
+            droppable: 'droppable',
+            droppableActive: 'droppable-active',
+            droppableTargetFirst: 'droppable-target-first',
+            droppableTargetPrevious: 'droppable-target-previous',
+            droppableTargetAfter: 'droppable-target-after'
         }
     };
 })(window);

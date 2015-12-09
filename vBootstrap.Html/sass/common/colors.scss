@@ -1,4 +1,6 @@
-﻿$gray: #888;
+﻿$transparent: rgba(255,255,255,0);
+
+$gray: #888;
 $gray-light-10: lighten($gray, 10%);
 $gray-light-20: lighten($gray, 20%);
 $gray-light-30: lighten($gray, 30%);
@@ -67,62 +69,202 @@ $green-dark-40: darken($green, 40%);
 $green-dark-50: darken($green, 50%);
 
 
-.gray-light-10 { color: $gray-light-10; }
-.gray-light-20 { color: $gray-light-20; }
-.gray-light-30 { color: $gray-light-30; }
-.gray-light-40 { color: $gray-light-40; }
-.gray-light-50 { color: $gray-light-50; }
+.gray-light-10 {
+    color: $gray-light-10;
+}
 
-.gray-dark-10 { color: $gray-dark-10; }
-.gray-dark-20 { color: $gray-dark-20; }
-.gray-dark-30 { color: $gray-dark-30; }
-.gray-dark-40 { color: $gray-dark-40; }
-.gray-dark-50 { color: $gray-dark-50; }
+.gray-light-20 {
+    color: $gray-light-20;
+}
 
-.blue-light-10 { color: $blue-light-10; }
-.blue-light-20 { color: $blue-light-20; }
-.blue-light-30 { color: $blue-light-30; }
-.blue-light-40 { color: $blue-light-40; }
-.blue-light-50 { color: $blue-light-50; }
+.gray-light-30 {
+    color: $gray-light-30;
+}
 
-.blue-dark-10 { color: $blue-dark-10; }
-.blue-dark-20 { color: $blue-dark-20; }
-.blue-dark-30 { color: $blue-dark-30; }
-.blue-dark-40 { color: $blue-dark-40; }
-.blue-dark-50 { color: $blue-dark-50; }
+.gray-light-40 {
+    color: $gray-light-40;
+}
 
-.red-light-10 { color: $red-light-10; }
-.red-light-20 { color: $red-light-20; }
-.red-light-30 { color: $red-light-30; }
-.red-light-40 { color: $red-light-40; }
-.red-light-50 { color: $red-light-50; }
+.gray-light-50 {
+    color: $gray-light-50;
+}
 
-.red-dark-10 { color: $red-dark-10; }
-.red-dark-20 { color: $red-dark-20; }
-.red-dark-30 { color: $red-dark-30; }
-.red-dark-40 { color: $red-dark-40; }
-.red-dark-50 { color: $red-dark-50; }
+.gray-dark-10 {
+    color: $gray-dark-10;
+}
 
-.yellow-light-10 { color: $yellow-light-10; }
-.yellow-light-20 { color: $yellow-light-20; }
-.yellow-light-30 { color: $yellow-light-30; }
-.yellow-light-40 { color: $yellow-light-40; }
-.yellow-light-50 { color: $yellow-light-50; }
+.gray-dark-20 {
+    color: $gray-dark-20;
+}
 
-.yellow-dark-10 { color: $yellow-dark-10; }
-.yellow-dark-20 { color: $yellow-dark-20; }
-.yellow-dark-30 { color: $yellow-dark-30; }
-.yellow-dark-40 { color: $yellow-dark-40; }
-.yellow-dark-50 { color: $yellow-dark-50; }
+.gray-dark-30 {
+    color: $gray-dark-30;
+}
 
-.green-light-10 { color: $green-light-10; }
-.green-light-20 { color: $green-light-20; }
-.green-light-30 { color: $green-light-30; }
-.green-light-40 { color: $green-light-40; }
-.green-light-50 { color: $green-light-50; }
+.gray-dark-40 {
+    color: $gray-dark-40;
+}
 
-.green-light-10 { color: $green-light-10; }
-.green-light-20 { color: $green-light-20; }
-.green-light-30 { color: $green-light-30; }
-.green-light-40 { color: $green-light-40; }
-.green-light-50 { color: $green-light-50; }
+.gray-dark-50 {
+    color: $gray-dark-50;
+}
+
+.blue-light-10 {
+    color: $blue-light-10;
+}
+
+.blue-light-20 {
+    color: $blue-light-20;
+}
+
+.blue-light-30 {
+    color: $blue-light-30;
+}
+
+.blue-light-40 {
+    color: $blue-light-40;
+}
+
+.blue-light-50 {
+    color: $blue-light-50;
+}
+
+.blue-dark-10 {
+    color: $blue-dark-10;
+}
+
+.blue-dark-20 {
+    color: $blue-dark-20;
+}
+
+.blue-dark-30 {
+    color: $blue-dark-30;
+}
+
+.blue-dark-40 {
+    color: $blue-dark-40;
+}
+
+.blue-dark-50 {
+    color: $blue-dark-50;
+}
+
+.red-light-10 {
+    color: $red-light-10;
+}
+
+.red-light-20 {
+    color: $red-light-20;
+}
+
+.red-light-30 {
+    color: $red-light-30;
+}
+
+.red-light-40 {
+    color: $red-light-40;
+}
+
+.red-light-50 {
+    color: $red-light-50;
+}
+
+.red-dark-10 {
+    color: $red-dark-10;
+}
+
+.red-dark-20 {
+    color: $red-dark-20;
+}
+
+.red-dark-30 {
+    color: $red-dark-30;
+}
+
+.red-dark-40 {
+    color: $red-dark-40;
+}
+
+.red-dark-50 {
+    color: $red-dark-50;
+}
+
+.yellow-light-10 {
+    color: $yellow-light-10;
+}
+
+.yellow-light-20 {
+    color: $yellow-light-20;
+}
+
+.yellow-light-30 {
+    color: $yellow-light-30;
+}
+
+.yellow-light-40 {
+    color: $yellow-light-40;
+}
+
+.yellow-light-50 {
+    color: $yellow-light-50;
+}
+
+.yellow-dark-10 {
+    color: $yellow-dark-10;
+}
+
+.yellow-dark-20 {
+    color: $yellow-dark-20;
+}
+
+.yellow-dark-30 {
+    color: $yellow-dark-30;
+}
+
+.yellow-dark-40 {
+    color: $yellow-dark-40;
+}
+
+.yellow-dark-50 {
+    color: $yellow-dark-50;
+}
+
+.green-light-10 {
+    color: $green-light-10;
+}
+
+.green-light-20 {
+    color: $green-light-20;
+}
+
+.green-light-30 {
+    color: $green-light-30;
+}
+
+.green-light-40 {
+    color: $green-light-40;
+}
+
+.green-light-50 {
+    color: $green-light-50;
+}
+
+.green-light-10 {
+    color: $green-light-10;
+}
+
+.green-light-20 {
+    color: $green-light-20;
+}
+
+.green-light-30 {
+    color: $green-light-30;
+}
+
+.green-light-40 {
+    color: $green-light-40;
+}
+
+.green-light-50 {
+    color: $green-light-50;
+}

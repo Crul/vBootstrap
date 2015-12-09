@@ -6,10 +6,10 @@
         init: initVerticalResizable
     };
 
-    function initVerticalResizable(editor, obj) {
-        var jElem = $(obj.elem);
+    function initVerticalResizable(element) {
+        var jElem = element.jElem;
         var resizableConfig = {
-            elem: jElem,
+            element: element,
             resize: resizeFromBottom,
             isOver: isBottom,
             resizableClass: resizeConfig.cssClasses.resizableBottom,
@@ -22,13 +22,11 @@
         }
 
         function resizeFromBottom(ev) {
-            jElem = $(obj.elem);
             var height = ev.pageY - jElem.offset().top;
             jElem.css(resizeConfig.verticalCssProperty, height);
         }
 
-        vBootstrap.core.resize.resizable.init(editor.lockService, resizableConfig);
+        vBootstrap.core.resize.resizable.init(resizableConfig);
     }
-
 
 })();

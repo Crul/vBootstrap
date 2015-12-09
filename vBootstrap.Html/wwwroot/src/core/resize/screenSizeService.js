@@ -9,10 +9,14 @@
         .skipDuplicates()
         .toProperty(getBootstrapSize());
 
-    namespace('vBootstrap.core.resize').screenSizeService = {
-        screenSize: resizeStream,
-        sizes: sizes
-    };
+    namespace('vBootstrap.core.resize').ScreenSizeService = ScreenSizeService;
+    vBootstrap.addFactory(ScreenSizeService);
+
+    function ScreenSizeService(editor) {
+        this.screenSize = resizeStream;
+        this.sizes = sizes
+        editor.screenSizeService = this;
+    }
 
     function getBootstrapSize() {
         var width = window.innerWidth;

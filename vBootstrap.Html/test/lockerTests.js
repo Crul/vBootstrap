@@ -12,16 +12,11 @@ describe("locker", function () {
 
     beforeEach(initBeforeEach);
     function initBeforeEach() {
-        locker = new vBootstrap.core.lock.locker();
+        locker = new vBootstrap.core.lock.Locker();
         output = undefined;
         runs = 0;
     }
-
-    //afterEach(initBeforeEach);
-    //function afterEach(done) {
-    //    setTimeout(done, waitForDone);
-    //}
-
+    
     it("should NOT lock when NO locks", function () {
         locker.isLocked.onValue(setOutput);
 

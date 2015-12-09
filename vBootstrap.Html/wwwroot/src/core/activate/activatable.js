@@ -1,27 +1,32 @@
 ﻿(function () {
     "use strict";
-    var vBUtils = vBootstrap.utils;
-    var activateConfig = vBootstrap.config.activate;
-    var globalStreams = vBootstrap.config.streams.global;
+    var vBUtils = namespace('vBootstrap.utils');
+    var globalStreams = namespace('vBootstrap.config.streams.global');
+    var activateConfig = namespace('vBootstrap.config.activate');
 
     namespace('vBootstrap.core.activate').activatable = {
         init: initActivatable
     };
 
-    function initActivatable(lockService, obj) {
-        var elem = obj.elem;
-        var jElem = $(elem);
+    function initActivatable(element) {
+        var dependencies = {
+            lockService: namespace('vBootstrap.core.lock.Locker'),
+            activateService: namespace('vBootstrap.core.activate.ActivateService')
+        };
+        element.editor.resolve(dependencies, load, element);
+    }
 
-        var unsubFn = globalStreams.mousemove
+    function load(lockService, activateService) {
+        var element = this;
+        var activatableStream = globalStreams.mousemove
             .filter(lockService.isNotLocked)
-            .map(isOver)
-            .toProperty(false)
-            .assign($(elem), 'toggleClass', activateConfig.cssClasses.activatable);
+            .map(vBUtils.getElementAndEventIfIsOverFn(element));
 
-        vBUtils.getVBData(elem).onDispose(unsubFn);
+        activateService.activatables.add(activatableStream);
 
-        function isOver(ev) {
-            return vBUtils.isCursorOverElem(ev, jElem);
+        element.onDispose(removeActivatable);
+        function removeActivatable() {
+            activateService.activatables.remove(activatableStream);
         }
     }
 })();

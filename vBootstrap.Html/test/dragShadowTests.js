@@ -2,89 +2,77 @@
 /// <reference path="../wwwroot/js/jquery.js"/>
 /// <reference path="../wwwroot/js/Bacon.js"/>
 /// <reference path="../wwwroot/src/seedwork/namespace.js" />
-/// <reference path="../wwwroot/src/config/events.js" />
 /// <reference path="../wwwroot/src/config/dragDrop.js" />
 /// <reference path="utils/testUtils.js" />
-/// <reference path="mock/seedwork/utils.js" />
-/// <reference path="mock/config/streams.js" />
+/// <reference path="mock/streamsMock.js" />
 /// <reference path="../wwwroot/src/core/dragDrop/dragShadow.js" />
 
 describe("drag shadow", function () {
+    namespace('vBootstrap.utils');
+
     var testUtils = vBootstrap.test.utils;
-    var events = vBootstrap.config.events;
     var streams = vBootstrap.config.streams;
     var dragDropCss = vBootstrap.config.dragDrop.cssClasses;
-    var dragShadow = vBootstrap.core.dragDrop.dragShadow;
+    var DragShadow = vBootstrap.core.dragDrop.DragShadow;
 
-    var elem;
+    var jElem;
     var editor;
-    var dragDropService;
     var offset = { x: 10, y: 20 };
     var ev = { pageX: 100, pageY: 200 };
     beforeEach(initBeforeEach);
 
     function initBeforeEach() {
-        vBootstrap.utils.setVBData = jasmine.createSpy('setVBData');
-        editor = testUtils.getBootstrapElement();
-        dragDropService = {
-            startDrag: jasmine.createSpy('startDrag')
-        };
-        elem = testUtils.getDomElement();
+        editor = testUtils.getEditor();
+        jElem = testUtils.getDomElement();
     }
 
     it("should create shadow", function () {
-        var shadow = dragShadow(editor, dragDropService, elem, ev, offset);
+        var shadow = new DragShadow(editor, jElem, ev, offset);
 
-        expect(shadow.css('left')).toBe('90px');
-        expect(shadow.css('top')).toBe('180px');
-        expect(dragDropService.startDrag).toHaveBeenCalledWith(ev);
-        var editorChildren = $(editor.elem).children();
-        var childrenCount = editorChildren.length;
-        expect(childrenCount).toBe(1);
-        if (childrenCount > 0) expect(editorChildren[0]).toBe(shadow[0]);
-        expect(shadow.hasClass(dragDropCss.dragging)).toBe(true);
-        expect(vBootstrap.utils.setVBData.calls.count()).toBe(2);
-        expect(vBootstrap.utils.setVBData).toHaveBeenCalledWith(shadow, jasmine.any(Object));
-        expect(vBootstrap.utils.setVBData).toHaveBeenCalledWith(elem, jasmine.objectContaining({ isDragging: true }));
-    });
+        var jShadow = shadow.jElem;
+        expect(jShadow.css('left')).toBe('90px');
+        expect(jShadow.css('top')).toBe('180px');
 
-    it("should remove shadow", function () {
-        var mouseupBus = streams.mock.setGlobalPushable('mouseup');
-        var shadow = dragShadow(editor, dragDropService, elem, ev, offset);
-        mouseupBus.push({});
-
-        expect(vBootstrap.utils.setVBData.calls.count()).toBe(3);
-        expect(vBootstrap.utils.setVBData).toHaveBeenCalledWith(elem, jasmine.objectContaining({ isDragging: false }));
+        var editorChildren = editor.jElem.children();
+        expect(jShadow.hasClass(dragDropCss.dragging)).toBe(true);
+        expect(editorChildren.length).toBe(1);
+        expect(editorChildren[0]).toBe(jShadow[0]);
     });
 
     it("should move shadow", function () {
         var mousemoveBus = streams.mock.setGlobalPushable('mousemove');
-        var shadow = dragShadow(editor, dragDropService, elem, ev, offset);
 
+        var shadow = new DragShadow(editor, jElem, ev, offset);
         ev.pageX = 1000;
         ev.pageY = 2000;
         mousemoveBus.push(ev);
 
-        expect(shadow.css('left')).toBe('990px');
-        expect(shadow.css('top')).toBe('1980px');
+        var jShadow = shadow.jElem;
+        expect(jShadow.css('top')).toBe('1980px');
+        expect(jShadow.css('left')).toBe('990px');
     });
 
-    it("should stop moving shadow", function () {
-        var mouseupBus = streams.mock.setGlobalPushable('mouseup');
+    it("should remove shadow", function () {
+
+        var shadow = new DragShadow(editor, jElem, ev, offset);
+        shadow.remove();
+
+        var editorChildren = editor.jElem.children();
+        expect(editorChildren.length).toBe(0);
+    });
+
+    it("should stop moving when removed", function () {
         var mousemoveBus = streams.mock.setGlobalPushable('mousemove');
-        var shadow = dragShadow(editor, dragDropService, elem, ev, offset);
 
-        ev.pageX = 1000;
-        ev.pageY = 2000;
-        mousemoveBus.push(ev);
-        mouseupBus.push({});
-
-        ev.pageX = 10;
-        ev.pageY = 20;
+        var shadow = new DragShadow(editor, jElem, ev, offset);
+        shadow.remove();
+        var jShadow = shadow.jElem;
+        var topCssBeforePush = jShadow.css('top');
+        var leftCssBeforePush = jShadow.css('left');
         mousemoveBus.push(ev);
 
-        expect(shadow.css('left')).toBe('990px');
-        expect(shadow.css('top')).toBe('1980px');
+        expect(jShadow.css('top')).toBe(topCssBeforePush);
+        expect(jShadow.css('left')).toBe(leftCssBeforePush);
     });
 
 

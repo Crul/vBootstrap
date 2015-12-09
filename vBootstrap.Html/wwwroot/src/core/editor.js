@@ -1,51 +1,60 @@
 ﻿(function () {
     "use strict";
-    namespace('vBootstrap.core').editor = vBEditor;
 
-    function vBEditor(elem) {
+    Editor.prototype.loadElements = loadElements;
+    Editor.prototype.remove = removeEditor;
+    Editor.prototype.resolve = resolve;
+    Editor.prototype.busByType = busByType;
+
+    namespace('vBootstrap.core').Editor = Editor;
+
+    function Editor(domElem) {
+        this.jElem = $(domElem);
+        this.bus = new Bacon.Bus();
+    }
+
+    function loadElements() {
+        var elemArray = this.jElem.find('*').toArray();
+        var initialElemStream = Bacon.fromArray(elemArray);
+        this.bus.plug(initialElemStream);
+    }
+
+    function resolve(dependencies, callback, obj) {
         var editor = this;
-        editor.elem = elem;
+        var dependencyProps = Object.keys(dependencies).map(dependencyToProperty);
+        return Bacon.combineAsArray(dependencyProps).onValue(onDependenciesValue);
 
-        createCoreServices(editor);
-        createToolbar(editor, elem);
-        createTools(editor);
-        createElements(editor, elem);
-        console.log('init');
-    }
-
-    function createCoreServices(editor) {
-        editor.lockService = vBootstrap.core.lock.lockService;
-        editor.activateService = new vBootstrap.core.activate.activateService(editor, editor.lockService);
-        editor.dragDropService = new vBootstrap.core.dragDrop.dragDropService(editor, editor.lockService);
-    }
-
-    function createToolbar(editor, elem) {
-        editor.toolbar = new vBootstrap.core.toolbar(elem);
-        editor.toolbar.addButton(new vBootstrap.tools.creation.containerCreator(editor));
-        editor.toolbar.addButton(new vBootstrap.tools.creation.rowCreator(editor));
-        editor.toolbar.addButton(new vBootstrap.tools.creation.colCreator(editor));
-        editor.toolbar.addButton(new vBootstrap.tools.creation.buttonCreator(editor));
-    }
-
-    function createTools(editor) {
-        var removator = new vBootstrap.tools.removator(editor.activateService);
-        var editator = new vBootstrap.tools.edit.editator(editor.activateService);
-        var informator = new vBootstrap.tools.inform.informator(editor.activateService);
-    }
-
-    function createElements(editor, elem) {
-        $(elem).find('*').each(createElem);
-
-        function createElem(i, elem) {
-            var bootstrapElements = Object.keys(vBootstrap.bootstrap);
-            $(bootstrapElements).each(createBootstrapElem);
-
-            function createBootstrapElem(i, elemName) {
-                var bootsrapElement = namespace('vBootstrap.bootstrap.' + elemName);
-                if ($(elem).is(bootsrapElement.selector || '.' + elemName)) {
-                    new bootsrapElement(editor, elem);
-                }
+        function onDependenciesValue(args) {
+            if (areAllResolved(args)) {
+                callback.apply(obj, args);
+                return Bacon.noMore;
             }
         }
+
+        function dependencyToProperty(name) {
+            return editor.busByType(dependencies[name]).toProperty(editor[name]);
+        }
+    }
+
+    function removeEditor() {
+        this.bus.end();
+    }
+
+    function busByType(type) {
+        return this.bus.filter(getFilterByTypeFn(type));
+    }
+
+    function getFilterByTypeFn(type) {
+        return function filterByTypeFn(value) {
+            return (value instanceof type);
+        }
+    }
+
+    function areAllResolved(args) {
+        return (args.filter(isUndefined).length == 0);
+    }
+
+    function isUndefined(v) {
+        return !v;
     }
 })();

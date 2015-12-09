@@ -1,5 +1,7 @@
 ﻿(function () {
     "use strict";
+    var vBootstrap = namespace('vBootstrap');
+
     var buttonsCssClass = 'vb-toolbar-buttons';
     var buttonsSelector = '.' + buttonsCssClass;
     var toolbarTemplate = `
@@ -16,22 +18,19 @@
         </div>
         `;
 
-    namespace('vBootstrap.core').toolbar = vBToolbar;
+    namespace('vBootstrap.core').Toolbar = Toolbar;
+    vBootstrap.addFactory(Toolbar);
 
-    vBToolbar.prototype.addButton = addButton;
+    Toolbar.prototype.addButton = addButton;
 
-    function addButton(buttonFactory) {
-        var button = buttonFactory.create();
-        this.toolbar.find(buttonsSelector).append(button);
+    function Toolbar(editor) {
+        editor.toolbar = this;
+        this.jElem = $(toolbarTemplate);
+        $(editor.jElem).prepend(this.jElem);
     }
 
-    function vBToolbar(editorElem, creators) {
-        this.toolbar = createToolbar(editorElem);
+    function addButton(button) {
+        this.jElem.find(buttonsSelector).prepend(button); // prepend because Bacon executes streams in reverse order (?)
     }
 
-    function createToolbar(editorElem) {
-        var toolbar = $(toolbarTemplate);
-        $(editorElem).prepend(toolbar);
-        return toolbar;
-    }
 })();

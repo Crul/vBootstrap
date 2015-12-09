@@ -3,108 +3,150 @@
 /// <reference path="../wwwroot/js/Bacon.js"/>
 /// <reference path="../wwwroot/src/seedwork/namespace.js" />
 /// <reference path="utils/testUtils.js" />
-/// <reference path="mock/seedwork/utils.js" />
+/// <reference path="mock/streamsMock.js" />
 /// <reference path="../wwwroot/src/config/dragDrop.js" />
-/// <reference path="../wwwroot/src/core/dragDrop/dropable.js" />
+/// <reference path="../wwwroot/src/core/dragDrop/droppable.js" />
 
-describe("dropable", function () {
+describe("droppable", function () {
     var testUtils = vBootstrap.test.utils;
     var dragDropCss = vBootstrap.config.dragDrop.cssClasses;
 
     var editor;
-    var bootstrapElem;
-    var onDraggingBus;
-    var onStopDragBus;
-    var onDispose;
-    vBootstrap.utils.getVBData = function () {
-        return { onDispose: setOnDispose };
-    };
+    var element;
+    var draggingBus;
+    var dragDropService;
+    var dropTargetSelector;
+    var droppableOutput;
 
     beforeEach(initBeforeEach);
-    afterEach(initAfterEach);
 
     function initBeforeEach() {
+        droppableOutput = undefined;
         onDispose = undefined;
-        bootstrapElem = testUtils.getBootstrapElement();
-        onDraggingBus = new Bacon.Bus();
-        onStopDragBus = new Bacon.Bus();
-        editor = {
-            elem: testUtils.getDomElement(),
-            dragDropService: {
-                onDragging: onDraggingBus,
-                onStopDrag: onStopDragBus
+        element = testUtils.getBootstrapElement();
+        element.source = testUtils.getDomElement();
+        editor = element.editor;
+        draggingBus = new Bacon.Bus();
+        dragDropService = {
+            dragging: draggingBus
+        };
+        dropTargetSelector = {
+            droppables: {
+                add: jasmine.createSpy('addDroppableStream'),
+                remove: jasmine.createSpy('removeDroppableStream')
             }
         };
+        editor.mock.setDependencies(dragDropService, dropTargetSelector);
+        vBootstrap.config.streams.mock.setGlobalByCount('mousemove', 1);
     }
 
-    function initAfterEach() {
-        if (onDispose) {
-            for (var i = 0; i < onDispose.length; i++)
-                onDispose[i]();
-        }
+    it("should set droppable output", function () {
+        setElementAndEvent();
+
+        var droppableStream = initDroppableAndBindDroppableStream();
+        draggingBus.push(element);
+
+        expect(vBootstrap.utils.getElementAndEventIfIsOverFn)
+            .toHaveBeenCalledWith(element, jasmine.any(Number));
+        expect(dropTargetSelector.droppables.add).toHaveBeenCalled();
+        expect(droppableOutput).toBe(elementAndEvent);
+    });
+    
+    it("should set droppable to undefined when is NOT over", function () {
+        setElementAndEvent();
+
+        var droppableStream = initDroppableAndBindDroppableStream();
+        draggingBus.push(element);
+        vBootstrap.utils.getElementAndEventIfIsOverFn.and.returnValue(function () { return; });
+        draggingBus.push(element);
+
+        expect(droppableOutput).toBe(undefined);
+    });
+    
+    it("should remove droppable stream when stops", function () {
+
+        vBootstrap.core.dragDrop.droppable.init(element);
+        expect(element.onDispose).toHaveBeenCalled();
+        var removeDroppable = element.onDispose.calls.allArgs()[0][0];
+        removeDroppable();
+
+        var droppableStream = dropTargetSelector.droppables.add.calls.allArgs()[0][0];
+        expect(dropTargetSelector.droppables.remove).toHaveBeenCalledWith(droppableStream);
+    });
+
+    it("should NOT set droppable if no event", function () {
+        vBootstrap.config.streams.mock.setGlobalByCount('mousemove', 0);
+        setElementAndEvent();
+
+        var droppableStream = initDroppableAndBindDroppableStream();
+        draggingBus.push(element);
+
+        expect(droppableOutput).toBe(undefined);
+    });
+
+    it("should NOT set droppable if no dragging", function () {
+        setElementAndEvent();
+
+        var droppableStream = initDroppableAndBindDroppableStream();
+
+        expect(droppableOutput).toBe(undefined);
+    });
+
+    it("should NOT set droppable if element is dragging source", function () {
+        setElementAndEvent();
+        element.source = element.jElem;
+
+        var droppableStream = initDroppableAndBindDroppableStream();
+        draggingBus.push(element);
+
+        expect(droppableOutput).toBe(undefined);
+    });
+
+    it("should set dragging-not-allowed class if element is dragging source", function () {
+        setElementAndEvent();
+        element.source = element.jElem;
+
+        var droppableStream = initDroppableAndBindDroppableStream();
+        draggingBus.push(element);
+
+        expect(element.jElem.attr('class')).toMatch(dragDropCss.draggingNotAllowed);
+    });
+
+    it("should NOT set droppable if element is descendant of dragging source", function () {
+        setElementAndEvent();
+        element.source.append(element.jElem);
+
+        var droppableStream = initDroppableAndBindDroppableStream();
+        draggingBus.push(element);
+
+        expect(droppableOutput).toBe(undefined);
+    });
+
+    it("should set dragging-not-allowed class if element is descendant of dragging source", function () {
+        setElementAndEvent();
+        element.source.append(element.jElem);
+
+        var droppableStream = initDroppableAndBindDroppableStream();
+        draggingBus.push(element);
+
+        expect(element.jElem.attr('class')).toMatch(dragDropCss.draggingNotAllowed);
+    });
+
+    function initDroppableAndBindDroppableStream() {
+        vBootstrap.core.dragDrop.droppable.init(element);
+        var droppableStream = dropTargetSelector.droppables.add.calls.allArgs()[0][0];
+        droppableStream.onValue(setDroppableOutput);
+        return droppableStream;
     }
 
-    it("should have dropable class when dragging over elem", function (done) {
-        spyOn(vBootstrap.utils, 'isCursorOverElem').and.returnValue(true);
-        var ev = {};
-
-        vBootstrap.core.dragDrop.dropable.init(editor, bootstrapElem);
-        onDraggingBus.push(ev);
-
-        expectDropableClass(bootstrapElem, true);
-        expect(vBootstrap.utils.isCursorOverElem)
-            .toHaveBeenCalledWith(ev, jasmine.any(Object), jasmine.any(Number));
-
-        done();
-    });
-
-    it("should NOT have dropable class when NO dragging", function (done) {
-        spyOn(vBootstrap.utils, 'isCursorOverElem').and.returnValue(true);
-
-        vBootstrap.core.dragDrop.dropable.init(editor, bootstrapElem);
-
-        expectDropableClass(bootstrapElem, false);
-        expect(vBootstrap.utils.isCursorOverElem).not.toHaveBeenCalled();
-
-        done();
-    });
-
-    it("should NOT have dropable class when is NOT over elem", function (done) {
-        spyOn(vBootstrap.utils, 'isCursorOverElem').and.returnValue(false);
-        var ev = {};
-
-        vBootstrap.core.dragDrop.dropable.init(editor, bootstrapElem);
-        onDraggingBus.push(ev);
-
-        expectDropableClass(bootstrapElem, false);
-        expect(vBootstrap.utils.isCursorOverElem)
-            .toHaveBeenCalledWith(ev, jasmine.any(Object), jasmine.any(Number));
-
-        done();
-    });
-
-    it("should NOT have dropable class when is descendant of dragging", function (done) {
-        vBootstrap.utils.mock.setIsCursorOverElem(true);
-        spyOn(vBootstrap.utils, 'isCursorOverElem').and.returnValue(true);
-        var beingDragged = $(testUtils.getDomElement());
-        beingDragged.addClass(dragDropCss.beingDragged);
-        beingDragged.append(bootstrapElem.elem);
-        $(editor.elem).append(beingDragged);
-
-        vBootstrap.core.dragDrop.dropable.init(editor, bootstrapElem);
-        onDraggingBus.push({});
-
-        expectDropableClass(bootstrapElem, false);
-        expect(vBootstrap.utils.isCursorOverElem).not.toHaveBeenCalled();
-
-        done();
-    });
-
-    function expectDropableClass(bootstrapElem, value) {
-        expect($(bootstrapElem.elem).hasClass(dragDropCss.dropable)).toBe(value);
+    function setElementAndEvent() {
+        elementAndEvent = { element: element, ev: {} };
+        vBootstrap.utils.getElementAndEventIfIsOverFn = jasmine
+            .createSpy('getElementAndEventIfIsOverFn')
+            .and.returnValue(Bacon._.always(elementAndEvent));
     }
 
-    function setOnDispose(value) {
-        onDispose = value;
+    function setDroppableOutput(value) {
+        droppableOutput = value;
     }
 });

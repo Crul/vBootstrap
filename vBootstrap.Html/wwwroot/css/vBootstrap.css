@@ -156,6 +156,10 @@ body {
   -ms-user-select: none;
   user-select: none; }
 
+.v-bootstrap-editor > .droppable {
+  margin-top: -20px;
+  padding-top: 20px; }
+
 .v-bootstrap-editor.editing.resizing-right, .v-bootstrap-editor.editing.resizing-left {
   cursor: ew-resize; }
 
@@ -194,7 +198,7 @@ body {
     background-color: rgba(241, 245, 165, 0.25); }
   .v-bootstrap-editor.editing .container.activated {
     border-color: #b2b915; }
-  .v-bootstrap-editor.editing .container.dropable-active {
+  .v-bootstrap-editor.editing .container.droppable-active {
     background-color: rgba(241, 245, 165, 0.5);
     border-color: #b2b915; }
   .v-bootstrap-editor.editing .container.resizable-bottom {
@@ -214,7 +218,7 @@ body {
     background-color: rgba(165, 245, 167, 0.25); }
   .v-bootstrap-editor.editing .row.activated {
     border-color: #15b918; }
-  .v-bootstrap-editor.editing .row.dropable-active {
+  .v-bootstrap-editor.editing .row.droppable-active {
     background-color: rgba(165, 245, 167, 0.8);
     border-color: #108b12; }
   .v-bootstrap-editor.editing .row.dragging {
@@ -238,7 +242,7 @@ body {
     background-color: rgba(165, 211, 245, 0.25); }
   .v-bootstrap-editor.editing [class*="col-"].activated {
     border-color: #1c90e5; }
-  .v-bootstrap-editor.editing [class*="col-"].dropable-active {
+  .v-bootstrap-editor.editing [class*="col-"].droppable-active {
     background-color: rgba(165, 211, 245, 0.5);
     border-color: #10578b; }
   .v-bootstrap-editor.editing [class*="col-"].dragging {
@@ -290,10 +294,10 @@ body {
   .v-bootstrap-editor.editing [class*="col-"].dragging-not-allowed,
   .v-bootstrap-editor.editing .btn.dragging-not-allowed {
     cursor: not-allowed; }
-  .v-bootstrap-editor.editing .container .dropable-target-first,
-  .v-bootstrap-editor.editing .row .dropable-target-first,
-  .v-bootstrap-editor.editing [class*="col-"] .dropable-target-first,
-  .v-bootstrap-editor.editing .btn .dropable-target-first {
+  .v-bootstrap-editor.editing .container .droppable-target-first,
+  .v-bootstrap-editor.editing .row .droppable-target-first,
+  .v-bootstrap-editor.editing [class*="col-"] .droppable-target-first,
+  .v-bootstrap-editor.editing .btn .droppable-target-first {
     border-top: solid 4px #b9152e; }
   .v-bootstrap-editor.editing .container.resizable-bottom,
   .v-bootstrap-editor.editing .row.resizable-bottom,
@@ -330,42 +334,42 @@ body {
 .v-bootstrap-editor.editing .row {
   margin-top: 8px;
   margin-bottom: 8px; }
-  .v-bootstrap-editor.editing .container.dropable-target-previous,
-  .v-bootstrap-editor.editing .row.dropable-target-previous {
+  .v-bootstrap-editor.editing .container.droppable-target-previous,
+  .v-bootstrap-editor.editing .row.droppable-target-previous {
     border-top: solid 4px #b9152e; }
-  .v-bootstrap-editor.editing .container.dropable-target-after,
-  .v-bootstrap-editor.editing .row.dropable-target-after {
+  .v-bootstrap-editor.editing .container.droppable-target-after,
+  .v-bootstrap-editor.editing .row.droppable-target-after {
     border-bottom: solid 4px #b9152e; }
 
-.v-bootstrap-editor.editing .btn.dropable-target-previous,
-.v-bootstrap-editor.editing [class*="col-"].dropable-target-previous {
+.v-bootstrap-editor.editing .btn.droppable-target-previous,
+.v-bootstrap-editor.editing [class*="col-"].droppable-target-previous {
   border-left: solid 4px #b9152e; }
 
-.v-bootstrap-editor.editing .btn.dropable-target-after,
-.v-bootstrap-editor.editing [class*="col-"].dropable-target-after {
+.v-bootstrap-editor.editing .btn.droppable-target-after,
+.v-bootstrap-editor.editing [class*="col-"].droppable-target-after {
   border-right: solid 4px #b9152e; }
 
-.v-bootstrap-editor.editing [class*="tool-"] {
-  position: absolute;
-  cursor: pointer;
-  margin: 0; }
-  .v-bootstrap-editor.editing [class*="tool-"] .label {
-    display: block; }
+.v-bootstrap-editor.editing .popup-container {
+  position: absolute; }
 
-.v-bootstrap-editor.editing .tool-removator,
-.v-bootstrap-editor.editing .tool-editor {
+.v-bootstrap-editor.editing [class*="popup-btn-"] {
   opacity: 0.66;
-  border: solid 2px rgba(255, 255, 255, 0);
-  margin: -2px; }
-  .v-bootstrap-editor.editing .tool-removator:hover,
-  .v-bootstrap-editor.editing .tool-editor:hover {
+  float: left;
+  border-style: solid;
+  border-width: 4px 2px;
+  border-color: rgba(255, 255, 255, 0);
+  margin: 0; }
+  .v-bootstrap-editor.editing [class*="popup-btn-"] .label {
+    display: block;
+    padding: 2px 3px; }
+  .v-bootstrap-editor.editing [class*="popup-btn-"]:hover {
     opacity: 1; }
 
-.v-bootstrap-editor.editing .tool-removator .label {
-  padding-top: 4px;
-  padding-bottom: 2px; }
+.v-bootstrap-editor.editing .popup-btn-informator {
+  opacity: 1; }
 
-.v-bootstrap-editor.editing .tool-editor .label {
-  padding: 2px 4px; }
+.v-bootstrap-editor.editing .popup-btn-removator,
+.v-bootstrap-editor.editing .popup-btn-editor {
+  cursor: pointer; }
 
 /*# sourceMappingURL=vBootstrap.css.map */

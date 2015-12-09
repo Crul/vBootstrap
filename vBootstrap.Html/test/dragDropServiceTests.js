@@ -3,145 +3,142 @@
 /// <reference path="../wwwroot/js/Bacon.js"/>
 /// <reference path="../wwwroot/src/seedwork/namespace.js" />
 /// <reference path="utils/testUtils.js" />
-/// <reference path="mock/seedwork/utils.js" />
-/// <reference path="mock/config/streams.js" />
-/// <reference path="mock/core/lockService.js" />
-/// <reference path="mock/core/dropTargetSelector.js" />
+/// <reference path="mock/streamsMock.js" />
+/// <reference path="mock/lockServiceMock.js" />
 /// <reference path="../wwwroot/src/config/dragDrop.js" />
 /// <reference path="../wwwroot/src/core/lock/locker.js" />
 /// <reference path="../wwwroot/src/core/dragDrop/dragDropService.js" />
 
 describe("drag&drop service", function () {
     var testUtils = vBootstrap.test.utils;
-    var dropTargetSelector = new vBootstrap.core.dragDrop.dropTargetSelector();
     var dragDropCss = vBootstrap.config.dragDrop.cssClasses;
 
     var isDragging;
     var editor;
     var dragDropService;
-    var unsubBefore;
     var source;
-    var draggingElem;
     var target;
     var targetParentElem;
+    var lockService;
 
     beforeEach(initBeforeEach);
 
     function initBeforeEach() {
-        if (unsubBefore) unsubBefore();
-        
         isDragging = undefined;
-        editor = { elem: testUtils.getDomElement() };
-        dragDropService = new vBootstrap.core.dragDrop.dragDropService(editor);
-        unsubBefore = dragDropService.isDragging.onValue(setIsDragging);
+        lockService = testUtils.lock.getNotLockedService();
+        editor = testUtils.getEditor();
+        editor.mock.setDependencies(lockService);
+        vBootstrap.utils.resetCssClass = jasmine.createSpy('resetCssClass');
+        vBootstrap.utils.removeCssClass = jasmine.createSpy('removeCssClass');
     }
 
     it("should be dragging when start dragging with {}", function () {
 
-        dragDropService.startDrag({});
+        createDragDropServiceAndPushDragging({});
 
         expect(isDragging).toBe(true);
     });
 
-    it("should NOT be dragging when start dragging without {}", function () {
+    it("should NOT be dragging when dragging undefined", function () {
 
-        dragDropService.startDrag();
+        createDragDropServiceAndPushDragging(undefined);
 
         expect(isDragging).toBe(false);
     });
 
     it("should NOT be dragging when dragging starts and ends", function () {
         var mouseupBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
-        initBeforeEach(); // because overriding mouseup stream
+        var removeFn = jasmine.createSpy('remove');
 
-        dragDropService.startDrag({});
+        createDragDropServiceAndPushDragging({ remove: removeFn });
         mouseupBus.push({});
 
         expect(isDragging).toBe(false);
-        expect(dropTargetSelector.stopBindingTarget).toHaveBeenCalled();
-    });
-
-    it("should insert source after target", function () {
-        var mouseupBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
-        initBeforeEach(); // because overriding mouseup stream
-        initDomElements();
-
-        dragDropService.startDrag({});
-        dropTargetSelector.mock.targetBus.push($(target));
-        mouseupBus.push({});
-
-        checkTargetDropped(targetParentElem, target, source);
     });
 
     it("should insert source before target", function () {
         var mouseupBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
-        initBeforeEach(); // because overriding mouseup stream
-        initDomElements({ isDraggingBefore: true });
+        initDomElements();
+        var dragging = {
+            remove: jasmine.createSpy('removeDragging'),
+            source: source
+        };
+        var droppable = {
+            jTarget: target,
+            isDraggingBefore: true
+        };
 
-        dragDropService.startDrag({});
-        dropTargetSelector.mock.targetBus.push($(target));
+        createDragDropServiceAndPushDragging(dragging);
+        dragDropService.droppableBus.push(droppable);
         mouseupBus.push({});
 
         checkTargetDropped(targetParentElem, source, target);
     });
 
-    it("should append source to target parent", function () {
+    it("should insert source after target", function () {
         var mouseupBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
-        initBeforeEach(); // because overriding mouseup stream
-        initDomElements({ isDraggingBefore: true });
-        $(target).addClass(dragDropCss.dropableTargetFirst);
+        initDomElements();
+        var dragging = {
+            remove: jasmine.createSpy('removeDragging'),
+            source: source
+        };
 
-        dragDropService.startDrag({});
-        dropTargetSelector.mock.targetBus.push($(target));
+        createDragDropServiceAndPushDragging(dragging);
+        dragDropService.droppableBus.push({ jTarget: target });
         mouseupBus.push({});
 
+        console.log(targetParentElem[0].outerHTML);
         checkTargetDropped(targetParentElem, target, source);
     });
 
-    it("should remove shadow", function () {
+    it("should remove dragging", function () {
         var mouseupBus = vBootstrap.config.streams.mock.setGlobalPushable('mouseup');
-        initBeforeEach(); // because overriding mouseup stream
-        $(editor.elem).append(draggingElem);
-        expect($(editor.elem).children().length).toBe(1);
+        var dragging = {
+            remove: jasmine.createSpy('removeDragging'),
+            source: source,
+            isDraggingBefore: true
+        };
 
-        dragDropService.startDrag({});
+        createDragDropServiceAndPushDragging(dragging);
+        dragDropService.droppableBus.push({ jTarget: target });
         mouseupBus.push({});
 
-        expect($(editor.elem).children().length).toBe(0);
-        
+        expect(dragging.remove).toHaveBeenCalled();
     });
 
-    function initDomElements(config) {
-        config = config || {};
+    it("should lock on dragging", function () {
+        var lockOnFn;
+        lockService.lockOn = setLockOnFn;
+        function setLockOnFn(fn) { lockOnFn = fn; }
 
+        dragDropService = new vBootstrap.core.dragDrop.DragDropService(editor);
+
+        expect(dragDropService.isDragging).toBe(lockOnFn);
+    });
+
+    function createDragDropServiceAndPushDragging(draggingEvent) {
+        dragDropService = new vBootstrap.core.dragDrop.DragDropService(editor);
+        dragDropService.isDragging.onValue(setIsDragging);
+        dragDropService.draggingBus.push(draggingEvent);
+    }
+
+    function initDomElements() {
         source = testUtils.getDomElement();
-        vBootstrap.utils.mock.setVBData({
-            source: source,
-            isDraggingBefore: config.isDraggingBefore
-        });
-
-        draggingElem = $(testUtils.getDomElement()).addClass(dragDropCss.dragging);
-        $(editor.elem).append(draggingElem);
 
         target = testUtils.getDomElement();
         targetParentElem = testUtils.getDomElement();
-        $(targetParentElem).append(target);
-        $(editor.elem).append(targetParentElem);
+        targetParentElem.append(target);
+        editor.jElem.append(targetParentElem);
     }
 
     function checkTargetDropped(targetParentElem, firstChildExpected, secondChildExpected) {
         var childrenCount = $(targetParentElem).children().length;
         expect(childrenCount).toBe(2);
-        expect($(editor).find('.' + dragDropCss.dragging).length).toBe(0);
-
-        if (childrenCount > 1) {
-            expect($(targetParentElem).children()[0]).toBe(firstChildExpected);
-            expect($(targetParentElem).children()[1]).toBe(secondChildExpected);
-        }
+        expect($(targetParentElem).children()[0]).toBe(firstChildExpected[0]);
+        expect($(targetParentElem).children()[1]).toBe(secondChildExpected[0]);
     }
 
     function setIsDragging(value) {
         isDragging = value;
     }
-
 });

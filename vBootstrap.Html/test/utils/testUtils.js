@@ -1,6 +1,7 @@
 ﻿(function () {
     "use strict";
     namespace('vBootstrap.test').utils = {
+        getEditor: getEditor,
         getBootstrapElement: getBootstrapElement,
         getDomElement: getDomElement,
         lock: {
@@ -12,12 +13,46 @@
         }
     };
 
+    function getEditor() {
+        var editor = {
+            jElem: getDomElement(),
+            bus: {
+                onEnd: jasmine.createSpy('onEndEditorBus')
+            },
+            mock: {
+                setDependencies: setDependencies
+            }
+        };
+        setDependencies();
+
+        $(document.body).append(editor.jElem);
+        return editor;
+
+        function setDependencies() {
+            var dependenciesArray = arguments;
+            editor.resolve = fakeResolve;
+
+            function fakeResolve(dependencies, load, elem) {
+                load.apply(elem, dependenciesArray)
+            };
+        }
+    }
+
     function getDomElement() {
-        return $('<div />')[0];
+        return $('<div />');
     }
 
     function getBootstrapElement() {
-        return { elem: getDomElement() };
+        return {
+            jElem: getDomElement(),
+            editor: getEditor(),
+            elemStreams: {
+                mousemove: new Bacon.Bus(),
+                mousedown: new Bacon.Bus(),
+                mouseout: new Bacon.Bus()
+            },
+            onDispose: jasmine.createSpy('onDispose')
+        };
     }
 
     function getLockedService() {

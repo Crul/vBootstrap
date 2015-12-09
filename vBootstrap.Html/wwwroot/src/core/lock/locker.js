@@ -1,56 +1,56 @@
 ﻿(function () {
     "use strict";
 
-    namespace('vBootstrap.core.lock').locker = vBLocker;
+    Locker.prototype.lockOn = lockOn;
+    Locker.prototype.removeLockOn = removeLockOn;
+    Locker.prototype.reset = reset;
+    namespace('vBootstrap.core.lock').Locker = Locker;
 
-    function vBLocker() {
+    function Locker(editor) {
+        if (editor) // TODO
+            editor.lockService = this;
 
-        var isLockedBus = new Bacon.Bus();
-        var isLockedPublic = isLockedBus.toProperty(false);
+        this.isLockedBus = new Bacon.Bus();
+        this.internalLocked;
+        this.locks = [];
+        this.isLocked = this.isLockedBus.toProperty(false);
+        this.isNotLocked = this.isLocked.not();
 
-        var isLocked;
-        var locks = [];
-        var unsubscribeBus;
+        this.reset();
+    }
 
-        subscribeBus();
+    function lockOn(lock) {
+        this.locks.push(lock);
+        this.reset();
+    }
 
-        var lockService = {
-            isLocked: isLockedPublic,
-            isNotLocked: isLockedPublic.not(),
-            lockOn: lockOn,
-            removeLockOn: removeLockOn
-        };
-
-        function lockOn(lock) {
-            locks.push(lock);
-            unsubscribeBus();
-            subscribeBus();
+    function removeLockOn(lock) {
+        var index = this.locks.indexOf(lock);
+        if (index > -1) {
+            this.locks.splice(index, 1);
+            this.reset();
+        } else {
+            console.warn('Locker.removeLockOn: lock not found: ' + lock.id);
         }
+    }
 
-        function removeLockOn(lock) {
-            var index = locks.indexOf(lock);
-            if (index > -1) {
-                locks.splice(index, 1);
-                unsubscribeBus();
-                subscribeBus();
-            } else {
-                console.warn('lock not found: ' + lock.id);
-            }
-        }
+    function reset() {
+        var locker = this;
 
-        function subscribeBus() {
-            isLocked = Bacon.constant(false);
-            $(locks).each(setLock);
-            unsubscribeBus = isLocked.skipDuplicates().onValue(function (v) {
-                isLockedBus.push(v);
-            });
+        if (this.unsubscribeBus)
+            this.unsubscribeBus();
+
+        this.internalLocked = Bacon.constant(false);
+        $(this.locks).each(setLock);
+        this.unsubscribeBus = this.internalLocked.onValue(pushPublicValue);
+
+        function pushPublicValue(v) {
+            locker.isLockedBus.push(v);
         }
 
         function setLock(i, lock) {
-            isLocked = isLocked.or(lock);
+            locker.internalLocked = locker.internalLocked.or(lock.toProperty());
         }
-
-        return lockService;
     }
 
 })();
