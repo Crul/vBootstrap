@@ -1,4 +1,4 @@
-﻿# vBootstrap
+# vBootstrap
 
 An experiment with BaconJs, learning purposes.
 The script adds an editor layer to any bootstrap HTML elements.
